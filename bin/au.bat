@@ -7,7 +7,7 @@ if "%1"=="new" (
 ) else if "%1"=="ki" (
     s ki auto.exe
 ) else if "%1"=="h" (
-    type %~dp0.\Lib\auto.ahk | clip.exe
+    type %~dp0.\Lib\auto.ahk | win32yank.exe -i
 ) else if 0==0 (
     cd /d C:/Users/%username%/Desktop
     s open %~dp0Lib\auto.exe

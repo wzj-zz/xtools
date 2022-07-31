@@ -26,7 +26,7 @@ java8_path := SCOOP_ROOT "\apps\openjdk8-redhat\current\bin"
 java11_path := SCOOP_ROOT "\apps\liberica11-full-jdk\current\bin"
 java17_path := SCOOP_ROOT "\apps\liberica17-full-jdk\current\bin"
 ;----------------------------------------------------------------------
-;group-´°¿Ú×é
+;group-çª—å£ç»„
 
 GroupAdd, browser, ahk_exe msedge.exe
 GroupAdd, browser, ahk_exe chrome.exe
@@ -166,7 +166,7 @@ clip_check_ed() {
 	clipboard := tmp_clip
 }
 ;----------------------------------------------------------------------
-;script-½Å±¾´¥·¢Æ÷£¬³£ÓÃ½Å±¾²¹È«ÈÈ×Ö´®
+;script-è„šæœ¬è§¦å‘å™¨ï¼Œå¸¸ç”¨è„šæœ¬è¡¥å…¨çƒ­å­—ä¸²
 
 #[::
 pyw_eval()
@@ -1219,9 +1219,9 @@ pyw_exec_wait()
 return
 #IfWinActive
 ;----------------------------------------------------------------------
-;apx-³£ÓÃ³ÌĞò¹¦ÄÜÔöÇ¿
+;apx-å¸¸ç”¨ç¨‹åºåŠŸèƒ½å¢å¼º
 
-;tc- TotalCMD64³£ÓÃÃüÁî
+;tc- TotalCMD64å¸¸ç”¨å‘½ä»¤
 #IfWinActive ahk_exe Totalcmd64.exe
 <^LAlt::
 clipboard := "
@@ -1336,10 +1336,10 @@ return
 <!LCtrl::SendInput, {XButton1}
 NumpadSub::RCtrl
 ;----------------------------------------------------------------------
-;app-³£ÓÃ³ÌĞò ÈÈ¼ü/ÈÈ×Ö´® Æô¶¯/¼¤»î
+;app-å¸¸ç”¨ç¨‹åº çƒ­é”®/çƒ­å­—ä¸² å¯åŠ¨/æ¿€æ´»
 
 ;apg- app global
-;apk- app hotkey È«¾ÖÈÈ¼ü Æô¶¯/¼¤»î
+;apk- app hotkey å…¨å±€çƒ­é”® å¯åŠ¨/æ¿€æ´»
 >^`;::
 if WinExist("ahk_exe cmd.exe") {
 	WinActivateBottom, ahk_group win_shell
@@ -1508,7 +1508,7 @@ WinActivateBottom, ahk_group debugger
 return
 
 ;apl- app local 
-;aps- app hotstring ¾Ö²¿ÈÈ×Ö´®(½öÔÚ#oÈÈ¼üÆô¶¯µÄ¶Ô»°¿òÖĞÉúĞ§) Æô¶¯/¼¤»î
+;aps- app hotstring å±€éƒ¨çƒ­å­—ä¸²(ä»…åœ¨#oçƒ­é”®å¯åŠ¨çš„å¯¹è¯æ¡†ä¸­ç”Ÿæ•ˆ) å¯åŠ¨/æ¿€æ´»
 #IfWinActive @Auto_Activate@
 !`;::
 SendInput, ^.{End}+{Home}{BS}
@@ -2002,7 +2002,7 @@ return
 
 #IfWinActive
 ;----------------------------------------------------------------------
-;gdb-Ïà¹ØÃüÁîºÍ½á¹¹
+;gdb-ç›¸å…³å‘½ä»¤å’Œç»“æ„
 
 #IfWinActive ahk_group wsl
 ::db::x/112xb{Space}
@@ -2017,7 +2017,7 @@ return
 ::ctx::context
 #IfWinActive
 ;----------------------------------------------------------------------
-;windbg- wd- ÃüÁî ½á¹¹ ²å¼ş
+;windbg- wd- å‘½ä»¤ ç»“æ„ æ’ä»¶
 
 #IfWinActive ahk_exe cmd.exe
 ::tag::type D:\tools\re\WinDbg\x64\triage\pooltag.txt | peco --rcfile D:\tools\bin\peco.cfg | clip.exe
@@ -2322,7 +2322,7 @@ SendInput, {RButton}c
 #IfWinActive
 
 ;----------------------------------------------------------------------
-;code-Æ¬¶Î
+;code-ç‰‡æ®µ
 
 ::lcip::
 SendInput, 127.0.0.1
@@ -2340,7 +2340,7 @@ return
 clipboard := "data = r'''" clipboard "'''.split('\n')`n`ndata = nem(data)"
 return
 ;----------------------------------------------------------------------
-;nasm-»ã±àÓïÑÔÏà¹ØÃüÁî
+;nasm-æ±‡ç¼–è¯­è¨€ç›¸å…³å‘½ä»¤
 
 #IfWinActive ahk_group terminal
 ::pe::nasm -f win32{Space}
@@ -2352,7 +2352,7 @@ return
 ::gld::GoLink /dll /export{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;sys- SysInternal³£ÓÃÃüÁî
+;sys- SysInternalå¸¸ç”¨å‘½ä»¤
 
 #IfWinActive ahk_group terminal
 ;Ps Tools
@@ -2421,7 +2421,7 @@ return
 ::drcx::D:\tools\re\DynamoRIO\bin64\drrun.exe -c{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;prox-³£ÓÃproxyÉèÖÃÃüÁî
+;prox-å¸¸ç”¨proxyè®¾ç½®å‘½ä»¤
 
 #IfWinActive ahk_group terminal
 ::lpx::export ALL_PROXY=socks5://
@@ -2430,7 +2430,7 @@ return
 ::wpc::proxychains{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;gen-linux & windowsÍ¨ÓÃÃüÁî
+;gen-linux & windowsé€šç”¨å‘½ä»¤
 
 #IfWinActive ahk_group common_shell
 ::dns::nslookup{Space}
@@ -2439,7 +2439,7 @@ return
 ::zt::powershell.exe Get-Clipboard{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;win-³£ÓÃÃüÁî
+;win-å¸¸ç”¨å‘½ä»¤
 
 #IfWinActive ahk_exe cmd.exe
 ::ce::type @@@bin@@@ > shell_.exe
@@ -2532,11 +2532,11 @@ return
 ::scu::sc.exe delete{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;wsl-³£ÓÃÃüÁî
+;wsl-å¸¸ç”¨å‘½ä»¤
 ;1. dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 ;2. dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 ;3. DISM /Online /Enable-Feature /All /FeatureName:Microsoft-Hyper-V
-;wsl_1 ÔËĞĞ 1; wsl_2 ÔËĞĞ 1, 2; Hyper-V ÔËĞĞ3
+;wsl_1 è¿è¡Œ 1; wsl_2 è¿è¡Œ 1, 2; Hyper-V è¿è¡Œ3
 
 #IfWinActive ahk_group wsl_shell
 ::wsip::$(grep -m 1 nameserver /etc/resolv.conf | awk '{{}print $2{}}')
@@ -2678,7 +2678,7 @@ return
 ::dmrm::~/.emacs.d/bin/doom purge{Space}
 ::dmbd::~/.emacs.d/bin/doom build{Space}
 ;----------------------------------------------------------------------
-;lix-³£ÓÃÃüÁî
+;lix-å¸¸ç”¨å‘½ä»¤
 
 #IfWinActive ahk_group lix_shell
 ::aslr::cat /proc/sys/kernel/randomize_va_space
@@ -2852,19 +2852,19 @@ return
 ;cfg-
 
 #IfWinActive ahk_group terminal
-;lixcfg- linux ÅäÖÃÎÄ¼ş±à¼­
+;lixcfg- linux é…ç½®æ–‡ä»¶ç¼–è¾‘
 ::edlpc::vi /etc/proxychains4.conf
 ::edapt::vi /etc/apt/sources.list
 ::edhst::vi /etc/hosts
 
-;wincfg- windows ÅäÖÃÎÄ¼ş±à¼­
+;wincfg- windows é…ç½®æ–‡ä»¶ç¼–è¾‘
 ::edwpc::ed %SCOOP%\apps\proxychains\current\proxychains.conf
 ::edhstw::ed %SystemRoot%\system32\drivers\etc\hosts
 #IfWinActive
 ;----------------------------------------------------------------------
-;pentest- test- ÉøÍ¸²âÊÔÔ­Óï
+;pentest- test- æ¸—é€æµ‹è¯•åŸè¯­
 
-;wtest- windows ÏÂµÄÉøÍ¸²âÊÔÔ­Óï
+;wtest- windows ä¸‹çš„æ¸—é€æµ‹è¯•åŸè¯­
 #IfWinActive ahk_group terminal
 :T:xwwifi::for /f "skip=9 tokens=1,2 delims=:" %i in ('netsh wlan show profiles') do @echo %j | findstr -i -v echo | netsh wlan show profiles %j key=clear
 ::xwdh::certutil -f -decodehex{Space}
@@ -2873,7 +2873,7 @@ return
 ::xwe64::certutil -f -encode{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;tmux-³£ÓÃÃüÁî
+;tmux-å¸¸ç”¨å‘½ä»¤
 
 #IfWinActive ahk_group terminal
 !,::SendInput, ^b!{Up}
@@ -2905,7 +2905,7 @@ SendInput, tmux new -s{Space}
 return
 #IfWinActive
 ;----------------------------------------------------------------------
-;openssl- ssl- ssh- git- ³£ÓÃÃüÁî
+;openssl- ssl- ssh- git- å¸¸ç”¨å‘½ä»¤
 ::sshk::ssh-keygen -t rsa -b 2048 -C ""{Left 1}
 ::ssht::ssh -T git@github.com
 
@@ -2917,19 +2917,19 @@ return
 ::gil::git config --local{Space}
 ::gills::git config --local --list
 
-;²é¿´PEM
+;æŸ¥çœ‹PEM
 ::sslp::openssl x509 -text -noout -in{Space}
 
-;²é¿´DER
+;æŸ¥çœ‹DER
 ::ssld::openssl x509 -inform der -text -noout -in{Space}
 
-;PEM×ªDER
+;PEMè½¬DER
 ::ssl2d::openssl x509 -outform der -in{Space}
 
-;DER×ªPEM
+;DERè½¬PEM
 ::ssl2p::openssl x509 -inform der -outform pem -in{Space}
 ;----------------------------------------------------------------------
-;docker-³£ÓÃÃüÁî
+;docker-å¸¸ç”¨å‘½ä»¤
 
 #IfWinActive ahk_group terminal
 ::dcver::docker version
@@ -2953,11 +2953,11 @@ return
 ::dibd::docker image build -t  .{Left 2}
 #IfWinActive
 ;----------------------------------------------------------------------
-;go-³£ÓÃÃüÁî
+;go-å¸¸ç”¨å‘½ä»¤
 
 #IfWinActive ahk_group terminal
-;GOOS£ºÄ¿±êÆ½Ì¨µÄ²Ù×÷ÏµÍ³(darwin¡¢freebsd¡¢linux¡¢windows)
-;GOARCH£ºÄ¿±êÆ½Ì¨µÄÌåÏµ¼Ü¹¹(386¡¢amd64¡¢arm)
+;GOOSï¼šç›®æ ‡å¹³å°çš„æ“ä½œç³»ç»Ÿ(darwinã€freebsdã€linuxã€windows)
+;GOARCHï¼šç›®æ ‡å¹³å°çš„ä½“ç³»æ¶æ„(386ã€amd64ã€arm)
 ::gow::CGO_ENABLED=0 GOOS=windows GOARCH=386{Space}
 ::gowx::CGO_ENABLED=0 GOOS=windows GOARCH=amd64{Space}
 ::gol::CGO_ENABLED=0 GOOS=linux GOARCH=386{Space}
@@ -2966,7 +2966,7 @@ return
 ::gobd::go build{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;java-³£ÓÃÃüÁî idea-´úÂë¿é²¹È«
+;java-å¸¸ç”¨å‘½ä»¤ idea-ä»£ç å—è¡¥å…¨
 
 #IfWinActive ahk_group terminal
 ::j8w::
@@ -2981,7 +2981,7 @@ return
 ::jcls::java -verbose:class{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;msvc-³£ÓÃÃüÁîºÍ´úÂëÆ¬¶Î
+;msvc-å¸¸ç”¨å‘½ä»¤å’Œä»£ç ç‰‡æ®µ
 
 ::vclib::
 clipboard =
@@ -3049,7 +3049,7 @@ __debugbreak();
 )
 return
 
-;winmake-³£ÓÃÃüÁî
+;winmake-å¸¸ç”¨å‘½ä»¤
 #IfWinActive ahk_group terminal
 ::mgw::set PATH=%scoop%\apps\gcc-llvm\current\bin;%PATH%
 ::mgwu::set PATH=%scoop%\apps\gcc-llvm-ucrt\current\bin;%PATH%
@@ -3063,11 +3063,11 @@ return
 ::winb::cmake . -G "NMake Makefiles" -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=True -DCMAKE_USER_MAKE_RULES_OVERRIDE=D:\tools\bin\Lib\build\c_cpp\cmake\msvc_static_link_flag.cmake && cd build && nmake
 #IfWinActive
 ;----------------------------------------------------------------------
-;cmake-³£ÓÃÃüÁî
+;cmake-å¸¸ç”¨å‘½ä»¤
 #IfWinActive ahk_group terminal
 ::cmk::md build && cd build && cmake ..{Space}
 ;----------------------------------------------------------------------
-;xmake- ³£ÓÃÃüÁî
+;xmake- å¸¸ç”¨å‘½ä»¤
 #IfWinActive ahk_group terminal
 ::xm::xmake{Space}
 ::xmb::xmake -rv{Space}
@@ -3084,7 +3084,7 @@ return
 ::xmdb::xmake project -k compile_commands
 #IfWinActive
 ;----------------------------------------------------------------------
-;binutils³£ÓÃÃüÁî
+;binutilså¸¸ç”¨å‘½ä»¤
 
 #IfWinActive ahk_group terminal
 ::dbin::dumpbin.exe{Space}
@@ -3094,7 +3094,7 @@ return
 ::dbdp::dumpbin.exe /DEPENDENTS ""{Left 1}
 #IfWinActive
 ;----------------------------------------------------------------------
-;vim-³£ÓÃÃüÁî vi-
+;vim-å¸¸ç”¨å‘½ä»¤ vi-
 
 #IfWinActive ahk_group terminal
 ::vizt::powershell.exe Get-Clipboard  | sed 's/\r//g' | vi -{Space}
@@ -3106,7 +3106,7 @@ return
 ::nu::set nu
 #IfWinActive
 ;----------------------------------------------------------------------
-;ida-³£ÓÃ½Å±¾
+;ida-å¸¸ç”¨è„šæœ¬
 
 #IfWinActive ahk_group ida
 ::ida::(r'D:\tools\bin\Lib\ida' not in sys.path) and sys.path.insert(0, r'D:\tools\bin\Lib\ida');import idabase,importlib;importlib.reload(idabase);from idabase import *;
@@ -3196,7 +3196,7 @@ return
 ::z::[]{Left 1}
 #IfWinActive
 ;----------------------------------------------------------------------
-;pkg- ³£¼û°ü¹ÜÀíÆ÷
+;pkg- å¸¸è§åŒ…ç®¡ç†å™¨
 
 #IfWinActive ahk_group terminal
 ;scoop- co-
@@ -3261,7 +3261,7 @@ return
 ::dgu::dpkg -r{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;py- python ³£ÓÃÃüÁî
+;py- python å¸¸ç”¨å‘½ä»¤
 
 #IfWinActive ahk_group terminal
 ::ia::{!}echo "$"{Left}
@@ -3282,7 +3282,7 @@ return
 ::pyqh::-i https://pypi.tuna.tsinghua.edu.cn/simple{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;tcp- tcpdump³£ÓÃÃüÁî
+;tcp- tcpdumpå¸¸ç”¨å‘½ä»¤
 
 #IfWinActive ahk_group terminal
 ::td::tcpdump{Space}
@@ -3292,7 +3292,7 @@ return
 ::tda::tcpdump -nvvv -A -i{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-; neo4j- neo- gd- Í¼Êı¾İ¿âneo4jÏà¹ØÖ¸Áî
+; neo4j- neo- gd- å›¾æ•°æ®åº“neo4jç›¸å…³æŒ‡ä»¤
 
 #IfWinActive ahk_group terminal
 ::gdi::D:\tools\utils\neo4j\bin\neo4j.bat install-service
@@ -3307,14 +3307,14 @@ return
 ::gdsh::D:\tools\utils\neo4j\bin\cypher-shell.bat -u neo4j -p{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
-;cs- cobaltstrike ³£ÓÃÃüÁî
+;cs- cobaltstrike å¸¸ç”¨å‘½ä»¤
 #IfWinActive ahk_group win_shell
 ::tserw::cd /d D:\tools\re\cs4 && D:\tools\re\cs4\teamserver.bat  root D:\tools\re\cs4\baidu.profile{Left 35}
 ;----------------------------------------------------------------------
-;msf- metasploit ³£ÓÃÃüÁî
+;msf- metasploit å¸¸ç”¨å‘½ä»¤
 
 #IfWinActive ahk_group terminal
-;ÔÚlinux shell»·¾³ÖĞÊ¹ÓÃ
+;åœ¨linux shellç¯å¢ƒä¸­ä½¿ç”¨
 ;/opt/metasploit-framework/embedded/framework/modules/exploits
 ;/opt/metasploit-framework/embedded/framework/modules/payloads
 
@@ -3343,7 +3343,7 @@ return
 ::mlrsx::linux/x64/meterpreter_reverse_https
 #IfWinActive
 ;----------------------------------------------------------------------
-;aud- ´úÂëÉó¼Æ
+;aud- ä»£ç å®¡è®¡
 #IfWinActive ahk_group terminal
 
 ;fortify-
@@ -3427,7 +3427,7 @@ pyw_exec_wait()
 return
 #IfWinActive
 ;----------------------------------------------------------------------
-;regx- regex- zz- ³£ÓÃÕıÔò±í´ïÊ½
+;regx- regex- zz- å¸¸ç”¨æ­£åˆ™è¡¨è¾¾å¼
 
 #IfWinActive ahk_group auto
 !`;::
@@ -3455,7 +3455,7 @@ return
 :T:wapix::\w+API\s+\w+\s+WINAPI\s+\w+\s*\(\s*[^;]*;
 #IfWinActive
 ;----------------------------------------------------------------------
-;registry- zc- reg-³£ÓÃ×¢²á±íÏî
+;registry- zc- reg-å¸¸ç”¨æ³¨å†Œè¡¨é¡¹
 
 #IfWinActive ahk_exe cmd.exe
 ::rgls::reg query ""{Space}{Left 2}
@@ -3489,7 +3489,7 @@ clipboard = HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windbg\Workspaces
 return
 #IfWinActive
 ;----------------------------------------------------------------------
-;pdb- Èí¼ş·ûºÅ
+;pdb- è½¯ä»¶ç¬¦å·
 
 ;Firefox http://symbols.mozilla.org/firefox
 ;Crhome https://chromium-browser-symsrv.commondatastorage.googleapis.com
