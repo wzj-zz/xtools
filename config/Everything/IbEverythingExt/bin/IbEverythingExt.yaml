@@ -1,0 +1,42 @@
+﻿# IbEverythingExt
+# https://github.com/Chaoses-Ib/IbEverythingExt
+
+# 拼音搜索
+pinyin_search:
+  # true：开启，false：关闭
+  enable: true
+
+  # 模式
+  # Auto：优先尝试 PCRE 模式，PCRE 模式不可用时使用 Edit 模式
+  # Pcre：默认模式
+  # Edit：只支持简拼搜索
+  mode: Auto
+
+  initial_letter: true  # 简拼
+  pinyin_ascii: true  # 全拼
+  pinyin_ascii_digit: false  # 带声调全拼
+  double_pinyin_abc: false  # 智能 ABC 双拼
+  double_pinyin_jiajia: false  # 拼音加加双拼
+  double_pinyin_microsoft: false  # 微软双拼
+  double_pinyin_thunisoft: false  # 华宇双拼（紫光双拼）
+  double_pinyin_xiaohe: false  # 小鹤双拼
+  double_pinyin_zrm: false  # 自然码双拼
+
+# 快速选择
+quick_select:
+  # true：开启，false：关闭
+  enable: true
+  
+  # 热键模式
+  # 1, 2
+  hotkey_mode: 1
+
+  # 输入模拟模式
+  # Auto：v1.5a→WmKey，v1.4→SendInput
+  # WmKey
+  # SendInput
+  input_mode: Auto
+
+  # 打开或定位文件后关闭窗口（不对 Everything 默认热键生效）
+  # 如果想要默认 Enter 热键也关闭窗口，可在 Everything 快捷键选项中将“打开选中对象，并退出 Everything”设置为 Enter
+  close_everything: false

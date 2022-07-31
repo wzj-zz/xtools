@@ -1,0 +1,23 @@
+# To use common configuration in %APPDATA%/mintty, simply remove this file
+Background=_/mnt/d/tools/config/wsltty/0.jpg,55
+Scrollbar=none
+Term=xterm-256color
+BellFlash=no
+BellTaskbar=yes
+BellPopup=no
+FontSmoothing=full
+BellType=0
+Language=zh_CN
+CursorType=block
+Font=Cascadia Mono
+Charset=UTF-8
+CtrlShiftShortcuts=yes
+ForegroundColour=51,204,204
+Transparency=off
+FontHeight=12
+
+
+ThemeFile=gruvbox
+PgUpDnScroll=yes
+Printer=*
+ClicksPlaceCursor=no

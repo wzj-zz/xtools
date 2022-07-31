@@ -1,0 +1,17 @@
+#!/bin/bash
+tmux has-session -t tml
+
+if [ $? != 0 ]
+then
+	tmux new-session -s tml -d
+
+	tmux split-window -h -t tml:0
+	tmux split-window -v -t tml:0.0
+
+	tmux new-window -t tml
+	tmux split-window -h -t tml:1
+
+	tmux select-window -t tml:1
+fi
+
+tmux attach -t tml

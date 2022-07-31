@@ -1,0 +1,15 @@
+#!/bin/bash
+if [[ $1 = "ja" ]]
+then
+	if [[ $2 = "fu" ]]
+	then
+		echo -e '\n----------------------------------File Upload-----------------------------------';echo -e '\n1. DiskFileItemFactory, parseRequest, FileItem, getInputStream|write:';find "$(pwd)" -type f | egrep -i "\.jsp$|\.jspx$|\.java$" | xargs -r -d '\n' egrep -i -r -l "\bDiskFileItemFactory\b"  | xargs -r -d '\n' egrep -i -r -l "\bparseRequest\b"  | xargs -r -d '\n' egrep -i -r -l "\bFileItem\b"  | xargs -r -d '\n' egrep -i -r -l "\bgetInputStream\b|\bwrite\b" ;echo -e '\n2. SmartUpload, save:';find "$(pwd)" -type f | egrep -i "\.jsp$|\.jspx$|\.java$" | xargs -r -d '\n' egrep -i -r -l "\bSmartUpload\b"  | xargs -r -d '\n' egrep -i -r -l "\bsave\b" ;echo -e '\n3. MultipartHttpServletRequest, getFile|getFiles|getFileMap|getMultiFileMap, MultipartFile, getBytes|getInputStream|transferTo:\n   MultipartFile|CommonsMultipartFile, getBytes|getInputStream|transferTo|getFileItem:';find "$(pwd)" -type f | egrep -i "\.jsp$|\.jspx$|\.java$" | xargs -r -d '\n' egrep -i -r -l "\bMultipartFile\b|\bCommonsMultipartFile\b"  | xargs -r -d '\n' egrep -i -r -l "\bgetBytes\b|\bgetInputStream\b|\btransferTo\b|\bgetFileItem\b" ;echo -e '\n4. FormFile, getFileData|getInputStream:';find "$(pwd)" -type f | egrep -i "\.jsp$|\.jspx$|\.java$" | xargs -r -d '\n' egrep -i -r -l "\bFormFile\b"  | xargs -r -d '\n' egrep -i -r -l "\bgetFileData\b|\bgetInputStream\b" ;echo -e '\n5. extends ActionSupport, File, FileUtils.copyFile|InputStream:';find "$(pwd)" -type f | egrep -i "\.jsp$|\.jspx$|\.java$" | xargs -r -d '\n' egrep -i -r -l "\bextends\s+ActionSupport\b"  | xargs -r -d '\n' egrep -i -r -l "\bFile\b"  | xargs -r -d '\n' egrep -i -r -l "\bFileUtils\s*\.\s*copyFile\b|\bInputStream\b" ;echo -e '\n6. new URL, openConnection, getInputStream';find "$(pwd)" -type f | egrep -i "\.jsp$|\.jspx$|\.java$" | xargs -r -d '\n' egrep -i -r -l "\bnew\s+URL\b"  | xargs -r -d '\n' egrep -i -r -l "\bopenConnection\b"  | xargs -r -d '\n' egrep -i -r -l "\bgetInputStream\b" ;echo -e '\n7. HttpServletRequest, getInputStream, FileOutputStream|FileUtils.copyInputStreamToFile|FileUtils.copyToFile:';find "$(pwd)" -type f | egrep -i "\.jsp$|\.jspx$|\.java$" | xargs -r -d '\n' egrep -i -r -l "\bHttpServletRequest\b"  | xargs -r -d '\n' egrep -i -r -l "\bgetInputStream\b"  | xargs -r -d '\n' egrep -i -r -l "\bFileOutputStream\b|\bFileUtils\s*\.\s*copyInputStreamToFile\b|\bFileUtils\s*\.\s*copyToFile\b" 
+	elif [[ $2 = "exec" ]]
+	then
+		echo -e '\n------------------------------------Cmd Exec------------------------------------';echo -e '\n1. Runtime, getRuntime(), exec:';find "$(pwd)" -type f | egrep -i "\.jsp$|\.jspx$|\.java$" | xargs -r -d '\n' egrep -i -r -l "\bRuntime\s*\.\s*getRuntime\b\(\)"  | xargs -r -d '\n' egrep -i -r -l "\.\s*\bexec\b" ;echo -e '\n2. ScriptEngine|CompiledScript, eval:';find "$(pwd)" -type f | egrep -i "\.jsp$|\.jspx$|\.java$" | xargs -r -d '\n' egrep -i -r -l "\bScriptEngine\b|\bCompiledScript\b"  | xargs -r -d '\n' egrep -i -r -l "\s*\.\s*\beval\b" 
+	fi
+
+elif [[ $1 = "cs" ]]
+then
+	echo "c#"
+fi

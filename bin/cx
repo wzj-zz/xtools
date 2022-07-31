@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+tmp_path=$(powershell.exe Get-Clipboard | xargs -r -d '\n' wslpath)
+if [ -d "$tmp_path" ]
+	then cd "$tmp_path"
+	else cd "$(dirname "$tmp_path")"
+fi

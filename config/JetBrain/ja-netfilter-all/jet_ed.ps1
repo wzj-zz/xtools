@@ -1,0 +1,6 @@
+[Environment]::SetEnvironmentVariable('IDEA_VM_OPTIONS', $null, 'User')
+[Environment]::SetEnvironmentVariable('CLION_VM_OPTIONS', $null, 'User')
+[Environment]::SetEnvironmentVariable('PYCHARM_VM_OPTIONS', $null, 'User')
+[Environment]::SetEnvironmentVariable('PHPSTORM_VM_OPTIONS', $null, 'User')
+# [Environment]::SetEnvironmentVariable('RUBYMINE_VM_OPTIONS', $null, 'User')
+# [Environment]::SetEnvironmentVariable('GOLAND_VM_OPTIONS', $null, 'User')

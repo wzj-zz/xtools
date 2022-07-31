@@ -1,0 +1,52 @@
+{
+    // vim-
+    "vim.useSystemClipboard": true,
+    "vim.easymotion": true,
+    "vim.leader": "s",
+    "vim.normalModeKeyBindings": [
+		{
+			"before": ["g", "D"],
+			"commands": ["editor.action.goToReferences"],
+		}
+    ],
+
+    // cc-
+    "clangd.path": "D:\\Scoop\\Scoop\\apps\\gcc-llvm-ucrt\\current\\bin\\clangd.exe",
+    "C_Cpp.intelliSenseEngine": "Disabled",
+
+    // go-
+
+    // rust-
+
+    // py-
+
+    // java-
+
+    // c#-
+
+    // php-
+    "php.validate.executablePath": "D:\\phpstudy_pro\\Extensions\\php\\php5.2.17nts\\php.exe",
+    "php.debug.executablePath": "D:\\phpstudy_pro\\Extensions\\php\\php5.2.17nts\\ext\\php_xdebug.dll",
+
+    // vscode-
+    "workbench.colorTheme": "Monokai",
+    "extensions.autoUpdate": false,
+
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+
+    "files.exclude": {
+      "**/.classpath": true,
+      "**/.project": true,
+      "**/.settings": true,
+      "**/.factorypath": true,
+      "**/build/.deps": true,
+      "**/build/.objs": true,
+      "**/build/mingw": true,
+      "**/build/windows": true,
+      "**/.cache/clangd": true
+    },
+    "extensions.ignoreRecommendations": true,
+    "python.defaultInterpreterPath": "D:\\tools\\utils\\python3.7.4\\python.exe",
+    "security.workspace.trust.untrustedFiles": "open"
+}

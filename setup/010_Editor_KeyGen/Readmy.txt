@@ -1,0 +1,20 @@
+[Use]
+1. Install the program.
+2. Run the program.
+3. Using keygen to generate a key.
+4. Register the program.
+5. Block online registration check by clicking on "Disadle" in the field "Online Check".
+6. Enjoy!
+
+-------------------------------------------------------------------------------------------------------
+Attention!!!
+
+The ban on online checks does not modify the hosts file,but requires admin rights!
+If your program is banned for registration, you can unlock the program by clicking the button "Unlock"
+in the field "Unlock Editor", this action also requires admin rights.
+-------------------------------------------------------------------------------------------------------
+
+[For check]
+
+SHA256 (KeyGen.exe)  - ba5642669d2c297bb555d55599b418d04ef4307d24f05c52139094fea095489b
+

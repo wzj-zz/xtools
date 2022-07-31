@@ -1,0 +1,39 @@
+new Object() {
+    byte[] bytes(Object data) throws Exception {
+		if(data instanceof InputStream) {
+            InputStream input_stream=(InputStream)data;
+
+			int nRead;
+			byte[] tmp_buf = new byte[0x4000];
+			ByteArrayOutputStream bytes_output_stream = new ByteArrayOutputStream();
+	
+			while ((nRead = input_stream.read(tmp_buf, 0, tmp_buf.length)) != -1) {
+				bytes_output_stream.write(tmp_buf, 0, nRead);
+			}
+			return bytes_output_stream.toByteArray();
+        }
+        if(data instanceof byte[]) {
+            return (byte[])data;
+        }
+		return new byte[0];
+    }
+
+    void write(String path, Object data) throws Exception {
+        OutputStream file_output_stream = new FileOutputStream(path);
+        try {
+            file_output_stream.write(bytes(data));
+        } finally {
+            file_output_stream.close();
+        }
+    }
+	
+	byte[] read(String path) throws Exception {
+		File file = new File(path);
+		return java.nio.file.Files.readAllBytes(file.toPath());
+	}
+	
+	Object main() throws Exception {
+		return 0;
+	}
+
+}.main();
