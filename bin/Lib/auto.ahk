@@ -2909,7 +2909,7 @@ return
 ::sshk::ssh-keygen -t rsa -b 2048 -C ""{Left 1}
 ::ssht::ssh -T git@github.com
 
-::gipx::git config --global https.proxy http://127.0.0.1:1080
+::gipx::git config --global http.proxy http://127.0.0.1:1080
 ::girn::git config --global core.autocrlf false
 ::gig::git config --global{Space}
 ::gigls::git config --global --list
