@@ -663,6 +663,24 @@ WinClose, @Auto_Activate@
 clipboard := StrReplace(clipboard, "`r")
 return
 
+::xt.ug::
+WinClose, @Auto_Activate@
+clipboard := "
+(
+xtools_upgrade_src = ''
+xtools_upgrade_src += dzip(d64(b'H4sIAMJL5mIC/3NITc7IV8hPS+PlSk7MyVFILFXIzoSys1MrgRwAuqDZuSIAAAA=')).decode()+'\n'
+xtools_upgrade_src += 'cd /d d:/tools\n'
+xtools_upgrade_src += 'git config --global core.autocrlf false\n'
+xtools_upgrade_src += 'git pull --rebase https://github.com/wzj-zz/xtools.git master\n'
+xtools_upgrade_src += dzip(d64(b'H4sIAOJL5mIC/0tOzMlRSCxVyEst5+VKhnCgjOzUSl4uh9TkjHyF/DwA8Se4GCgAAAA=')).decode()
+rm('xtools_upgrade.bat')
+wt('xtools_upgrade.bat', 'w')(xtools_upgrade_src)
+)"
+pyw_exec_wait()
+Run, cmd /k xtools_upgrade.bat
+return
+
+::xt.tm::
 ::tm.xt::
 WinClose, @Auto_Activate@
 clipboard := "
