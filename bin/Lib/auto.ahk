@@ -2906,6 +2906,7 @@ return
 #IfWinActive
 ;----------------------------------------------------------------------
 ;openssl- ssl- ssh- git- 常用命令
+#IfWinActive ahk_group common_shell
 ::sshk::ssh-keygen -t rsa -b 2048 -C ""{Left 1}
 ::ssht::ssh -T git@github.com
 
@@ -2916,6 +2917,8 @@ return
 ::gigrm::git config --global --unset{Space}
 ::gil::git config --local{Space}
 ::gills::git config --local --list
+::gisps::git stash push{Space}
+::gispp::git stash pop{Space}
 
 ;查看PEM
 ::sslp::openssl x509 -text -noout -in{Space}
@@ -2928,6 +2931,7 @@ return
 
 ;DER转PEM
 ::ssl2p::openssl x509 -inform der -outform pem -in{Space}
+#IfWinActive
 ;----------------------------------------------------------------------
 ;docker-常用命令
 
