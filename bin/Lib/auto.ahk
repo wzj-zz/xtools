@@ -88,6 +88,7 @@ GroupAdd, ahk_window, ahk_exe auto.exe
 GroupAdd, ahk_window, ahk_exe KeyPatch64.exe
 ;----------------------------------------------------------------------
 ;ahk- ahk function
+
 quotes := Chr(34)
 
 pyw_eval() {
@@ -154,6 +155,38 @@ clip_msg_box() {
     MsgBox, %clipboard%
 }
 
+append_text(path, data) {
+    FileEncoding, UTF-8-RAW
+    FileAppend, %data% , %path%
+}
+
+write_text(path, data) {
+    FileDelete, %path%
+    append_text(path, data)
+}
+
+read_text(path) {
+    FileEncoding, UTF-8-RAW
+    FileRead, data, %path%
+    return data
+}
+
+isdir(path) {
+    return InStr(FileExist(path), "D")
+}
+
+isfile(path) {
+    return not isdir(path)
+}
+
+remove(path) {
+    if(isdir(path)) {
+        FileRemoveDir, %path%, 1
+    } else if(isfile(path)) {
+        FileDelete, %path%
+    }
+}
+
 clip_check_op() {
 	global tmp_clip := clipboard
 	if(InStr(clipboard, "`n")) {
@@ -179,14 +212,14 @@ clip_msg_box()
 return
 
 #]::
-FileDelete, tmp_nasm
-FileDelete, @@@nasm_bin@@@
-FileRead, core_asm, %A_ScriptDir%\..\..\bin\Lib\core\core_asm\core.asm
-FileAppend, %core_asm%, tmp_nasm, UTF-8
-FileAppend, %clipboard%, tmp_nasm, UTF-8
+remove("tmp_nasm_")
+remove("@@@nasm_bin@@@")
+core_asm := read_text(A_ScriptDir "\..\..\bin\Lib\core\core_asm\core.asm")
+write_text("tmp_nasm_", core_asm)
+write_text("tmp_nasm_", clipboard)
 clipboard := "
 (
-pp('nasm', '-f', 'bin', 'tmp_nasm', '-o', '@@@nasm_bin@@@')()
+pp('nasm', '-f', 'bin', 'tmp_nasm_', '-o', '@@@nasm_bin@@@')()
 set_clip(rd('@@@nasm_bin@@@').hex())
 )"
 pyw_exec_wait()
@@ -201,39 +234,36 @@ return
 #=::
 Gui +LastFound +OwnDialogs +AlwaysOnTop
 InputBox, pattern, line_filter, , , 300, 100
-FileAppend, %pattern%, @@@line_filter_pattern@@@, UTF-8
+write_text("@@@line_filter_pattern@@@", pattern)
 line_filter()
-FileDelete, @@@line_filter_pattern@@@
+remove("@@@line_filter_pattern@@@")
 return
 
 #+=::
-#!=::
 Gui +LastFound +OwnDialogs +AlwaysOnTop
 InputBox, pattern, neg_line_filter, , , 300, 100
-FileAppend, %pattern%, @@@neg_line_filter_pattern@@@, UTF-8
+write_text("@@@neg_line_filter_pattern@@@", pattern)
 neg_line_filter()
-FileDelete, @@@neg_line_filter_pattern@@@
+remove("@@@neg_line_filter_pattern@@@")
 return
 
 #-::
 Gui +LastFound +OwnDialogs +AlwaysOnTop
 InputBox, pattern, block_filter, , , 300, 100
-FileAppend, %pattern%, @@@block_filter_pattern@@@, UTF-8
+write_text("@@@block_filter_pattern@@@", pattern)
 block_filter()
-FileDelete, @@@block_filter_pattern@@@
+remove("@@@block_filter_pattern@@@")
 return
 
 #+-::
-#!-::
 Gui +LastFound +OwnDialogs +AlwaysOnTop
 InputBox, pattern, neg_block_filter, , , 300, 100
-FileAppend, %pattern%, @@@neg_block_filter_pattern@@@, UTF-8
+write_text("@@@neg_block_filter_pattern@@@", pattern)
 neg_block_filter()
-FileDelete, @@@neg_block_filter_pattern@@@
+remove("@@@neg_block_filter_pattern@@@")
 return
 
 #+7::
-#!7::
 clipboard := "shell()"
 py_exec_cmd_32()
 return
@@ -411,8 +441,8 @@ return
 
 ::ab::
 WinClose, @Auto_Activate@
-FileDelete, @@@tmp_string@@@
-FileAppend, %clipboard% , @@@tmp_string@@@, UTF-8
+remove("@@@tmp_string@@@")
+write_text("@@@tmp_string@@@", clipboard)
 clipboard := "
 (
 data = rd('@@@tmp_string@@@', 'r').encode('ansi')
@@ -423,8 +453,8 @@ return
 
 ::ub::
 WinClose, @Auto_Activate@
-FileDelete, @@@tmp_string@@@
-FileAppend, %clipboard% , @@@tmp_string@@@, UTF-8
+remove("@@@tmp_string@@@")
+write_text("@@@tmp_string@@@", clipboard)
 clipboard := "
 (
 data = rd('@@@tmp_string@@@', 'r').encode('utf-8')
@@ -435,8 +465,8 @@ return
 
 ::uxb::
 WinClose, @Auto_Activate@
-FileDelete, @@@tmp_string@@@
-FileAppend, %clipboard% , @@@tmp_string@@@, UTF-8
+remove("@@@tmp_string@@@")
+write_text("@@@tmp_string@@@", clipboard)
 clipboard := "
 (
 data = rd('@@@tmp_string@@@', 'r').encode('utf-16')
@@ -556,14 +586,14 @@ return
 
 ::wt::
 WinClose, @Auto_Activate@
-FileDelete, @@@txt@@@
-FileAppend, %clipboard% , @@@txt@@@, UTF-8-RAW
+remove("@@@txt@@@")
+write_text("@@@txt@@@", clipboard)
 return
 
 ::lg::
 WinClose, @Auto_Activate@
-FileDelete, @@@log_txt@@@
-FileAppend, %clipboard% , @@@log_txt@@@, UTF-8
+remove("@@@log_txt@@@")
+write_text("@@@log_txt@@@", clipboard)
 clipboard =
 (
 if not exist('@@@log@@@'):
@@ -591,29 +621,29 @@ return
 
 ::un::
 WinClose, @Auto_Activate@
-FileDelete, @@@uniq_txt@@@
-FileAppend, %clipboard% , @@@uniq_txt@@@, UTF-8
+remove("@@@uniq_txt@@@")
+write_text("@@@uniq_txt@@@", clipboard)
 clipboard := "en(sorted(set(filter(lambda x:x, map(lambda x:x.strip(), rd('@@@uniq_txt@@@', 'r').split('\n')))), key=str.lower))"
 pyw_eval()
-FileDelete, @@@uniq_txt@@@
+remove("@@@uniq_txt@@@")
 return
 
 ::bnx::
 WinClose, @Auto_Activate@
-FileDelete, @@@bnx_txt@@@
-FileAppend, %clipboard% , @@@bnx_txt@@@, UTF-8
+remove("@@@bnx_txt@@@")
+write_text("@@@bnx_txt@@@", clipboard)
 clipboard := "en(set(map(basename, fl(rd('@@@bnx_txt@@@', 'r')))))"
 pyw_eval()
-FileDelete, @@@bnx_txt@@@
+remove("@@@bnx_txt@@@")
 return
 
 ::dnx::
 WinClose, @Auto_Activate@
-FileDelete, @@@dnx_txt@@@
-FileAppend, %clipboard% , @@@dnx_txt@@@, UTF-8
+remove("@@@dnx_txt@@@")
+write_text("@@@dnx_txt@@@", clipboard)
 clipboard := "en(set(map(dirname, fl(rd('@@@dnx_txt@@@', 'r')))))"
 pyw_eval()
-FileDelete, @@@dnx_txt@@@
+remove("@@@dnx_txt@@@")
 return
 
 ::rb::
@@ -720,6 +750,16 @@ set_clip(data)
 pyw_exec_wait()
 return
 
+::str::
+WinClose, @Auto_Activate@
+clipboard := "r'''" clipboard "'''"
+return
+
+::strn::
+WinClose, @Auto_Activate@
+clipboard := "data = r'''" clipboard "'''.split('\n')`n`ndata = nem(data)"
+return
+
 ::fmcc::
 WinClose, @Auto_Activate@
 clipboard := "
@@ -820,8 +860,8 @@ return
 
 ::cc::
 WinClose, @Auto_Activate@
-FileDelete, @@@cc_exe_src@@@
-FileAppend, %clipboard% , @@@cc_exe_src@@@, UTF-8-RAW
+remove("@@@cc_exe_src@@@")
+write_text("@@@cc_exe_src@@@", clipboard)
 clipboard := "
 (
 cc_src = rd('@@@cc_exe_src@@@', 'r')
@@ -2333,12 +2373,6 @@ return
 ::en::set_clip(en()){Left 2}
 ::enr::sset(get_clip())
 ::ens::sset(get_clip(), 0)
-::str::
-clipboard := "r'''" clipboard "'''"
-return
-::strn::
-clipboard := "data = r'''" clipboard "'''.split('\n')`n`ndata = nem(data)"
-return
 ;----------------------------------------------------------------------
 ;nasm-汇编语言相关命令
 
