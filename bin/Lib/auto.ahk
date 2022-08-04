@@ -565,6 +565,19 @@ clipboard := "dzip(" clipboard ")"
 pyw_eval()
 return
 
+::et::
+WinClose, @Auto_Activate@
+write_text("@@@temp_utf_8_text@@@", clipboard)
+clipboard := "etxt(rd('@@@temp_utf_8_text@@@').decode())"
+pyw_eval()
+return
+
+::dt::
+WinClose, @Auto_Activate@
+clipboard := "dtxt(" clipboard ")"
+pyw_eval()
+return
+
 ::rdb::
 WinClose, @Auto_Activate@
 clipboard := "rd(fl(r'''" clipboard "''')[0])"
@@ -698,11 +711,11 @@ WinClose, @Auto_Activate@
 clipboard := "
 (
 xtools_upgrade_src = ''
-xtools_upgrade_src += dzip(d64(b'H4sIAMJL5mIC/3NITc7IV8hPS+PlSk7MyVFILFXIzoSys1MrgRwAuqDZuSIAAAA=')).decode()+'\n'
+xtools_upgrade_src += dtxt(b'H4sIAMJL5mIC/3NITc7IV8hPS+PlSk7MyVFILFXIzoSys1MrgRwAuqDZuSIAAAA=')+'\n'
 xtools_upgrade_src += 'cd /d d:/tools\n'
 xtools_upgrade_src += 'git config --global core.autocrlf false\n'
 xtools_upgrade_src += 'git pull --rebase https://github.com/wzj-zz/xtools.git master\n'
-xtools_upgrade_src += dzip(d64(b'H4sIAOJL5mIC/0tOzMlRSCxVyEst5+VKhnCgjOzUSl4uh9TkjHyF/DwA8Se4GCgAAAA=')).decode()
+xtools_upgrade_src += dtxt(b'H4sIAOJL5mIC/0tOzMlRSCxVyEst5+VKhnCgjOzUSl4uh9TkjHyF/DwA8Se4GCgAAAA=')
 rm('xtools_upgrade.bat')
 wt('xtools_upgrade.bat', 'w')(xtools_upgrade_src)
 )"
@@ -716,9 +729,9 @@ WinClose, @Auto_Activate@
 clipboard := "
 (
 xtools_exec_src = ''
-xtools_exec_src += dzip(d64(b'H4sIAFEJ5GIC/0tJTVNIqcos0EhJLEnUtOLlUgCCzNyC/KIShXSgOESgKLWktCgPLKCXkpqcn1tQlFpcDNEDUcHLlQIyycwELKijUFqUE1+cmJZq65aYU5yKZnBSYnGqmQlUKA2uFqoIyUKIQj2gApB8fJKZCcj2lFRkm1OB5uPUiaYDAN6hFb/uAAAA')).decode() + '\n\n'
-xtools_exec_src += 'exec(dzip(d64(' + str(e64(ezip(neg_block_filter('main-', rd(sys.argv[0], 'r')).replace('-'*80, '').encode()))) + ')).decode())' + '\n\n'
-xtools_exec_src += dzip(d64(b'H4sIADEu5mIC/5WRz2rEIBDG74G8g+xlDGwW2mPBQ99g76UMksxaISYy6rL79lWzbZb+g3oYwZnv56efdX7hKDQbrzlQ27TNSCfhtJ1l99Q2Iq/aYaE+pw7PbJKjOR5rR44UBrY+2mVWAF2BFJ3hJfksW/UHPY7oUkx6mq5Il2FKwZ4J65Ts7iR1Ut+ukNAPsBd6WOkhLkwYOVE+fKPJKygVXTDwF+PyP8b9w7+ibFbFqycVIn/T74WjqM+aFbwsPj6IXB5fP7A/A4sK+t4ku5ncbSZ3v5nMiLB9b90KNsiagD0JxFk7QlQKEEukiHDLdA34HWSqx13+AQAA')).decode()
+xtools_exec_src += dtxt(b'H4sIAFEJ5GIC/0tJTVNIqcos0EhJLEnUtOLlUgCCzNyC/KIShXSgOESgKLWktCgPLKCXkpqcn1tQlFpcDNEDUcHLlQIyycwELKijUFqUE1+cmJZq65aYU5yKZnBSYnGqmQlUKA2uFqoIyUKIQj2gApB8fJKZCcj2lFRkm1OB5uPUiaYDAN6hFb/uAAAA') + '\n\n'
+xtools_exec_src += 'exec(dzip(d64(' + str(etxt(neg_block_filter('main-', rd(sys.argv[0], 'r')).replace('-'*80, ''))) + ')).decode())' + '\n\n'
+xtools_exec_src += dtxt(b'H4sIADEu5mIC/5WRz2rEIBDG74G8g+xlDGwW2mPBQ99g76UMksxaISYy6rL79lWzbZb+g3oYwZnv56efdX7hKDQbrzlQ27TNSCfhtJ1l99Q2Iq/aYaE+pw7PbJKjOR5rR44UBrY+2mVWAF2BFJ3hJfksW/UHPY7oUkx6mq5Il2FKwZ4J65Ts7iR1Ut+ukNAPsBd6WOkhLkwYOVE+fKPJKygVXTDwF+PyP8b9w7+ibFbFqycVIn/T74WjqM+aFbwsPj6IXB5fP7A/A4sK+t4ku5ncbSZ3v5nMiLB9b90KNsiagD0JxFk7QlQKEEukiHDLdA34HWSqx13+AQAA')
 set_clip(xtools_exec_src)
 )"
 pyw_exec_wait()
@@ -734,7 +747,7 @@ return
 WinClose, @Auto_Activate@
 clipboard := "
 (
-data = dzip(d64(b'H4sIAEkx5mIC/5VRXW+CMBR9J+E/3GQvmjh9n8sSJiySMCHA5qOp5TKa1ZZQGHGL/30t6EymZq4vbW/v+ei5N0xQ3mQI90smMtmqcfFgW7b1GIYBLP2FE/ngcv5MmBjYFug19xdJ6ixmHhRMqNoNghHAZAIFERlHqCXoEmxk1nDsEe4yjF3IszZGoqQYmZpBVN0VclkBJZwz8QZ5I2jNpOiBQfQa+i7wMkaF1QdmMNwD+6ttffWNuhZhpYk2QDq8gjVRul/T1wWeURr3QNWymhaDozkY9g97YrOoZjJ/WkVxOPOSZOWkqTOb3x079hZ8wWpGOPtErUuxk0NCCxDYQllJikqNT1Ax1k0l4MkJEs+klxPGuwi5JNmv9rX+yPvUzOfEXDqPPce96M2VOgiNzm5ViZTljAI72CUmsX8rud7VSpQjEU15vcQh6UsaP8MWWx2uyZVU2z9kzHnXb1UfeRq/eNOOL2moIckbfmbQmm/3Da33zB8nAwAA')).decode()
+data = dtxt(b'H4sIAEkx5mIC/5VRXW+CMBR9J+E/3GQvmjh9n8sSJiySMCHA5qOp5TKa1ZZQGHGL/30t6EymZq4vbW/v+ei5N0xQ3mQI90smMtmqcfFgW7b1GIYBLP2FE/ngcv5MmBjYFug19xdJ6ixmHhRMqNoNghHAZAIFERlHqCXoEmxk1nDsEe4yjF3IszZGoqQYmZpBVN0VclkBJZwz8QZ5I2jNpOiBQfQa+i7wMkaF1QdmMNwD+6ttffWNuhZhpYk2QDq8gjVRul/T1wWeURr3QNWymhaDozkY9g97YrOoZjJ/WkVxOPOSZOWkqTOb3x079hZ8wWpGOPtErUuxk0NCCxDYQllJikqNT1Ax1k0l4MkJEs+klxPGuwi5JNmv9rX+yPvUzOfEXDqPPce96M2VOgiNzm5ViZTljAI72CUmsX8rud7VSpQjEU15vcQh6UsaP8MWWx2uyZVU2z9kzHnXb1UfeRq/eNOOL2moIckbfmbQmm/3Da33zB8nAwAA')
 set_clip(data)
 )"
 pyw_exec_wait()
@@ -744,7 +757,7 @@ return
 WinClose, @Auto_Activate@
 clipboard := "
 (
-data = dzip(d64(b'H4sIAHoz5mIC/8VXbW/bNhD+bAP+D1yKBTLqBOn2rW7TqRKdsJUpTS9Zt6YgFJtO1MiUJ9HJgiL77TvqrZJtJcG6ofkQSeTxXh7ec3d+FolZvJ5z9ErIaJEdXh0P+s/qtdv5MuOzfBGW53wRCY6IbfiWNlmLmYwSMUTwxQzbxNqEWJiZ+IwYmAX0PbV/oyNUyY3QFPuntsneBpMJdrEJW0pep78z3TCw5w2/miiVUH2KkbV3fm7ym2jGz89TfsPTjLPVrfjlxU8/7zVO2B7bPPXmza4Tg77pkjPsMkKJT3SL/IGRmUYghoVM78b1fkAtWzeR+iv2AxEn4fw0FPOYp2OlibF5esPmUbYK5ezKv1txjbgOm75jhot1Hw8fFLFsT0mU5kziObpvnCKSroyUh5IbcZLxp5krQzds6ru2tVtpASJJDBn/dzHkIjnkJnOI0xEPTSRZrmK+5ELyFoKD/plNzF0Aa4N+zyl12W/fYcMvpeyLz3wmB30w9QVkAkpU9jHPdwk9QWaSFYHScMnRa/QFHaH73FTP0U/AyzxVh7DSc2VMRCQDEc2SOfdkGolLbb+lYLSZWMNCFUlMHnPJvbvlRRJHMysS1xtHcxOVXLGsNQM4OC4Wi69cOuVynQp4u1dGqO/5uh94g34XggoiRgRDTulhhVND8aiWgStTd1EDB+8HxyTxZCjX2SERiyRdhoqqgNrReEugeMBe4RWjts+8wHFs18dmgUpAXay4TQ2VDboLePnY1bbi3LiIHCcjUeFJ7vI/1zyTGhgfQakBM0BUSLMppn4pXMDU5cc2dtts+q7AeUFe7r4jZF89aIG1u0gorAh9DCklsYlTYNlASOUnFNYkNoBkFUIOuAlGjffMsg3dJzZVJ70V7NPAspRI7dX/m3ilVZKccGms0xT4pdZkOLu2kll+rQrYks3tUPLDB8dOmALfJfSZwxq+Qu6wdaL0tUBFWFw8TYVYreXb9WLBUzhyKa/GtRJ7LZ+qBUQ71bi8VHNUeJjdRlDmkdZyHu60py4V+m24juVLeO2ZF5cOFE2p7X08+AQh3YRxNC/mA6TOvERHf/344VzsjdpZkIPZ27xXQs+gG5tVtXXxrwH2/Fz0Ahh8rd7uq0vbya/8ZfwIQ4tox/+WQZWNNnMaA8QjfUuRxdnoWS6/jDI46oTyqmbPA4R7CksCWrJ8EuSCm22y2eK6W2YHsZoOdxCro7k2zba76re04zp4uNK82Jf9Nk/SDfB7R/n/pivqe9fwurnuYSNw4UYcXO7ploeb2qrRpFf6FS2Q9gP1q4KrFX4OKy5tJVWR3/CEhEUaMAtFOS3h8QqCK2auqf6BTIMpmwTUUJUTdp8/r1W2R4xp+DlJqxH8Y/SpqBVd41hJr4dUtOa+Ut3OafVJWtQE/K1K2qNvqa1j1t3S2Jw74WTXnN9rXu/B8SQOLzO0/xr9bdqV/frXBLCrIykfGBZHaL89Oe6qOP8AXcvUEKwNAAA=')).decode()
+data = dtxt(b'H4sIAHoz5mIC/8VXbW/bNhD+bAP+D1yKBTLqBOn2rW7TqRKdsJUpTS9Zt6YgFJtO1MiUJ9HJgiL77TvqrZJtJcG6ofkQSeTxXh7ec3d+FolZvJ5z9ErIaJEdXh0P+s/qtdv5MuOzfBGW53wRCY6IbfiWNlmLmYwSMUTwxQzbxNqEWJiZ+IwYmAX0PbV/oyNUyY3QFPuntsneBpMJdrEJW0pep78z3TCw5w2/miiVUH2KkbV3fm7ym2jGz89TfsPTjLPVrfjlxU8/7zVO2B7bPPXmza4Tg77pkjPsMkKJT3SL/IGRmUYghoVM78b1fkAtWzeR+iv2AxEn4fw0FPOYp2OlibF5esPmUbYK5ezKv1txjbgOm75jhot1Hw8fFLFsT0mU5kziObpvnCKSroyUh5IbcZLxp5krQzds6ru2tVtpASJJDBn/dzHkIjnkJnOI0xEPTSRZrmK+5ELyFoKD/plNzF0Aa4N+zyl12W/fYcMvpeyLz3wmB30w9QVkAkpU9jHPdwk9QWaSFYHScMnRa/QFHaH73FTP0U/AyzxVh7DSc2VMRCQDEc2SOfdkGolLbb+lYLSZWMNCFUlMHnPJvbvlRRJHMysS1xtHcxOVXLGsNQM4OC4Wi69cOuVynQp4u1dGqO/5uh94g34XggoiRgRDTulhhVND8aiWgStTd1EDB+8HxyTxZCjX2SERiyRdhoqqgNrReEugeMBe4RWjts+8wHFs18dmgUpAXay4TQ2VDboLePnY1bbi3LiIHCcjUeFJ7vI/1zyTGhgfQakBM0BUSLMppn4pXMDU5cc2dtts+q7AeUFe7r4jZF89aIG1u0gorAh9DCklsYlTYNlASOUnFNYkNoBkFUIOuAlGjffMsg3dJzZVJ70V7NPAspRI7dX/m3ilVZKccGms0xT4pdZkOLu2kll+rQrYks3tUPLDB8dOmALfJfSZwxq+Qu6wdaL0tUBFWFw8TYVYreXb9WLBUzhyKa/GtRJ7LZ+qBUQ71bi8VHNUeJjdRlDmkdZyHu60py4V+m24juVLeO2ZF5cOFE2p7X08+AQh3YRxNC/mA6TOvERHf/344VzsjdpZkIPZ27xXQs+gG5tVtXXxrwH2/Fz0Ahh8rd7uq0vbya/8ZfwIQ4tox/+WQZWNNnMaA8QjfUuRxdnoWS6/jDI46oTyqmbPA4R7CksCWrJ8EuSCm22y2eK6W2YHsZoOdxCro7k2zba76re04zp4uNK82Jf9Nk/SDfB7R/n/pivqe9fwurnuYSNw4UYcXO7ploeb2qrRpFf6FS2Q9gP1q4KrFX4OKy5tJVWR3/CEhEUaMAtFOS3h8QqCK2auqf6BTIMpmwTUUJUTdp8/r1W2R4xp+DlJqxH8Y/SpqBVd41hJr4dUtOa+Ut3OafVJWtQE/K1K2qNvqa1j1t3S2Jw74WTXnN9rXu/B8SQOLzO0/xr9bdqV/frXBLCrIykfGBZHaL89Oe6qOP8AXcvUEKwNAAA=')
 set_clip(data)
 )"
 pyw_exec_wait()

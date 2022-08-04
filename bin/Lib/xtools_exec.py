@@ -315,6 +315,12 @@ def dzip(data):
     import gzip
     return gzip.decompress(data)
     
+def etxt(text):
+    return e64(ezip(text.encode()))
+    
+def dtxt(data):
+    return dzip(d64(data)).decode()
+    
 def md5(data):
     import hashlib
     m = hashlib.md5()
@@ -365,6 +371,7 @@ def sha256(data):
     return ''
 
 def dmjs(obj, fd=None):
+    import json
     x = obj
     if '__dict__' in dir(obj):
         x = obj.__dict__
@@ -374,6 +381,7 @@ def dmjs(obj, fd=None):
         return json.dumps(x)
 
 def ldjs(json_str, obj_hook=None, fd=None):
+    import json
     if fd:
         return json.load(json_str, fd, object_hook=obj_hook)
     else:
