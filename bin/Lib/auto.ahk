@@ -2966,8 +2966,12 @@ return
 ::gigrm::git config --global --unset{Space}
 ::gil::git config --local{Space}
 ::gills::git config --local --list
-::gisps::git stash push{Space}
-::gispp::git stash pop{Space}
+::gigc::git gc --prune=now{Space}
+::gilg::git log{Space}
+::giad::git add .
+::gist::git status{Space}
+::gizz::git stash push{Space}
+::gizp::git stash pop{Space}
 
 ;查看PEM
 ::sslp::openssl x509 -text -noout -in{Space}
