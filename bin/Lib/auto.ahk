@@ -714,8 +714,10 @@ xtools_upgrade_src = ''
 xtools_upgrade_src += dtxt(b'H4sIAMJL5mIC/3NITc7IV8hPS+PlSk7MyVFILFXIzoSys1MrgRwAuqDZuSIAAAA=')+'\n'
 xtools_upgrade_src += 'cd /d d:/tools\n'
 xtools_upgrade_src += 'git config --global core.autocrlf false\n'
+xtools_upgrade_src += 'git stash push\n'
 xtools_upgrade_src += 'git pull --rebase https://github.com/wzj-zz/xtools.git master\n'
-xtools_upgrade_src += dtxt(b'H4sIAOJL5mIC/0tOzMlRSCxVyEst5+VKhnCgjOzUSl4uh9TkjHyF/DwA8Se4GCgAAAA=')
+xtools_upgrade_src += 'git stash pop\n'
+xtools_upgrade_src += dtxt(b'H4sIAGZ27GIC/0tOzMlRSCxVyEst5+VKBnGyUyuReImlCGFeLofU5Ix8hfw8AA31zbg2AAAA')
 rm('xtools_upgrade.bat')
 wt('xtools_upgrade.bat', 'w')(xtools_upgrade_src)
 )"
