@@ -417,6 +417,18 @@ def neg_block_filter(pattern, data, sep_pattern=r'.*{}.*\n|.*{}.*\n|\n--.*\n|\n=
     data = ('-'*80+'\n').join(filter(lambda item:item and not search(pattern, item, re.I), data))
     return data
     
+def line_remove(data):
+    return gsub(r'\n\s*\n', '\n', data.replace('\r', ''))
+
+def line_strip(data):
+    return en(map(lambda line:line.strip(), data.replace('\r', '').split('\n')))
+
+lr = line_remove    
+ls = line_strip
+lsr = lambda data:lr(ls(data))
+
+def str_to_block(pattern, data, sep='-'):
+    return en([sep*80+'\n'+line if search(pattern, line, re.I) else line for line in data.replace('\r', '').split('\n')])
     
 def sset(data, ignore_case=True):
     def _strip(data):

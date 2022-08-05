@@ -231,6 +231,9 @@ Gui +LastFound +OwnDialogs +AlwaysOnTop
 InputBox, nothing, @Auto_Activate@, , , 300, 100
 return
 
+#+o::
+return
+
 #=::
 Gui +LastFound +OwnDialogs +AlwaysOnTop
 InputBox, pattern, line_filter, , , 300, 100
@@ -567,8 +570,8 @@ return
 
 ::et::
 WinClose, @Auto_Activate@
-write_text("@@@temp_utf_8_text@@@", clipboard)
-clipboard := "etxt(rd('@@@temp_utf_8_text@@@').decode())"
+write_text("@@@tmp_utf_8_text@@@", clipboard)
+clipboard := "etxt(rd('@@@tmp_utf_8_text@@@').decode())"
 pyw_eval()
 return
 
@@ -677,19 +680,6 @@ clipboard := "fm(r'''" clipboard "'''.strip())"
 pyw_eval()
 return
 
-::2b::
-WinClose, @Auto_Activate@
-data := clipboard
-Loop, parse, data, `n, `r
-{
-	new_data := A_LoopField
-	break
-}
-pos := InStr(data, new_data)+StrLen(new_data)
-data := SubStr(data, pos)
-clipboard := StrReplace(data, new_data, "================`n" new_data) "`n================`n"
-return
-
 ::lr::
 WinClose, @Auto_Activate@
 clipboard := RegExReplace(clipboard, "m)(*BSR_ANYCRLF)^[[:blank:]]+\R+", "`n")
@@ -701,9 +691,26 @@ WinClose, @Auto_Activate@
 clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
 return
 
+::lsr::
+WinClose, @Auto_Activate@
+clipboard := RegExReplace(clipboard, "m)(*BSR_ANYCRLF)^[[:blank:]]+\R+", "`n")
+clipboard := RegExReplace(clipboard, "(*BSR_ANYCRLF)\R+", "`n")
+clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
+return
+
 ::rn::
 WinClose, @Auto_Activate@
 clipboard := StrReplace(clipboard, "`r")
+return
+
+::2b::
+WinClose, @Auto_Activate@
+clipboard := "
+(
+data = r'''" clipboard "'''.split('\n')
+set_clip(lr(str_to_block(data[0].strip(), en(data[1:]))))
+)"
+pyw_exec_wait()
 return
 
 ::xt.ug::
