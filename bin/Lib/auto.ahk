@@ -1307,6 +1307,7 @@ return
 <!LCtrl::
 SendInput, ^+c\{Enter}
 return
+::re::<(){Left 1}
 ::exe::<(\.exe$|\.dll$|\.sys$)
 ::cfg::<(\.yml$|\.xml$|\.json$|\.properties$|\.ini$)
 ::cpp::<(\.cpp$|\.c\+\+$|\.cxx$|\.hpp$|\.hh$|\.h\+\+$|\.hxx$|\.c$|\.cc$|\.h$)
@@ -1598,12 +1599,22 @@ WinClose, @Auto_Activate@
 FileRead, clipboard, %A_ScriptDir%\..\..\bin\Lib\core\core_asm\core.asm
 return
 
-::jd::
+::7z::
 WinClose, @Auto_Activate@
-FileCreateDir, @@@jad_src@@@
-clip_check_op()
-RunWait, %java11% -jar %A_ScriptDir%\..\..\re\fernflower.jar @@@log@@@ @@@jad_src@@@
-clip_check_ed()
+clipboard := "
+(
+paths = r'''" clipboard " '''
+try:
+    for path in filter(lambda path:exist(path), wcx(paths)):
+        pp('7z', 'x', '-r', '{}'.format(abspath(path)), '-aou', '-o{}'.format(abspath(path)+'@'))()
+except:
+    set_clip('Error File List!')
+)"
+pyw_exec_wait()
+return
+
+::jd2::
+WinClose, @Auto_Activate@
 clipboard := "
 (
 for i in glob(r'@@@jad_src@@@\**.jar'):
@@ -1611,6 +1622,24 @@ for i in glob(r'@@@jad_src@@@\**.jar'):
     rm(abspath(i))
 )"
 pyw_exec_wait()
+return
+
+::jd1::
+WinClose, @Auto_Activate@
+clipboard := "
+(
+paths = r'''" clipboard " '''
+
+try:
+    set_clip(en(wcx(paths)))
+except:
+    set_clip('Error File List!')
+)"
+pyw_exec_wait()
+Loop, parse, clipboard, `n, `r
+{
+    Run, %java11% -jar %A_ScriptDir%\..\..\re\fernflower.jar %A_LoopField% @@@jad_src@@@
+}
 return
 
 ::jdx::
