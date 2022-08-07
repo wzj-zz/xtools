@@ -179,6 +179,16 @@ isfile(path) {
     return not isdir(path)
 }
 
+basename(path) {
+    SplitPath, path, name
+    return name
+}
+
+dirname(path) {
+    SplitPath, path, , dir
+    return dir
+}
+
 remove(path) {
     if(isdir(path)) {
         FileRemoveDir, %path%, 1
@@ -1647,12 +1657,23 @@ WinClose, @Auto_Activate@
 Run, %java11w% -jar %A_ScriptDir%\..\..\re\recaf.jar
 return
 
-::csd::
+::cd1::
 WinClose, @Auto_Activate@
-clip_check_op()
-RunWait, %A_ScriptDir%\..\..\re\dnspy\dnSpy-net-win64\dnSpy.Console.exe -o @@@csd_src@@@ -r @@@log@@@, , Hide
-clip_check_ed()
-MsgBox, dotnet decompile completed
+clipboard := "
+(
+paths = r'''" clipboard " '''
+
+try:
+    set_clip(en(wcx(paths)))
+except:
+    set_clip('Error File List!')
+)"
+pyw_exec_wait()
+Loop, parse, clipboard, `n, `r
+{
+    base_name := basename(A_LoopField)
+    Run, %A_ScriptDir%\..\..\re\dnspy\dnSpy-net-win64\dnSpy.Console.exe -o @@@csd_src@@@/%base_name% -r %A_LoopField%
+}
 return
 
 ::cd::
