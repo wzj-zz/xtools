@@ -197,6 +197,18 @@ remove(path) {
     }
 }
 
+clip_etxt() {
+    write_text("@@@tmp_utf_8_txt@@@", clipboard)
+    clipboard := "etxt(rd('@@@tmp_utf_8_txt@@@').decode())"
+    pyw_eval()
+    remove("@@@tmp_utf_8_txt@@@")
+}
+
+clip_dtxt() {
+    clipboard := "dtxt(" clipboard ")"
+    pyw_eval()
+}
+
 clip_check_op() {
 	global tmp_clip := clipboard
 	if(InStr(clipboard, "`n")) {
@@ -580,15 +592,12 @@ return
 
 ::et::
 WinClose, @Auto_Activate@
-write_text("@@@tmp_utf_8_text@@@", clipboard)
-clipboard := "etxt(rd('@@@tmp_utf_8_text@@@').decode())"
-pyw_eval()
+clip_etxt()
 return
 
 ::dt::
 WinClose, @Auto_Activate@
-clipboard := "dtxt(" clipboard ")"
-pyw_eval()
+clip_dtxt()
 return
 
 ::rdb::
@@ -784,12 +793,15 @@ return
 
 ::str::
 WinClose, @Auto_Activate@
-clipboard := "r'''" clipboard "'''"
+clip_etxt()
+clipboard := "data = dtxt(" clipboard ").replace('\r', '')"
 return
 
 ::strn::
 WinClose, @Auto_Activate@
-clipboard := "data = r'''" clipboard "'''.split('\n')`n`ndata = nem(data)"
+clip_etxt()
+clipboard := "data = dtxt(" clipboard ").replace('\r', '').split('\n')"
+clipboard := clipboard "`ndata = nem(data)"
 return
 
 ::fmcc::
