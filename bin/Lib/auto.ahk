@@ -1650,6 +1650,8 @@ return
 WinClose, @Auto_Activate@
 clipboard := "
 (
+if not exist('@@@jad_src@@@'):
+    md('@@@jad_src@@@')
 paths = r'''" clipboard " '''
 
 try:
