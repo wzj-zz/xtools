@@ -189,6 +189,13 @@ dirname(path) {
     return dir
 }
 
+abspath(path) {
+    cc := DllCall("GetFullPathName", "str", path, "uint", 0, "ptr", 0, "ptr", 0, "uint")
+    VarSetCapacity(buf, cc*(A_IsUnicode?2:1))
+    DllCall("GetFullPathName", "str", path, "uint", cc, "str", buf, "ptr", 0, "uint")
+    return buf
+}
+
 remove(path) {
     if(isdir(path)) {
         FileRemoveDir, %path%, 1
@@ -235,8 +242,8 @@ return
 
 #]::
 remove("@@@nasm_bin@@@")
-core_asm := read_text(A_ScriptDir "\..\..\bin\Lib\core\core_asm\core.asm")
-write_text("tmp_nasm_", core_asm)
+core_asm_path := A_ScriptDir "\..\..\bin\Lib\core\core_asm\core.asm"
+write_text("tmp_nasm_", "%include """ core_asm_path """`n")
 append_text("tmp_nasm_", clipboard)
 clipboard := "
 (
