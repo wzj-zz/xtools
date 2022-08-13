@@ -234,17 +234,18 @@ clip_msg_box()
 return
 
 #]::
-remove("tmp_nasm_")
 remove("@@@nasm_bin@@@")
 core_asm := read_text(A_ScriptDir "\..\..\bin\Lib\core\core_asm\core.asm")
 write_text("tmp_nasm_", core_asm)
-write_text("tmp_nasm_", clipboard)
+append_text("tmp_nasm_", clipboard)
 clipboard := "
 (
 pp('nasm', '-f', 'bin', 'tmp_nasm_', '-o', '@@@nasm_bin@@@')()
 set_clip(rd('@@@nasm_bin@@@').hex())
 )"
 pyw_exec_wait()
+remove("@@@nasm_bin@@@")
+remove("tmp_nasm_")
 clip_msg_box()
 return
 
@@ -466,7 +467,6 @@ return
 
 ::ab::
 WinClose, @Auto_Activate@
-remove("@@@tmp_string@@@")
 write_text("@@@tmp_string@@@", clipboard)
 clipboard := "
 (
@@ -474,11 +474,11 @@ data = rd('@@@tmp_string@@@', 'r').encode('ansi')
 set_clip(data)
 )"
 pyw_exec_wait()
+remove("@@@tmp_string@@@")
 return
 
 ::ub::
 WinClose, @Auto_Activate@
-remove("@@@tmp_string@@@")
 write_text("@@@tmp_string@@@", clipboard)
 clipboard := "
 (
@@ -486,11 +486,11 @@ data = rd('@@@tmp_string@@@', 'r').encode('utf-8')
 set_clip(data)
 )"
 pyw_exec_wait()
+remove("@@@tmp_string@@@")
 return
 
 ::uxb::
 WinClose, @Auto_Activate@
-remove("@@@tmp_string@@@")
 write_text("@@@tmp_string@@@", clipboard)
 clipboard := "
 (
@@ -498,6 +498,7 @@ data = rd('@@@tmp_string@@@', 'r').encode('utf-16')
 set_clip(data)
 )"
 pyw_exec_wait()
+remove("@@@tmp_string@@@")
 return
 
 ::md5x::
@@ -621,13 +622,11 @@ return
 
 ::wt::
 WinClose, @Auto_Activate@
-remove("@@@txt@@@")
 write_text("@@@txt@@@", clipboard)
 return
 
 ::lg::
 WinClose, @Auto_Activate@
-remove("@@@log_txt@@@")
 write_text("@@@log_txt@@@", clipboard)
 clipboard =
 (
@@ -656,7 +655,6 @@ return
 
 ::un::
 WinClose, @Auto_Activate@
-remove("@@@uniq_txt@@@")
 write_text("@@@uniq_txt@@@", clipboard)
 clipboard := "en(sorted(set(filter(lambda x:x, map(lambda x:x.strip(), rd('@@@uniq_txt@@@', 'r').split('\n')))), key=str.lower))"
 pyw_eval()
@@ -665,7 +663,6 @@ return
 
 ::bnx::
 WinClose, @Auto_Activate@
-remove("@@@bnx_txt@@@")
 write_text("@@@bnx_txt@@@", clipboard)
 clipboard := "en(set(map(basename, fl(rd('@@@bnx_txt@@@', 'r')))))"
 pyw_eval()
@@ -674,7 +671,6 @@ return
 
 ::dnx::
 WinClose, @Auto_Activate@
-remove("@@@dnx_txt@@@")
 write_text("@@@dnx_txt@@@", clipboard)
 clipboard := "en(set(map(dirname, fl(rd('@@@dnx_txt@@@', 'r')))))"
 pyw_eval()
@@ -904,7 +900,6 @@ return
 
 ::cc::
 WinClose, @Auto_Activate@
-remove("@@@cc_exe_src@@@")
 write_text("@@@cc_exe_src@@@", clipboard)
 clipboard := "
 (
