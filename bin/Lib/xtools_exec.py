@@ -1234,12 +1234,12 @@ class bypass_av(object):
         if not cmds:
             if icon:
                 cmds = [
-                    ['g++.exe', 'shell.cpp', 'icon.o'] + libs + ['-o', 'shell.exe'],
+                    ['g++.exe', '-static', 'shell.cpp', 'icon.o'] + libs + ['-o', 'shell.exe'],
                     ['strip.exe', 'shell.exe']
                 ]
             else:
                 cmds = [
-                    ['g++.exe', 'shell.cpp'] + libs + ['-o', 'shell.exe'],
+                    ['g++.exe', '-static', 'shell.cpp'] + libs + ['-o', 'shell.exe'],
                     ['strip.exe', 'shell.exe']
                 ]
         

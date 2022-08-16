@@ -3181,8 +3181,7 @@ return
 
 ;winmake-常用命令
 #IfWinActive ahk_group terminal
-::mgw::set PATH=%scoop%\apps\gcc-llvm\current\bin;%PATH%
-::mgwu::set PATH=%scoop%\apps\gcc-llvm-ucrt\current\bin;%PATH%
+::mgw::set PATH=%scoop%\apps\mingw-winlibs\current\bin;%PATH%
 ::mgb::mingw32-make.exe{Space}
 ::vcd::cl.exe /Zi /LD{Space}
 ::vcdu::cl.exe /Zi /LD /D "_UNICODE" /D "UNICODE"{Space}
