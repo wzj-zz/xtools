@@ -261,9 +261,6 @@ Gui +LastFound +OwnDialogs +AlwaysOnTop
 InputBox, nothing, @Auto_Activate@, , , 300, 100
 return
 
-#+o::
-return
-
 #=::
 Gui +LastFound +OwnDialogs +AlwaysOnTop
 InputBox, pattern, line_filter, , , 300, 100
@@ -3365,6 +3362,9 @@ return
 ::cost::scoop status{Space}
 ::cocr::scoop create{Space}
 ::cocl::scoop cleanup{Space}
+::cosls::scoop shim list{Space}
+::cosad::scoop shim add{Space}
+::cosrm::scoop shim rm{Space}
 ::copx::scoop config proxy 127.0.0.1:1080
 
 ;apt- ap-
