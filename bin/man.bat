@@ -1,7 +1,16 @@
 @echo off
-if "%1"=="" (
-	type %~dp0.\Lib\man.txt
-) else (
-	type %~dp0.\Lib\man.txt | findstr /i %1
-)
+set man_txt=dtxt(b'H4sIAKwL/mIC/5WV328bRRDHn69S/4d9TIRiqW0ETyAV122iGsVqzA8pitDmbs+39d7usbsXn3kCAQ8hCQ0oCIlGiiyoakFbiorUChPyz+TuzBP/Anu7zt3aSSpiyfZpvp+Z2ZndnVtY+J+fq1fW7qy0V9ZBx3EJFIHz9jtAP1gC2kS8XwiN4kEGmHYsNSmUj1YRV6Jt5pYdiDiKGJeAo5BJBOY8LOAGQQC6LhICuIxKzsi87Y9s/x6WAWiE0BXgTCZBYVSwqxRHUEhkSUQWQhMLCXn/6pWFS3Tl/fZycx3A2CkiwFiyGgy6YG2p0WxdWwfZg72Tvx+mx79muy//2X+WHX+W/TFKX73K94fpn/vq99+/dtJvj05GP48HO+PBo/SrYfrdzvjLH7ODJ9nWY2XMX4zy0WF2sJt+PSjTdVFf57uL+i0o3eDNxZmMIP99tInD/IunRdbhINs+BPkvP6QPfho/e54efQ+yna10bzd//Hz88sX46InRQHb4KD/YHh8/zIfbJ8eD7PPf8qdbM7l7QqfuCVJDCSrNxNPmWxwX+9Bk0NPNNyIyIlV7GkGvNEfaGqmjwuiN2lu1xVIxOUTssdIUaFPYBwEiUWlNtPUDLGJIwKqMPcxAg25izkJEZYltinO4Fmf3kVtBn4amBCS6klUpYomJFuoBpB0EbmGuvBjvgzbTYknKiznJGBFgbgPTeQtPLubDyPJJKieOLvTh1W4o99eFrjgWu6axLkdQ3TgfkyrKJ1ppJLjqURebg4cJAW0ouqXgm4S3MfWKxhbXtdJopa0yt4skqDNK7d6jZJIrIoxbJ0e62t5mEpI6C0NI7XOlrpqWby7dVRHDSC2+EnFkfNU/oz7umOEQQSkRp9UZlBpqGTOomzbcVCutQ+LGBKq2Vc1npsp7K6070Ougav3ehlm/h6XKQ72NTu2+sNTkjKy+VvWo0hO97x8rm1uLLjONgIo3mQKOmhCAop5j9ta0xhoXxZAqaUfTxc4WcFdtrWOR5pLbZEIMeTqcP8T0jSaYy74Zjnf35mfgCYtohc4QdEIUtb92hYEzO/SWzCiwoaiQTrl3GeQeWKb6AFuUCVRM+6mUulSLhPHZHp6O+GnMbp5BpttWRLLKPD/IpD4RsN75hL3sKsmlz8d1FSxwEPH1eogPfMZDKKfUSL9WI3S+xqZEc7GY7ws0C/rT4O2YkCkCr11bWFwvoGUqEQHvQaoG9BSiXzaY3rgOYISBG4SXqfg/4aGv/uAIAAA=')
+
+if "%1"=="" goto show_man
+
+:show_man_search
+echo %man_txt% | p %~dp0Lib\xtools_exec.py -x -e stdout | findstr /i %1
+goto end
+
+:show_man
+echo %man_txt% | p %~dp0Lib\xtools_exec.py -x -e stdout
+goto end
+
+:end
+set man_txt=
 @echo on
