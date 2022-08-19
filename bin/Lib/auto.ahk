@@ -754,13 +754,25 @@ return
 ::xt.tm::
 ::tm.xt::
 WinClose, @Auto_Activate@
+clip_etxt()
+src_code := clipboard
 clipboard := "
 (
 xtools_exec_src = ''
 xtools_exec_src += dtxt(b'H4sIAFEJ5GIC/0tJTVNIqcos0EhJLEnUtOLlUgCCzNyC/KIShXSgOESgKLWktCgPLKCXkpqcn1tQlFpcDNEDUcHLlQIyycwELKijUFqUE1+cmJZq65aYU5yKZnBSYnGqmQlUKA2uFqoIyUKIQj2gApB8fJKZCcj2lFRkm1OB5uPUiaYDAN6hFb/uAAAA') + '\n\n'
 xtools_exec_src += 'exec(dzip(d64(' + str(etxt(neg_block_filter('main-', rd(sys.argv[0], 'r')).replace('-'*80, ''))) + ')).decode())' + '\n\n'
-xtools_exec_src += dtxt(b'H4sIADEu5mIC/5WRz2rEIBDG74G8g+xlDGwW2mPBQ99g76UMksxaISYy6rL79lWzbZb+g3oYwZnv56efdX7hKDQbrzlQ27TNSCfhtJ1l99Q2Iq/aYaE+pw7PbJKjOR5rR44UBrY+2mVWAF2BFJ3hJfksW/UHPY7oUkx6mq5Il2FKwZ4J65Ts7iR1Ut+ukNAPsBd6WOkhLkwYOVE+fKPJKygVXTDwF+PyP8b9w7+ibFbFqycVIn/T74WjqM+aFbwsPj6IXB5fP7A/A4sK+t4ku5ncbSZ3v5nMiLB9b90KNsiagD0JxFk7QlQKEEukiHDLdA34HWSqx13+AQAA')
+xtools_exec_src += r'''exec(dtxt(" src_code "))'''
 set_clip(xtools_exec_src)
+)"
+pyw_exec_wait()
+return
+
+::tm.arg::
+WinClose, @Auto_Activate@
+clipboard := "
+(
+data = dtxt(b'H4sIAE4FAGMC/5VRTWvEIBC9B/IfZC8mkAS2x4KH/oPeSxFJZq0Qo4zjkv33NSa7Cf2CepiRmfeez5kBLswrDCAV6qp+LguWjrHeIbFUyr21mK/IxKPcvaCOFiZ6zZ1qgNCj8WTcJDivy2LlaXTRJ9rK79QwSBspqnG8SZj7MQZzBZlRVX2gZKTanqh42/OGqX5VD+QQJGGEVPyA0Qu+RGmD5n9pzP/TOH78q5RJLLp5EIHwG79hFkhdFQr+5jydWQpP73fZnwUXFm9bHc1u8rSbPP1mMkmEfbyPZYb7MBEo4pRhy0qO8HXpZeHRJAtLp+ubjOzmLZstJ1v1J2ZXpj8tAgAA')
+set_clip(data)
 )"
 pyw_exec_wait()
 return
