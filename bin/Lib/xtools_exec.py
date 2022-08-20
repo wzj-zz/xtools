@@ -526,12 +526,23 @@ def fmap(data):
     _fmap(data)
     return ret
     
-def rdict(data):
-    data = dict(data)
-    if len(data)==len(set(data.values())):
-        return dict([i[::-1] for i in data.items()])
-    else:
-        raise ValueError('Mapping Irreversible')
+def rdict(src_map):
+    src_map = dict(src_map)
+    dst_map = {}
+    for k in src_map:
+        v = src_map[k]
+        if type(v)==list or type(v)==tuple:
+            for k_ in v:
+                if dst_map.get(k_):
+                    dst_map[k_].extend([k])
+                else:
+                    dst_map[k_] = [k]
+        else:
+            if dst_map.get(v):
+                dst_map[v].extend([k])
+            else:
+                dst_map[v] = [k]
+    return dst_map
     
 def tcp(ip='127.0.0.1', port=7777):
     import socket
