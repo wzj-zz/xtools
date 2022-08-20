@@ -751,6 +751,12 @@ pyw_exec_wait()
 Run, cmd /k xtools_upgrade.bat
 return
 
+::ec::
+WinClose, @Auto_Activate@
+clip_etxt()
+clipboard := "exec(dtxt(" clipboard "))"
+return
+
 ::xt.tm::
 ::tm.xt::
 WinClose, @Auto_Activate@
