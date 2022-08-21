@@ -2755,7 +2755,7 @@ SendInput, {TEXT}%clipboard%
 return
 
 ::wsls::wsl.exe --list --verbose{Space}
-::wsed::wsl.exe -t{Space}
+::wski::wsl.exe -t{Space}
 ::wshh::wsl.exe --help{Space}
 ::wshlp::wsl.exe --help{Space}
 ::wscx::wsl.exe --set-default{Space}
