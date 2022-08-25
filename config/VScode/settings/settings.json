@@ -11,7 +11,7 @@
     ],
 
     // cc-
-    "clangd.path": "D:\\Scoop\\Scoop\\apps\\gcc-llvm-ucrt\\current\\bin\\clangd.exe",
+    "clangd.path": "D:\\Scoop\\Scoop\\apps\\llvm\\current\\bin\\clangd.exe",
     "C_Cpp.intelliSenseEngine": "Disabled",
 
     // go-

