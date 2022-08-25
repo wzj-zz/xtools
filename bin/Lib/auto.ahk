@@ -2563,7 +2563,7 @@ return
 #IfWinActive ahk_group terminal
 ::lpx::export ALL_PROXY=socks5://
 ::wpx::set https_proxy=socks5://127.0.0.1:1080 & set http_proxy=socks5://127.0.0.1:1080
-::lpc::proxychains{Space}
+::lpc::proxychains4{Space}
 ::wpc::proxychains{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
@@ -2765,7 +2765,7 @@ return
 ::wsim2::wsl.exe --import ubuntu_2 D:\ubuntu_2 ubuntu_2.tar
 ::wsimka::wsl.exe --import kali-linux D:\kali-linux kali-linux.tar
 ::wsst::wsl.exe --set-version{Space}
-::wsstn::wsl.exe --set-default-version{Space}
+::wssd::wsl.exe --set-default-version{Space}
 ::wsu::wsl.exe --unregister{Space}
 ::wsex::
 clipboard := "r'''" clipboard "'''.strip()"
@@ -3394,6 +3394,8 @@ return
 ::aps::apt search{Space}
 ::apinf::apt show{Space}
 ::apsrc::apt edit-sources{Space}
+::apkad::apt-key adv --keyserver keyserver.ubuntu.com --recv-keys{Space}
+::apkls::apt-key list{Space}
 
 ;apt-get- ag-
 ::agi::apt-get install{Space}
