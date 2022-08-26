@@ -547,6 +547,40 @@ def rdict(src_map):
                 dst_map[v] = [k]
     return dst_map
     
+class xtargs(object):
+    def __init__(self):
+        import argparse
+        self.parser = argparse.ArgumentParser(description='')
+        self.groups = {}
+        
+    def add_val(self, key, help, metavar='', type=str, default=None):
+        self.parser.add_argument(key, type=type, help=help, metavar=metavar, default=default)
+        return self
+        
+    def add_flag(self, key, help, default=None):
+        self.parser.add_argument(key, action='store_true', help=help, default=default)
+        return self
+        
+    def add_mutex_val(self, key, help, metavar='', type=str, default=None, group='xtargs'):
+        if group in self.groups:
+            args_group = self.groups[group]
+        else:
+            self.groups[group] = self.parser.add_mutually_exclusive_group()
+        self.groups[group].add_argument(key, type=type, help=help, metavar=metavar, default=default)
+        return self
+        
+    def add_mutex_flag(self, key, help, default=None, group='xtargs'):
+        if group in self.groups:
+            args_group = self.groups[group]
+        else:
+            self.groups[group] = self.parser.add_mutually_exclusive_group()
+        self.groups[group].add_argument(key, action='store_true', help=help, default=default)
+        return self
+        
+    @property
+    def val(self):
+        return self.parser.parse_args()
+    
 def tcp(ip='127.0.0.1', port=7777):
     import socket
     a = (ip.strip(), int(port))
@@ -1410,17 +1444,14 @@ ida_bex = lambda target_list: ida(target_list, r'D:\tools\bin\Lib\ida\BinExport.
 import argparse
 
 if __name__=='__main__':
-    parser = argparse.ArgumentParser(description='')
-
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-c', action='store_true', help='exec code from clipboard')
-    group.add_argument('-x', action='store_true', help='exec code from stdin')
-    group.add_argument('-f', type=str, help='text filter', metavar='[line neg_line block neg_block]')
-    
-    parser.add_argument('-i', type=str, help='stdin encoding', metavar='[ansi utf-8 utf-16]')
-    parser.add_argument('-o', type=str, help='stdout encoding', metavar='[ansi utf-8 utf-16]')
-    parser.add_argument('-e', type=str, help='eval expr, set value to clipboard or stdout', metavar='[clip stdout]')
-    args = parser.parse_args()
+    args = xtargs()
+    args = args.add_mutex_flag('-c', 'exec code from clipboard')
+    args = args.add_mutex_flag('-x', 'exec code from stdin')
+    args = args.add_mutex_val('-f', 'text filter', '[line neg_line block neg_block]')
+    args = args.add_val('-i', 'stdin encoding', '[ansi utf-8 utf-16]')
+    args = args.add_val('-o', 'stdout encoding', '[ansi utf-8 utf-16]')
+    args = args.add_val('-e', 'eval expr, set value to clipboard or stdout', '[clip stdout]')
+    args = args.val
     
     if args.i:
         sys.stdin.reconfigure(encoding=args.i)

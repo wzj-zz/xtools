@@ -777,7 +777,7 @@ return
 WinClose, @Auto_Activate@
 clipboard := "
 (
-data = dtxt(b'H4sIAE4FAGMC/5VRTWvEIBC9B/IfZC8mkAS2x4KH/oPeSxFJZq0Qo4zjkv33NSa7Cf2CepiRmfeez5kBLswrDCAV6qp+LguWjrHeIbFUyr21mK/IxKPcvaCOFiZ6zZ1qgNCj8WTcJDivy2LlaXTRJ9rK79QwSBspqnG8SZj7MQZzBZlRVX2gZKTanqh42/OGqX5VD+QQJGGEVPyA0Qu+RGmD5n9pzP/TOH78q5RJLLp5EIHwG79hFkhdFQr+5jydWQpP73fZnwUXFm9bHc1u8rSbPP1mMkmEfbyPZYb7MBEo4pRhy0qO8HXpZeHRJAtLp+ubjOzmLZstJ1v1J2ZXpj8tAgAA')
+data = dtxt(b'H4sIAHBCCGMC/0ssSi9WsFWoKEkEMjQ0ebkSIQIgSi8xJSU+t7QktSI+LScxXUM9O7VSXUdBPSM1pwBIpxfllxbYqkO0AvkpqWmJpTkltn75eak4DSpLzEE3Rz03tSSxLLGIdCOxuYqAFvz249EM1AgA48y3GywBAAA=')
 set_clip(data)
 )"
 pyw_exec_wait()
