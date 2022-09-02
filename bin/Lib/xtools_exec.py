@@ -32,6 +32,8 @@ from inspect import getfullargspec as getarg
 isins = isinstance
 
 import random
+from random import choice
+
 import time
 random.seed(time.time())
 

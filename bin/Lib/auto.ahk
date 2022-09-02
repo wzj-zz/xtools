@@ -2503,7 +2503,6 @@ return
 ::xvm::vmmap.exe -p{Space}
 ::xhd::handle.exe{Space}
 ::xs::strings.exe -o{Space}
-::xsr::strings.exe -o -s{Space}
 ::xsg::sigcheck.exe{Space}
 ::xdm::procdump.exe{Space}
 ::xdma::procdump.exe -accepteula -ma  @@@tmp@@@.dmp{Left 14}
@@ -3218,6 +3217,10 @@ return
 ::xmc::xmake clean{Space}
 ::xmn::xmake create{Space}
 ::xms::xmake show{Space}
+::xmsp::xmake show -l platforms{Space}
+::xmsa::xmake show -l architectures{Space}
+::xmst::xmake show -l targets{Space}
+::xmstl::xmake show -l toolchains{Space}
 ::xmr::xmake run{Space}
 ::xmf::xmake config{Space}
 ::xmim::xmake f --import=
@@ -3226,6 +3229,23 @@ return
 ::xmrd::xmake run -d{Space}
 ::xmug::xmake update{Space}
 ::xmdb::xmake project -k compile_commands
+
+::xr::xrepo{Space}
+::xrbls::xrepo list-repo{Space}
+::xrbad::xrepo add-repo{Space}
+::xrbrm::xrepo rm-repo{Space}
+::xrbud::xrepo update-repo{Space}
+::xrbug::xrepo update-repo{Space}
+::xri::xrepo install{Space}
+::xru::xrepo remove{Space}
+::xrs::xrepo search{Space}
+::xrim::xrepo import{Space}
+::xrex::xrepo export{Space}
+::xrls::xrepo scan{Space}
+::xrinf::xrepo info{Space}
+
+::xmgw::--mingw=%SCOOP%\apps\mingw-winlibs\current
+::xpx::--proxy=socks5://127.0.0.1:1080
 #IfWinActive
 ;----------------------------------------------------------------------
 ;binutils常用命令
