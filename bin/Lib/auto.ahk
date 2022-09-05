@@ -1869,12 +1869,12 @@ return
 
 ::e::
 WinClose, @Auto_Activate@
-if WinExist("ahk_exe 010Editor.exe") {
-	WinActivate, ahk_exe 010Editor.exe
+if WinExist("ahk_exe imhex.exe") {
+	WinActivate, ahk_exe imhex.exe
 	return
 }
 else {
-    Run, %SCOOP_ROOT%\apps\010Editor\current\010EditorPortable.exe
+    Run, %SCOOP_ROOT%\apps\imhex\current\imhex.exe
 	return
 }
 
@@ -2562,6 +2562,7 @@ return
 #IfWinActive ahk_group terminal
 ::lpx::export ALL_PROXY=socks5://
 ::wpx::set https_proxy=socks5://127.0.0.1:1080 & set http_proxy=socks5://127.0.0.1:1080
+::spx::reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d  /f{Left 3}
 ::lpc::proxychains4{Space}
 ::wpc::proxychains{Space}
 #IfWinActive
