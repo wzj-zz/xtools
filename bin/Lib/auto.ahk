@@ -3214,14 +3214,19 @@ return
 ;xmake- 常用命令
 #IfWinActive ahk_group terminal
 ::xm::xmake{Space}
+::xmh::xmake --help{Space}
 ::xmb::xmake -rv{Space}
 ::xmc::xmake clean{Space}
 ::xmn::xmake create{Space}
+::xmnh::xmake create --help{Space}
+::xmne::xmake create -t console{Space}
+::xmns::xmake create -t static{Space}
+::xmnd::xmake create -t shared{Space}
+::xmnt::xmake create -t{Space}
 ::xms::xmake show{Space}
-::xmsp::xmake show -l platforms{Space}
-::xmsa::xmake show -l architectures{Space}
-::xmst::xmake show -l targets{Space}
-::xmstl::xmake show -l toolchains{Space}
+::xmsh::xmake show --help{Space}
+::xmsl::xmake show -l{Space}
+::xmst::xmake show -t{Space}
 ::xmr::xmake run{Space}
 ::xmf::xmake config{Space}
 ::xmim::xmake f --import=
@@ -3232,6 +3237,8 @@ return
 ::xmdb::xmake project -k compile_commands
 
 ::xr::xrepo{Space}
+::xrh::xrepo --help{Space}
+::xrc::xrepo clean{Space}
 ::xrbls::xrepo list-repo{Space}
 ::xrbad::xrepo add-repo{Space}
 ::xrbrm::xrepo rm-repo{Space}
