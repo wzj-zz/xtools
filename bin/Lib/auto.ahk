@@ -1199,7 +1199,8 @@ return
 
 ::fl::
 WinClose, @Auto_Activate@
-clipboard := "fl(r'''`n" clipboard "`n''')"
+clip_etxt()
+clipboard := "files = fl(dtxt(" clipboard "))"
 return
 
 ::fa::
