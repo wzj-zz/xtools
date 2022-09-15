@@ -69,6 +69,7 @@ md = mkdir
 
 pwd = cwd = lambda :abspath(os.getcwd())
 
+from shutil import which
 from glob import glob
 glob = partial(glob, recursive=True)
 
