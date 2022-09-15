@@ -2565,6 +2565,10 @@ return
 ::wpx::set https_proxy=socks5://127.0.0.1:1080 & set http_proxy=socks5://127.0.0.1:1080
 ::spx::reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d  /f{Left 3}
 ::lpc::proxychains4{Space}
+::lpcx::
+SendInput, {TEXT}echo H4sIANlbI2MC/ysuKcpMLolPzkjMzOMqKMqvqIxPySvmKkrNzS9JBTHji0uT8lJLFIyMTLhKkgvii1ITU+JLMnNT4/NLSxQMTQ0MDMDiyfl5ealAk+BSFiCZ6ACQkT6ZxSWxAInSm/BqAAAA | base64 -d  | gzip -d | sed -r "s/^(\[ProxyList\])\s*$/\1\nsocks5  1080/g" > /etc/proxychains4.conf
+SendInput, {Left 33}
+return
 ::wpc::proxychains{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
