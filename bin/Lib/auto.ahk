@@ -1231,12 +1231,12 @@ WinClose, @Auto_Activate@
 Run, wsl.exe
 return
 
-::ml::
+::tml::
 WinClose, @Auto_Activate@
 Run, wsl.exe tml
 return
 
-::mlx::
+::tmlx::
 WinClose, @Auto_Activate@
 Run, wsl.exe tmux kill-session -t tml, , Hide
 return
@@ -2759,7 +2759,10 @@ pyw_eval()
 SendInput, {TEXT}%clipboard%
 return
 
+::wsx::lxrunoffline{Space}
+
 ::wsls::wsl.exe --list --verbose{Space}
+::wsud::wsl.exe --update{Space}
 ::wski::wsl.exe -t{Space}
 ::wshh::wsl.exe --help{Space}
 ::wshlp::wsl.exe --help{Space}
@@ -3082,9 +3085,10 @@ return
 ;docker-常用命令
 
 #IfWinActive ahk_group terminal
-::dcver::docker version
-::dcop::sudo service docker start
-::dced::sudo service docker stop
+::dkver::docker version
+::dkinf::docker info
+::dkop::sudo service docker start
+::dked::sudo service docker stop
 ::dcls::docker container ls{Space}
 ::dcla::docker container ls --all{Space}
 ::dcst::docker container start{Space}
@@ -3462,6 +3466,17 @@ return
 ::pyim::p -m pip install -r requirements.txt{Space}{Home}{Right 1}
 
 ::pyqh::-i https://pypi.tuna.tsinghua.edu.cn/simple{Space}
+#IfWinActive
+;----------------------------------------------------------------------
+;js- node- nvm- npm- 常用命令
+
+#IfWinActive ahk_group terminal
+::nvi::nvm install{Space}
+::nvls::nvm ls{Space}
+::nvs::nvm ls-remote{Space}
+::nvst::nvm use{Space}
+::nvcur::nvm current{Space}
+::nvpx::export NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node/
 #IfWinActive
 ;----------------------------------------------------------------------
 ;tcp- tcpdump常用命令
