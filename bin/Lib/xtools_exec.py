@@ -157,13 +157,15 @@ def pp(*command):
             st = subprocess.STARTUPINFO()
             st.dwFlags = subprocess.STARTF_USESHOWWINDOW
             st.wShowWindow = subprocess.SW_HIDE
+            command_ = list(command)
         else:
             st = None
+            command_ = ' '.join(command)
         if std_err:
-            p_pipe = subprocess.Popen(list(command), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=st, shell=shell)
+            p_pipe = subprocess.Popen(command_, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=st, shell=shell)
             return p_pipe.communicate(c_input)
         else:
-            p_pipe = subprocess.Popen(list(command), stdin=subprocess.PIPE, stdout=subprocess.PIPE, startupinfo=st, shell=shell)
+            p_pipe = subprocess.Popen(command_, stdin=subprocess.PIPE, stdout=subprocess.PIPE, startupinfo=st, shell=shell)
             return p_pipe.communicate(c_input)[0]
     return communicate
     
@@ -200,22 +202,30 @@ px = px()
 # clip-
 
 def set_clip(data):
-    import win32clipboard
-    import win32con
-    data = str(data)
-    win32clipboard.OpenClipboard()
-    win32clipboard.EmptyClipboard()
-    win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, data)
-    win32clipboard.CloseClipboard()
+    try:
+        import win32clipboard
+        import win32con
+        data = str(data)
+        win32clipboard.OpenClipboard()
+        win32clipboard.EmptyClipboard()
+        win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, data)
+        win32clipboard.CloseClipboard()
+    except:
+        if which('win32yank.exe'):
+            pp('win32yank.exe', '-i')(data.encode())
 
 def get_clip():
-    import win32clipboard
-    import win32con
-    win32clipboard.OpenClipboard()
-    data = win32clipboard.GetClipboardData()
-    win32clipboard.CloseClipboard()
-    return data
-    
+    try:
+        import win32clipboard
+        import win32con
+        win32clipboard.OpenClipboard()
+        data = win32clipboard.GetClipboardData()
+        win32clipboard.CloseClipboard()
+        return data
+    except:
+        if which('win32yank.exe'):
+            return pp('win32yank.exe', '-o')().decode()
+
 #--------------------------------------------------------------------------------
 # enc- encode-
 
