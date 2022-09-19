@@ -2764,6 +2764,7 @@ return
 ::wsls::wsl.exe --list --verbose{Space}
 ::wsud::wsl.exe --update{Space}
 ::wski::wsl.exe -t{Space}
+::wskix::wsl.exe --shutdown{Space}
 ::wshh::wsl.exe --help{Space}
 ::wshlp::wsl.exe --help{Space}
 ::wscx::wsl.exe --set-default{Space}

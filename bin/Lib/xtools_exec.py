@@ -37,6 +37,17 @@ from random import choice
 import time
 random.seed(time.time())
 
+def is_plat(plat):
+    from platform import system
+    return {
+        'win':'windows',
+        'windows':'windows',
+        'lix':'linux',
+        'linux':'linux',
+        'darwin':'darwin',
+        'mac':'darwin'
+    }[plat.lower()]==system().lower()
+
 def set_python_path(*paths):
     from os.path import isfile, isdir, abspath, dirname
     
@@ -141,9 +152,12 @@ def wtz(file_path='@@@bin@@@', mode='w'):
 def pp(*command):
     import subprocess
     def communicate(c_input=b'', shell=True, std_err=False):
-        st = subprocess.STARTUPINFO()
-        st.dwFlags = subprocess.STARTF_USESHOWWINDOW
-        st.wShowWindow = subprocess.SW_HIDE
+        if is_plat('win'):
+            st = subprocess.STARTUPINFO()
+            st.dwFlags = subprocess.STARTF_USESHOWWINDOW
+            st.wShowWindow = subprocess.SW_HIDE
+        else:
+            st = None
         if std_err:
             p_pipe = subprocess.Popen(list(command), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=st, shell=shell)
             return p_pipe.communicate(c_input)
@@ -1493,8 +1507,8 @@ if __name__=='__main__':
     args = args.add_mutex_flag('-c', 'exec code from clipboard')
     args = args.add_mutex_flag('-x', 'exec code from stdin')
     args = args.add_mutex_val('-f', 'text filter', '[line neg_line block neg_block]')
-    args = args.add_val('-i', 'stdin encoding', '[ansi utf-8 utf-16]')
-    args = args.add_val('-o', 'stdout encoding', '[ansi utf-8 utf-16]')
+    args = args.add_val('-i', 'stdin encoding', '[utf-8 utf-16 gbk]')
+    args = args.add_val('-o', 'stdout encoding', '[utf-8 utf-16 gbk]')
     args = args.add_val('-e', 'eval expr, set value to clipboard or stdout', '[clip stdout]')
     args = args.val
     
