@@ -171,16 +171,20 @@ def cmd_exec(cmds):
         pp(*cmd)()
     
 class px(object):
-    def __init__(self, shell=False):
+    def __init__(self, shell=True):
         self.data = b''
         self.shell = shell
+        self.cmd = []
     
     def __call__(self, *args):
-        self.data = pp(*args)(self.data, shell=self.shell)
+        if self.cmd:
+            self.cmd.append('|')
+        self.cmd.extend(args)
         return self
         
     @property
     def val(self):
+        self.data = pp(*self.cmd)(self.data, shell=self.shell)
         return self.data
         
     @val.setter
@@ -1185,20 +1189,22 @@ def lcx(x):
     lix = list(map(lambda tmp_lix:tmp_lix.strip(), lix))
     return sorted(set(filter(lambda x:x, win + lix + url)))
 
-def wsl(*args):
-    return pp('wsl', *args)
-
 class wsx(object):
-    def __init__(self, shell=False):
+    def __init__(self, shell=True):
         self.data = b''
         self.shell = shell
+        self.cmd = []
     
     def __call__(self, *args):
-        self.data = wsl(*args)(self.data, shell=self.shell)
+        if self.cmd:
+            self.cmd.append('|')
+        self.cmd.append('wsl')
+        self.cmd.extend(args)
         return self
         
     @property
     def val(self):
+        self.data = pp(*self.cmd)(self.data, shell=self.shell)
         return self.data
         
     @val.setter
