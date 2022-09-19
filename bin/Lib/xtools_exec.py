@@ -45,7 +45,8 @@ def is_plat(plat):
         'lix':'linux',
         'linux':'linux',
         'darwin':'darwin',
-        'mac':'darwin'
+        'mac':'darwin',
+        'java':'java'
     }[plat.lower()]==system().lower()
 
 def set_python_path(*paths):
@@ -184,7 +185,10 @@ class px(object):
         
     @property
     def val(self):
-        self.data = pp(*self.cmd)(self.data, shell=self.shell)
+        if is_plat('win'):
+            self.data = pp(*self.cmd)(self.data, shell=self.shell)
+        else:
+            self.data = pp(' '.join(self.cmd))(self.data, shell=self.shell)
         return self.data
         
     @val.setter
@@ -1188,6 +1192,16 @@ def lcx(x):
     win = list(map(lambda tmp_win:gsub(r'([a-zA-Z]):', lambda x:'\\mnt\\'+x.group(1).lower(), tmp_win).replace('\\', '/').strip(), win))
     lix = list(map(lambda tmp_lix:tmp_lix.strip(), lix))
     return sorted(set(filter(lambda x:x, win + lix + url)))
+    
+def wsl(wsl_name):
+    wsl_map = {
+        'ub1':'ubuntu_1',
+        'ub2':'ubuntu_2',
+        'ka':'kali-linux'
+    }
+    if wsl_name in wsl_map:
+        wsl_name = wsl_map[wsl_name]
+    pp('wsl.exe', '--set-default', wsl_name)()
 
 class wsx(object):
     def __init__(self, shell=True):
@@ -1198,13 +1212,16 @@ class wsx(object):
     def __call__(self, *args):
         if self.cmd:
             self.cmd.append('|')
-        self.cmd.append('wsl')
+        self.cmd.append('wsl.exe')
         self.cmd.extend(args)
         return self
         
     @property
     def val(self):
-        self.data = pp(*self.cmd)(self.data, shell=self.shell)
+        if is_plat('win'):
+            self.data = pp(*self.cmd)(self.data, shell=self.shell)
+        else:
+            self.data = pp(' '.join(self.cmd))(self.data, shell=self.shell)
         return self.data
         
     @val.setter
@@ -1215,7 +1232,7 @@ wsx = wsx()
 
 def mutate(payload, FUZZ_FACTOR=100):
     if random.random() < FUZZ_FACTOR / 100:
-        return pp('wsl', 'radamsa', '-n', '1')(payload)
+        return pp('wsl.exe', 'radamsa', '-n', '1')(payload)
     else:
         return payload
         
