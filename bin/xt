@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [[ $1 = "-e" ]]
+then
+	python3 /mnt/d/tools/bin/Lib/xtools_exec.py -c -e clip  
+else
+	python3 /mnt/d/tools/bin/Lib/xtools_exec.py -c
+fi
