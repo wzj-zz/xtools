@@ -3090,6 +3090,8 @@ return
 ::dkinf::docker info
 ::dkop::sudo service docker start
 ::dked::sudo service docker stop
+::dks::docker search{Space}
+::dkit::docker exec -it  /bin/bash{Left 10}
 ::dcls::docker container ls{Space}
 ::dcla::docker container ls --all{Space}
 ::dcst::docker container start{Space}
@@ -3444,7 +3446,8 @@ return
 ::aginf::apt-cache show{Space}
 
 ;dpkg- dg-
-::dgls::dpkg-query -l{Space}
+::dgls::dpkg -l{Space}
+::dgi::dpkg -i{Space}
 ::dgu::dpkg -r{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
@@ -3478,6 +3481,17 @@ return
 ::nvst::nvm use{Space}
 ::nvcur::nvm current{Space}
 ::nvpx::export NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node/
+#IfWinActive
+
+;java- jenv- 常用命令
+
+#IfWinActive ahk_group terminal
+::jvi::jenv add{Space}
+::jvu::jenv remove{Space}
+::jvls::jenv versions{Space}
+::jvcur::jenv version{Space}
+::jvst::jenv local{Space}
+::jvstx::jenv global{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
 ;tcp- tcpdump常用命令
