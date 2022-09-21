@@ -326,7 +326,12 @@ return
 return
 
 <^Space::
-py_exec_dispatch()
+if InStr(clipboard, "#@w") {
+	py_exec_dispatch()
+}
+else {
+	py_exec_cmd()
+}
 return
 
 <^+Space::
