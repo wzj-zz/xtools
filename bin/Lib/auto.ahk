@@ -757,6 +757,14 @@ clip_etxt()
 clipboard := "exec(dtxt(" clipboard "))"
 return
 
+::es::
+WinClose, @Auto_Activate@
+clip_etxt()
+clipboard := "e64(dtxt(" clipboard ").encode()).decode()"
+pyw_eval()
+clipboard := "echo " clipboard " | base64 -d | sed 's/\r//g' | sh"
+return
+
 ::xt.tm::
 ::tm.xt::
 WinClose, @Auto_Activate@

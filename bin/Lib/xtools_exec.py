@@ -152,7 +152,7 @@ def wtz(file_path='@@@bin@@@', mode='w'):
     
 def pp(*command):
     import subprocess
-    def communicate(c_input=b'', shell=True, std_err=False):
+    def communicate(input=b'', shell=True, stderr=False):
         if is_plat('win'):
             st = subprocess.STARTUPINFO()
             st.dwFlags = subprocess.STARTF_USESHOWWINDOW
@@ -161,12 +161,12 @@ def pp(*command):
         else:
             st = None
             command_ = ' '.join(command)
-        if std_err:
+        if stderr:
             p_pipe = subprocess.Popen(command_, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=st, shell=shell)
-            return p_pipe.communicate(c_input)
+            return p_pipe.communicate(input)
         else:
             p_pipe = subprocess.Popen(command_, stdin=subprocess.PIPE, stdout=subprocess.PIPE, startupinfo=st, shell=shell)
-            return p_pipe.communicate(c_input)[0]
+            return p_pipe.communicate(input)[0]
     return communicate
     
 def cmd_exec(cmds):
@@ -362,6 +362,10 @@ def etxt(text):
     
 def dtxt(data):
     return dzip(d64(data)).decode()
+    
+def decode(data):
+    import chardet
+    return data.decode(chardet.detect(data)['encoding'])
     
 def md5(data):
     import hashlib
