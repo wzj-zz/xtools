@@ -152,7 +152,7 @@ def wtz(file_path='@@@bin@@@', mode='w'):
     
 def pp(*command):
     import subprocess
-    def communicate(input=b'', shell=True, stderr=False):
+    def communicate(input=b'', shell=True, err=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
         if is_plat('win'):
             st = subprocess.STARTUPINFO()
             st.dwFlags = subprocess.STARTF_USESHOWWINDOW
@@ -161,11 +161,11 @@ def pp(*command):
         else:
             st = None
             command_ = ' '.join(command)
-        if stderr:
-            p_pipe = subprocess.Popen(command_, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=st, shell=shell)
+        if err:
+            p_pipe = subprocess.Popen(command_, stdin=stdin, stdout=stdout, stderr=stderr, startupinfo=st, shell=shell)
             return p_pipe.communicate(input)
         else:
-            p_pipe = subprocess.Popen(command_, stdin=subprocess.PIPE, stdout=subprocess.PIPE, startupinfo=st, shell=shell)
+            p_pipe = subprocess.Popen(command_, stdin=stdin, stdout=stdout, stderr=stderr, startupinfo=st, shell=shell)
             return p_pipe.communicate(input)[0]
     return communicate
     

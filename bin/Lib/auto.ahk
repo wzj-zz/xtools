@@ -91,6 +91,11 @@ GroupAdd, ahk_window, ahk_exe KeyPatch64.exe
 
 quotes := Chr(34)
 
+py_exec_dispatch() {
+	global python
+	RunWait, cmd /k %python% %A_ScriptDir%\xtools_dispatch.py
+}
+
 pyw_eval() {
     global pythonw
     RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -c -e clip
@@ -321,7 +326,7 @@ return
 return
 
 <^Space::
-py_exec_cmd()
+py_exec_dispatch()
 return
 
 <^+Space::
