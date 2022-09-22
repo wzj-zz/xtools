@@ -93,7 +93,7 @@ quotes := Chr(34)
 
 py_exec_dispatch() {
 	global python
-	RunWait, cmd /k %python% %A_ScriptDir%\xtools_dispatch.py
+	Run, cmd /k %python% %A_ScriptDir%\xtools_dispatch.py
 }
 
 pyw_eval() {
