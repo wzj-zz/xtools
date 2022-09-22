@@ -150,7 +150,7 @@ def dispatch_spec_blks(spec_blks):
             if spec[0]=='wsl':
                 wsl(spec[1])
                 set_clip(spec_blk['src'])
-                pp('wsl.exe' ,'xt')(stdin=None, stdout=None, stderr=None)
+                pp('wsl.exe', 'xt', '-c')(stdin=None, stdout=None, stderr=None)
 
 if __name__=='__main__':
     data = get_clip().replace('\r', '')
