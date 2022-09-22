@@ -775,6 +775,16 @@ pyw_eval()
 clipboard := "echo " clipboard " | base64 -d | sed 's/\r//g' | sh"
 return
 
+::esx::
+WinClose, @Auto_Activate@
+clip_etxt()
+clipboard := "e64(dtxt(" clipboard ").encode()).decode()"
+pyw_eval()
+clipboard := "echo " clipboard " | base64 -d | sed 's/\r//g' | sh"
+clip_etxt()
+clipboard := "data = dtxt(" clipboard ").replace('\r', '')"
+return
+
 ::xt.tm::
 ::tm.xt::
 WinClose, @Auto_Activate@
@@ -789,6 +799,18 @@ xtools_exec_src += r'''exec(dtxt(" src_code "))'''
 set_clip(xtools_exec_src)
 )"
 pyw_exec_wait()
+return
+
+::tm.ws1::
+WinClose, @Auto_Activate@
+clipboard := "dtxt(b'H4sIAFYMLGMC/wtwDPGwVQkAklb6Rfn5Jfp6Ppl5pRUh+fk5xfpJmXm8XAEEVFTwcvFypVYU5BeVKLh4Bgf4OEbaGhqZ6xkAoaEVkATJ+zjHO4dEBrjapubFhwbrhYa46VqARR19fJDFALy/rWaPAAAA').replace('\r', '')"
+pyw_eval()
+return
+
+::tm.ws2::
+WinClose, @Auto_Activate@
+clipboard := "dtxt(b'H4sIADYMLGMC/wtwDPGwVQkAklb6Rfn5Jfp6Ppl5pRUh+fk5xfpJmXm8XAEEVFTwcvFypVYU5BeVKLh4Bgf4OEbaqmikF6UWKOjmKhgq5CXmphanFpWlFinop5Yk6xelFufnlOkl5+elKdQoJJZnK6hXFxRl5pUoqBjVqmtaGegZgEz0cY53DokMcLVNzYsPDdYLDXHTtQCLOvr4IIsBAKZxVj3BAAAA').replace('\r', '')"
+pyw_eval()
 return
 
 ::tm.arg::
@@ -1228,13 +1250,11 @@ pyw_exec()
 return
 
 ::ub1::
-::ws1::
 WinClose, @Auto_Activate@
 RunWait, wsl.exe --set-default ubuntu_1, , Hide
 return
 
 ::ub2::
-::ws2::
 WinClose, @Auto_Activate@
 RunWait, wsl.exe --set-default ubuntu_2, , Hide
 return
