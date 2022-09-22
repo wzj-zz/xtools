@@ -767,7 +767,7 @@ clip_etxt()
 clipboard := "exec(dtxt(" clipboard "))"
 return
 
-::es::
+::esx::
 WinClose, @Auto_Activate@
 clip_etxt()
 clipboard := "e64(dtxt(" clipboard ").encode()).decode()"
@@ -775,7 +775,7 @@ pyw_eval()
 clipboard := "echo " clipboard " | base64 -d | sed 's/\r//g' | sh"
 return
 
-::esx::
+::es::
 WinClose, @Auto_Activate@
 clip_etxt()
 clipboard := "e64(dtxt(" clipboard ").encode()).decode()"
