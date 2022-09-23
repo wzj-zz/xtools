@@ -9,19 +9,6 @@ p = print
 en = lambda lst:'\n'.join(list(map(str, lst)))
 nem = lambda target: list(filter(lambda x:x, target))
 
-def set_clip(data):
-    try:
-        import win32clipboard
-        import win32con
-        data = str(data)
-        win32clipboard.OpenClipboard()
-        win32clipboard.EmptyClipboard()
-        win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, data)
-        win32clipboard.CloseClipboard()
-    except:
-        if which('win32yank.exe'):
-            pp('win32yank.exe', '-i')(data.encode())
-
 def get_clip():
     try:
         import win32clipboard
@@ -33,6 +20,20 @@ def get_clip():
     except:
         if which('win32yank.exe'):
             return pp('win32yank.exe', '-o')().decode()
+            
+def e64(data, url_safe=False):
+    import base64
+    if url_safe:
+        return base64.urlsafe_b64encode(data)
+    else:
+        return base64.b64encode(data)
+
+def d64(data, url_safe=False):
+    import base64
+    if url_safe:
+        return base64.urlsafe_b64decode(data)
+    else:
+        return base64.b64decode(data)
             
 def wt(file_path='@@@bin@@@', mode='wb', encoding='utf-8'):
     def wt_(data):
@@ -141,16 +142,16 @@ def dispatch_spec_blks(spec_blks):
     for spec_blk in spec_blks:
         spec = spec_blk['spec']
         if not spec:
-            set_clip(spec_blk['src'])
-            pp('p.bat', r'D:\tools\bin\Lib\xtools_exec.py', '-c')(stdin=None, stdout=None, stderr=None)
+            spec_blk_src = e64(spec_blk['src'].encode()).decode()
+            pp('p.bat', r'D:\tools\bin\Lib\xtools_exec.py', '-b', spec_blk_src)(stdin=None, stdout=None, stderr=None)
         else:
             if spec[0]=='win':
-                set_clip(spec_blk['src'])
-                pp('p.bat', r'D:\tools\bin\Lib\xtools_exec.py', '-c')(stdin=None, stdout=None, stderr=None)
+                spec_blk_src = e64(spec_blk['src'].encode()).decode()
+                pp('p.bat', r'D:\tools\bin\Lib\xtools_exec.py', '-b', spec_blk_src)(stdin=None, stdout=None, stderr=None)
             if spec[0]=='wsl':
                 wsl(spec[1])
-                set_clip(spec_blk['src'])
-                pp('wsl.exe', 'xt', '-c')(stdin=None, stdout=None, stderr=None)
+                spec_blk_src = e64(spec_blk['src'].encode()).decode()
+                pp('wsl.exe', 'xt', '-b', spec_blk_src)(stdin=None, stdout=None, stderr=None)
 
 if __name__=='__main__':
     data = get_clip().replace('\r', '')
