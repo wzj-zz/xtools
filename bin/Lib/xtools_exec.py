@@ -1543,6 +1543,7 @@ if __name__=='__main__':
     args = xtargs()
     args = args.add_mutex_flag('-c', 'exec code from clipboard')
     args = args.add_mutex_flag('-x', 'exec code from stdin')
+    args = args.add_mutex_val('-b', 'exec base64 code from param', '<base64_code>')
     args = args.add_mutex_val('-f', 'text filter', '[line neg_line block neg_block]')
     args = args.add_val('-i', 'stdin encoding', '[utf-8 utf-16 gbk]')
     args = args.add_val('-o', 'stdout encoding', '[utf-8 utf-16 gbk]')
@@ -1554,28 +1555,6 @@ if __name__=='__main__':
     if args.o:
         sys.stdout.reconfigure(encoding=args.o)
         
-    if args.c:
-        src_code = get_clip().strip('\x00')
-        if args.e:
-            eval_result = str(eval(src_code))
-            if args.e=='clip':
-                set_clip(eval_result)
-            if args.e=='stdout':
-                print(eval_result)
-        else:
-            exec(src_code)
-            
-    if args.x:
-        src_code = sys.stdin.read().strip('\x00')
-        if args.e:
-            eval_result = str(eval(src_code))
-            if args.e=='clip':
-                set_clip(eval_result)
-            if args.e=='stdout':
-                print(eval_result)
-        else:
-            exec(src_code)
-            
     if args.f:
         if args.f=='line':
             set_clip(line_filter(rd(r'@@@line_filter_pattern@@@', 'r').replace('\r', ''), get_clip()))
@@ -1585,4 +1564,22 @@ if __name__=='__main__':
             set_clip(block_filter(rd(r'@@@block_filter_pattern@@@', 'r').replace('\r', ''), get_clip()))
         elif args.f=='neg_block':
             set_clip(neg_block_filter(rd(r'@@@neg_block_filter_pattern@@@', 'r').replace('\r', ''), get_clip()))
+        
+    if args.c:
+        src_code = get_clip().strip('\x00')
+        
+    if args.x:
+        src_code = sys.stdin.read().strip('\x00')
+        
+    if args.b:
+        src_code = d64(args.b.encode())
+        
+    if args.e:
+        eval_result = str(eval(src_code))
+        if args.e=='clip':
+            set_clip(eval_result)
+        if args.e=='stdout':
+            print(eval_result)
+    else:
+        exec(src_code)
 #--------------------------------------------------------------------------------
