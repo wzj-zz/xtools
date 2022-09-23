@@ -587,6 +587,19 @@ clipboard := "e64(" clipboard ")"
 pyw_eval()
 return
 
+::e64x::
+WinClose, @Auto_Activate@
+write_text("@@@tmp_string@@@", clipboard)
+clipboard := "
+(
+data = rd('@@@tmp_string@@@', 'r').encode('utf-8')
+data = e64(data).decode()
+set_clip(data)
+)"
+pyw_exec_wait()
+remove("@@@tmp_string@@@")
+return
+
 ::d64::
 WinClose, @Auto_Activate@
 clipboard := "d64(" clipboard ")"
