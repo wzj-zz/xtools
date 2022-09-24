@@ -626,6 +626,94 @@ class xtargs(object):
     @property
     def val(self):
         return self.parser.parse_args()
+        
+class xt_util(object):
+    def __init__(self, db_path=None):
+        if db_path:
+            self.db_path = db_path
+        else:
+            self.db_path = abspath(pin(__file__, '..', '..', '..', 'wiki', 'xtools.db'))
+        if not exist(self.db_path):
+            wt(self.db_path)(dmjs({}).encode())
+        self.db = ldjs(rd(self.db_path).decode())
+    
+    def call(self, code_id):
+        if type(self.db)==dict:
+            exec(d64(self.db[code_id].encode()).decode(), globals())
+        return self
+        
+    def add(self, code_src):
+        code_id = uuid().hex
+        code_val = e64(code_src.encode()).decode()
+        
+        if code_val in self.db.values():
+            return ''
+        else:
+            self.db[code_id] = code_val
+            wt(self.db_path)(dmjs(self.db).encode())
+            return code_id
+        
+    def rm(self, code_id):
+        code_src = self.db.pop(code_id)
+        wt(self.db_path)(dmjs(self.db).encode())
+        return etxt(d64(code_src.encode()).decode())
+        
+    def get(self, code_id=None):
+        ret = sio()
+        p('-'*80, file=ret)
+        if code_id:
+            code_src = self.db.get(code_id)
+            code_src = d64(code_src.encode()).decode()
+            p('id: ', code_id, '\n', file=ret)
+            p(etxt(code_src), file=ret)
+            p('-'*80, file=ret)
+        else:
+            for code_id_ in self.db:
+                code_src_ = self.db.get(code_id_)
+                code_src_ = d64(code_src_.encode()).decode()
+                p('id: ', code_id, '\n', file=ret)
+                p(etxt(code_src_), file=ret)
+                p('-'*80, file=ret)
+        return ret.getvalue()
+        
+    @staticmethod
+    def _parse_spec_blks(src_code):
+        blks = str_to_block(r'\s*#@wsl\.[\w-]+\s*|\s*#@win\s*', src_code, '$')
+        blks = nem([blk.strip() for blk in split(r'\${80,}', blks)])
+        spec_blks = []
+        
+        for blk in blks:
+            spec = blk.split('\n')[0].strip()
+            spec_match = match(r'\s*#@wsl\.[\w-]+\s*|\s*#@win\s*', spec)
+            if spec_match:
+                spec = spec_match.group().strip('#@').split('.')
+            else:
+                spec = None
+            spec_blks.append({'spec':spec, 'src':blk})
+        return spec_blks
+        
+    @staticmethod
+    def _dispatch_spec_blks(spec_blks):
+        for spec_blk in spec_blks:
+            spec = spec_blk['spec']
+            if not spec:
+                spec_blk_src = e64(spec_blk['src'].encode()).decode()
+                pp('python3.exe', wcx(__file__)[0] if is_plat('win') else wcx(__file__)[0].join(["'", "'"]), '-b', spec_blk_src)(stdin=None, stdout=None, stderr=None)
+            else:
+                if spec[0]=='win':
+                    spec_blk_src = e64(spec_blk['src'].encode()).decode()
+                    pp('python3.exe', wcx(__file__)[0] if is_plat('win') else wcx(__file__)[0].join(["'", "'"]), '-b', spec_blk_src)(stdin=None, stdout=None, stderr=None)
+                if spec[0]=='wsl':
+                    wsl(spec[1])
+                    spec_blk_src = e64(spec_blk['src'].encode()).decode()
+                    pp('wsl.exe', 'python3', lcx(__file__)[0], '-b', spec_blk_src)(stdin=None, stdout=None, stderr=None)
+
+    @staticmethod
+    def dispatch(src_code):
+        spec_blks = xt_util._parse_spec_blks(src_code)
+        xt_util._dispatch_spec_blks(spec_blks)
+
+xt = xt_util
     
 def tcp(ip='127.0.0.1', port=7777):
     import socket
@@ -1548,6 +1636,7 @@ if __name__=='__main__':
     args = args.add_val('-i', 'stdin encoding', '[utf-8 utf-16 gbk]')
     args = args.add_val('-o', 'stdout encoding', '[utf-8 utf-16 gbk]')
     args = args.add_val('-e', 'eval expr, set value to clipboard or stdout', '[clip stdout]')
+    args = args.add_flag('-d', 'dispatch code')
     args = args.val
     
     if args.i:
@@ -1572,7 +1661,7 @@ if __name__=='__main__':
         src_code = sys.stdin.read().strip('\x00')
         
     if args.b:
-        src_code = d64(args.b.encode())
+        src_code = d64(args.b.encode()).decode().strip('\x00')
         
     if args.e:
         eval_result = str(eval(src_code))
@@ -1581,5 +1670,8 @@ if __name__=='__main__':
         if args.e=='stdout':
             print(eval_result)
     else:
-        exec(src_code)
+        if args.d:
+            xt.dispatch(src_code)
+        else:
+            exec(src_code)
 #--------------------------------------------------------------------------------

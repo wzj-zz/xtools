@@ -20,3 +20,5 @@ setup/*
 !setup/CascadiaMono.ttf
 !setup/windbg.reg
 !setup/si4.pediy.lic
+
+wiki/*

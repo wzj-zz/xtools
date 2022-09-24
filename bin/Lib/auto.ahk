@@ -93,7 +93,7 @@ quotes := Chr(34)
 
 py_exec_dispatch() {
 	global python
-	Run, cmd /k %python% %A_ScriptDir%\xtools_dispatch.py
+	Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -c -d
 }
 
 pyw_eval() {
@@ -753,6 +753,41 @@ data = r'''" clipboard "'''.split('\n')
 set_clip(lr(str_to_block(data[0].strip(), en(data[1:]))))
 )"
 pyw_exec_wait()
+return
+
+::xt.add::
+WinClose, @Auto_Activate@
+clip_etxt()
+clipboard := "xt().add(dtxt(" clipboard ").strip())"
+pyw_eval()
+clip_msg_box()
+return
+
+::xt.rm::
+WinClose, @Auto_Activate@
+clip_etxt()
+clipboard := "xt().rm(dtxt(" clipboard ").strip())"
+pyw_eval()
+return
+
+::xt.get::
+WinClose, @Auto_Activate@
+clip_etxt()
+clipboard := "xt().get(dtxt(" clipboard ").strip())"
+pyw_eval()
+return
+
+::xt.getx::
+WinClose, @Auto_Activate@
+clip_etxt()
+clipboard := "xt().get()"
+pyw_eval()
+return
+
+::xt.call::
+WinClose, @Auto_Activate@
+clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
+clipboard := "xt().call('" clipboard "')"
 return
 
 ::xt.ug::
