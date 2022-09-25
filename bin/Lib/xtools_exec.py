@@ -171,7 +171,7 @@ def pp(*command):
     
 def cmd_exec(cmds):
     for cmd in cmds:
-        pp(*cmd)()
+        pp(*cmd)(stdin=None, stdout=None, stderr=None)
     
 class px(object):
     def __init__(self, shell=True):
