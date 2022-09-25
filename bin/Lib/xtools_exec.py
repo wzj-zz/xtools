@@ -676,6 +676,12 @@ class xt_util(object):
                 p('-'*80, file=ret)
         return ret.getvalue()
         
+    def set(self, code_id, code_src):
+        code_val = e64(code_src.encode()).decode()
+        self.db[code_id] = code_val
+        wt(self.db_path)(dmjs(self.db).encode())
+        return code_id
+        
     @staticmethod
     def _parse_spec_blks(src_code):
         blks = str_to_block(r'\s*#@wsl\.[\w-]+\s*|\s*#@win\s*', src_code, '$')
