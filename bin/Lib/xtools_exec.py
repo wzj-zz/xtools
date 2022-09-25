@@ -671,7 +671,7 @@ class xt_util(object):
             for code_id_ in self.db:
                 code_src_ = self.db.get(code_id_)
                 code_src_ = d64(code_src_.encode()).decode()
-                p('id: ', code_id, '\n', file=ret)
+                p('id: ', code_id_, '\n', file=ret)
                 p(etxt(code_src_), file=ret)
                 p('-'*80, file=ret)
         return ret.getvalue()
