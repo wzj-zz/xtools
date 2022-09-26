@@ -20,8 +20,8 @@ if "%1"=="clash" (
 	start "" "%SCOOP%\apps\vcxsrv\current\vcxsrv.exe" :0 -multiwindow -clipboard -wgl -ac
 ) else if "%1"=="xe" (
 	ki vcxsrv.exe
-	start "" "%SCOOP%\apps\vcxsrv\current\vcxsrv.exe" :0 -multiwindow -clipboard -wgl
-	wsl.exe --set-default ubuntu_1
+	start "" "%SCOOP%\apps\vcxsrv\current\vcxsrv.exe" :0 -multiwindow -clipboard -wgl -ac
+	wsl.exe --set-default ubuntu_2
 	wsl.exe pkill emacs
 	wsl.exe emacs --daemon
 )

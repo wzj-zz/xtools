@@ -1651,12 +1651,14 @@ if WinExist("ahk_exe vcxsrv.exe") {
 	return
 }
 else {
-    Run, cmd.exe /c "wsl.exe bash -c "DISPLAY=:0 emacsclient -c" &", , Hide
+	RunWait, wsl.exe --set-default ubuntu_2, , Hide
+    Run, cmd.exe /c "wsl.exe bash -c "DISPLAY=$(grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'):0.0 emacsclient -c" &", , Hide
 	return
 }
 
 #+Enter::
 WinActivateBottom, ahk_exe vcxsrv.exe
+RunWait, wsl.exe --set-default ubuntu_2, , Hide
 clipboard := "
 (
 path = r'''" clipboard " '''
@@ -3166,7 +3168,7 @@ return
 ::sshk::ssh-keygen -t rsa -b 2048 -C ""{Left 1}
 ::ssht::ssh -T git@github.com
 
-::gipx::git config --global http.proxy http://127.0.0.1:1080
+::gipx::git config --global http.proxy http://:1080{Left 5}
 ::girn::git config --global core.autocrlf false
 ::gig::git config --global{Space}
 ::gigls::git config --global --list
