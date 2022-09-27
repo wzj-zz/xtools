@@ -91,49 +91,155 @@ GroupAdd, ahk_window, ahk_exe KeyPatch64.exe
 
 quotes := Chr(34)
 
+/*   http://www.autohotkey.net/~Titan/
+
+	Function: uuid
+		Generates a time-based UUID string <http://en.wikipedia.org/wiki/UUID>.
+
+	Parameters:
+		c - (optional) true to use your computers MAC code (default: false)
+
+	Returns:
+		A UUID string.
+
+	About: License
+		- Version 1.1 <http://www.autohotkey.net/~Titan/#uuid>
+		- New BSD License <http://www.autohotkey.net/~Titan/license.txt>
+*/
+uuid(c = false) {
+	static n = 0, l, i
+	f := A_FormatInteger, t := A_Now, s := ""
+	SetFormat, Integer, H
+	t -= 1970, s
+	t := (t . A_MSec) * 10000 + 122192928000000000
+	If !i and c {
+		Loop, HKLM, System\MountedDevices
+		If i := A_LoopRegName
+			Break
+		StringGetPos, c, i, %s%, R2
+		StringMid, i, i, c + 2, 17
+	} Else {
+		Random, x, 0x100, 0xfff
+		Random, y, 0x10000, 0xfffff
+		Random, z, 0x100000, 0xffffff
+		x := "9"  SubStr(x, 3) s "1" SubStr(y, 3) SubStr(z, 3)
+	} t += n += l = A_Now, l := A_Now
+	SetFormat, Integer, %f%
+	Return, SubStr(t, 10) . s . SubStr(t, 6, 4) . s . 1 . SubStr(t, 3, 3) . s . (c ? i : x)
+}
+
+base64(string)
+{
+    VarSetCapacity(bin, StrPut(string, "UTF-8")) && len := StrPut(string, &bin, "UTF-8") - 1 
+    if !(DllCall("crypt32\CryptBinaryToString", "ptr", &bin, "uint", len, "uint", 0x1, "ptr", 0, "uint*", size))
+        throw Exception("CryptBinaryToString failed", -1)
+    VarSetCapacity(buf, size << 1, 0)
+    if !(DllCall("crypt32\CryptBinaryToString", "ptr", &bin, "uint", len, "uint", 0x1, "ptr", &buf, "uint*", size))
+        throw Exception("CryptBinaryToString failed", -1)
+    return StrGet(&buf)
+}
+
 py_exec_dispatch() {
 	global python
 	Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -c -d
 }
 
-pyw_eval() {
+pyw_eval(code_src:="") {
     global pythonw
-    RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -c -e clip
+	if(code_src=="") {
+		RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -c -e clip
+	}
+    else {
+		file_name := uuid()
+		write_text(file_name, base64(code_src))
+		RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -p %file_name% -e clip
+		remove(file_name)
+	}
 }
 
-pyw_eval_32() {
+pyw_eval_32(code_src:="") {
     global pythonw32
-    RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -c -e clip
+	if(code_src=="") {
+		RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -c -e clip
+	}
+    else {
+		file_name := uuid()
+		write_text(file_name, base64(code_src))
+		RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -p %file_name% -e clip
+		remove(file_name)
+	}
 }
 
-pyw_exec() {
+pyw_exec(code_src:="") {
     global pythonw
-    Run, %pythonw% %A_ScriptDir%\xtools_exec.py -c
+	if(code_src=="") {
+		Run, %pythonw% %A_ScriptDir%\xtools_exec.py -c
+	}
+    else {
+		base64_code_src := base64(code_src)
+		Run, %pythonw% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
+	}
 }
 
-pyw_exec_32() {
+pyw_exec_32(code_src:="") {
     global pythonw32
-    Run, %pythonw32% %A_ScriptDir%\xtools_exec.py -c
+	if(code_src=="") {
+		Run, %pythonw32% %A_ScriptDir%\xtools_exec.py -c
+	}
+    else {
+		base64_code_src := base64(code_src)
+		Run, %pythonw32% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
+	}
 }
 
-pyw_exec_wait() {
+pyw_exec_wait(code_src:="") {
     global pythonw
-    RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -c
+	if(code_src=="") {
+		RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -c
+	}
+    else {
+		file_name := uuid()
+		write_text(file_name, base64(code_src))
+		RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -p %file_name%
+		remove(file_name)
+	}
 }
 
-pyw_exec_wait_32() {
+pyw_exec_wait_32(code_src:="") {
     global pythonw32
-    RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -c
+	if(code_src=="") {
+		RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -c
+	}
+    else {
+		file_name := uuid()
+		write_text(file_name, base64(code_src))
+		RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -p %file_name%
+		remove(file_name)
+	}
 }
 
-py_exec_cmd() {
+py_exec_cmd(code_src:="") {
     global python
-    Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -c
+	
+	if(code_src=="") {
+		Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -c
+	}
+    else {
+		base64_code_src := base64(code_src)
+		Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
+	}
 }
 
-py_exec_cmd_32() {
+py_exec_cmd_32(code_src:="") {
     global python32
-    Run, cmd /k %python32% %A_ScriptDir%\xtools_exec.py -c
+	
+	if(code_src=="") {
+		Run, cmd /k %python32% %A_ScriptDir%\xtools_exec.py -c
+	}
+    else {
+		base64_code_src := base64(code_src)
+		Run, cmd /k %python32% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
+	}
 }
 
 line_filter() {
@@ -790,7 +896,7 @@ if not (len(code_id)==32 and match(r'[0-9a-fA-F]{32}', code_id)):
 xt().set(code_id, code_src)
 set_clip(code_id)
 )"
-pyw_exec()
+pyw_exec_wait()
 return
 
 ::xt.get::
@@ -3085,12 +3191,11 @@ return
 ; alt- update-alt-
 
 #IfWinActive ahk_group lix_shell
-::altls::update-alternatives --list{Space}
-::altlsc::update-alternatives --get-selections{Space}
+::altls::update-alternatives --get-selections{Space}
 ::altad::update-alternatives --install{Space}
 ::altrm::update-alternatives --remove{Space}
 ::altrmx::update-alternatives --remove-all{Space}
-::altcfg::update-alternatives --config{Space}
+::altst::update-alternatives --config{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
 ; sc- search code

@@ -702,17 +702,24 @@ class xt_util(object):
     def _dispatch_spec_blks(spec_blks):
         for spec_blk in spec_blks:
             spec = spec_blk['spec']
+            spec_blk_src = e64(spec_blk['src'].encode()).decode()
+            
+            if len(spec_blk_src)>5000:
+                wt('@@@py_xtools_src@@@')(spec_blk_src.encode())
+                dispatch_flag = ('-p', '@@@py_xtools_src@@@')
+            else:
+                dispatch_flag = ('-b', spec_blk_src)
+                
             if not spec:
-                spec_blk_src = e64(spec_blk['src'].encode()).decode()
-                pp('python3.exe', wcx(__file__)[0] if is_plat('win') else wcx(__file__)[0].join(["'", "'"]), '-b', spec_blk_src)(stdin=None, stdout=None, stderr=None)
+                pp('python3.exe', wcx(__file__)[0] if is_plat('win') else wcx(__file__)[0].join(["'", "'"]), *dispatch_flag)(stdin=None, stdout=None, stderr=None)
             else:
                 if spec[0]=='win':
-                    spec_blk_src = e64(spec_blk['src'].encode()).decode()
-                    pp('python3.exe', wcx(__file__)[0] if is_plat('win') else wcx(__file__)[0].join(["'", "'"]), '-b', spec_blk_src)(stdin=None, stdout=None, stderr=None)
+                    pp('python3.exe', wcx(__file__)[0] if is_plat('win') else wcx(__file__)[0].join(["'", "'"]), *dispatch_flag)(stdin=None, stdout=None, stderr=None)
                 if spec[0]=='wsl':
                     wsl(spec[1])
-                    spec_blk_src = e64(spec_blk['src'].encode()).decode()
-                    pp('wsl.exe', 'python3', lcx(__file__)[0], '-b', spec_blk_src)(stdin=None, stdout=None, stderr=None)
+                    pp('wsl.exe', 'python3', lcx(__file__)[0], *dispatch_flag)(stdin=None, stdout=None, stderr=None)
+            if len(spec_blk_src)>5000:
+                rm('@@@py_xtools_src@@@')
 
     @staticmethod
     def dispatch(src_code):
@@ -1638,6 +1645,7 @@ if __name__=='__main__':
     args = args.add_mutex_flag('-c', 'exec code from clipboard')
     args = args.add_mutex_flag('-x', 'exec code from stdin')
     args = args.add_mutex_val('-b', 'exec base64 code from param', '<base64_code>')
+    args = args.add_mutex_val('-p', 'exec base64 code from file', '<file_path>')
     args = args.add_mutex_val('-f', 'text filter', '[line neg_line block neg_block]')
     args = args.add_val('-i', 'stdin encoding', '[utf-8 utf-16 gbk]')
     args = args.add_val('-o', 'stdout encoding', '[utf-8 utf-16 gbk]')
@@ -1659,7 +1667,9 @@ if __name__=='__main__':
             set_clip(block_filter(rd(r'@@@block_filter_pattern@@@', 'r').replace('\r', ''), get_clip()))
         elif args.f=='neg_block':
             set_clip(neg_block_filter(rd(r'@@@neg_block_filter_pattern@@@', 'r').replace('\r', ''), get_clip()))
-        
+
+    src_code = ''
+    
     if args.c:
         src_code = get_clip().strip('\x00')
         
@@ -1668,6 +1678,10 @@ if __name__=='__main__':
         
     if args.b:
         src_code = d64(args.b.encode()).decode().strip('\x00')
+        
+    if args.p:
+        if exist(args.p):
+            src_code = d64(rd(args.p)).decode().strip('\x00')
         
     if args.e:
         eval_result = str(eval(src_code))
