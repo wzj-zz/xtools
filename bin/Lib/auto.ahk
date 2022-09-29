@@ -62,6 +62,7 @@ GroupAdd, wsl_shell, ahk_exe cmd.exe
 GroupAdd, wsl_shell, ahk_exe WindowsTerminal.exe
 
 GroupAdd, lix_shell, ahk_group wsl_shell
+GroupAdd, lix_shell, ahk_exe MobaXterm.exe
 
 GroupAdd, common_shell, ahk_group win_shell
 GroupAdd, common_shell, ahk_group wsl_shell
@@ -325,6 +326,15 @@ clip_etxt() {
 clip_dtxt() {
     clipboard := "dtxt(" clipboard ")"
     pyw_eval()
+}
+
+check_multi_line(data) {
+	if(InStr(data, "`n")) {
+		return true
+	}
+	else {
+		return false
+	}
 }
 
 clip_check_op() {
@@ -2921,20 +2931,6 @@ pyw_exec_wait()
 SendInput, {TEXT}cd "%clipboard%"
 return
 
-::lcc::
-clipboard := "
-(
-path = r'''" clipboard " '''
-
-try:
-    set_clip(lcx(path)[0])
-except:
-    set_clip('Error File Path!')
-)"
-pyw_exec_wait()
-SendInput, {TEXT}'%clipboard%'
-return
-
 ::mmx::'/mnt/x'
 ::mmz::'/mnt/z'
 ::mmc::'/mnt/c'
@@ -3174,6 +3170,23 @@ return
 ::bsa::find "$(pwd)" -type f | xargs -r -d '\n' strings -tx -f{Space}
 ::nl:: | nl{Space}
 ::fe::fg emacs
+
+::lcc::
+code_src := "
+(
+path = r'''" clipboard " '''
+
+try:
+    set_clip(lcx(path)[0])
+except:
+    pass
+)"
+pyw_exec_wait(code_src)
+if !check_multi_line(clipboard) {
+	clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
+	SendInput, {TEXT}'%clipboard%'
+}
+return
 
 ::ss:: | fzf
 ::lss:: | peco --rcfile /mnt/d/tools/bin/peco.cfg{Space}
@@ -3641,7 +3654,9 @@ return
 ::cosad::scoop shim add{Space}
 ::cosrm::scoop shim rm{Space}
 ::copx::scoop config proxy 127.0.0.1:1080
+#IfWinActive
 
+#IfWinActive ahk_group lix_shell
 ;apt- ap-
 ::apls::apt list --installed{Space}
 ::api::apt install{Space}
