@@ -336,18 +336,6 @@ check_multi_line(data) {
 		return false
 	}
 }
-
-clip_check_op() {
-	global tmp_clip := clipboard
-	if(InStr(clipboard, "`n")) {
-		clipboard := ""
-	}
-}
-
-clip_check_ed() {
-	global tmp_clip
-	clipboard := tmp_clip
-}
 ;----------------------------------------------------------------------
 ;script-脚本触发器，常用脚本补全热字串
 
@@ -415,13 +403,13 @@ remove("@@@neg_block_filter_pattern@@@")
 return
 
 #+7::
-clipboard := "shell()"
-py_exec_cmd_32()
+code_src := "shell()"
+py_exec_cmd_32(code_src)
 return
 
 #7::
-clipboard := "shell()"
-py_exec_cmd()
+code_src := "shell()"
+py_exec_cmd(code_src)
 return
 
 <^RCtrl::
@@ -2550,20 +2538,8 @@ return
 ::ps::{!}process @$proc 0{Left 2}+{Left 6}
 ::psx::{!}process @$proc 1{Left 2}+{Left 6}
 ::vd::{!}vad{Space}
-::prp::
-clipboard := "set_clip(r'''.process /r /p '''+r'''" clipboard "'''.strip().split()[-1])"
-pyw_exec_wait()
-clip_check_op()
-SendInput, {Text}%clipboard%
-clip_check_ed()
-return
-::pri::
-clipboard := "set_clip(r'''.process /i '''+r'''" clipboard "'''.strip().split()[-1])"
-pyw_exec_wait()
-clip_check_op()
-SendInput, {Text}%clipboard%
-clip_check_ed()
-return
+::prp::.process /r /p{Space}
+::pri::.process /i{Space}
 ::sen::{!}session{Space}
 ::sprr::{!}sprocess{Space}
 ::prr::{!}process{Space}
@@ -3057,18 +3033,12 @@ return
 ::lc::locate -i -e --regex ""{Left 1}
 ::lcud::updatedb{Space}
 ::cxl::
-clip_check_op()
-SendInput, {TEXT}if [ -d "%clipboard%" ];then cd "%clipboard%";else cd "$(dirname "%clipboard%")"; fi; pwd;
-clip_check_ed()
+if !check_multi_line(clipboard) {
+	clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
+	SendInput, {TEXT}if [ -d "%clipboard%" ];then cd "%clipboard%";else cd "$(dirname "%clipboard%")"; fi; pwd;
+}
 return
 ::ct:: | xargs -r -d '\n' cat{Space}
-::wtx::
-clip_check_op()
-clipboard := "lcx(r'''" clipboard "''')[0]"
-pyw_eval()
-SendInput, watch -n 0.1 "cat \"%clipboard%\" | nl | tail -n 50"
-clip_check_ed()
-return
 ::wt::watch -n 0.1 ""{Space}{Left 2}
 ::hd:: | head{Space}
 ::tl:: | tail{Space}
@@ -3251,7 +3221,7 @@ return
 ;----------------------------------------------------------------------
 ;tmux-常用命令
 
-#IfWinActive ahk_group terminal
+#IfWinActive ahk_group lix_shell
 !,::SendInput, ^b!{Up}
 !.::SendInput, ^b!{Down}
 !u::SendInput, ^b!{Left}

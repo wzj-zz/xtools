@@ -363,6 +363,14 @@ def etxt(text):
 def dtxt(data):
     return dzip(d64(data)).decode()
     
+def eurl(url):
+    import urllib.parse
+    return urllib.parse.quote(url)
+
+def durl(url):
+    import urllib.parse
+    return urllib.parse.unquote(url)
+    
 def decode(data):
     import chardet
     return data.decode(chardet.detect(data)['encoding'])
