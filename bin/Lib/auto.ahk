@@ -350,13 +350,14 @@ clip_msg_box()
 return
 
 #]::
+remove("@@@nasm_err_log@@@")
 remove("@@@nasm_bin@@@")
 core_asm_path := A_ScriptDir "\..\..\bin\Lib\core\core_asm\core.asm"
 write_text("tmp_nasm_", "%include """ core_asm_path """`n")
 append_text("tmp_nasm_", clipboard)
 clipboard := "
 (
-pp('nasm', '-f', 'bin', 'tmp_nasm_', '-o', '@@@nasm_bin@@@')()
+pp('nasm', '-f', 'bin', 'tmp_nasm_', '-o', '@@@nasm_bin@@@')(stderr=open('@@@nasm_err_log@@@', 'wb'))
 set_clip(rd('@@@nasm_bin@@@').hex())
 )"
 pyw_exec_wait()
@@ -1601,7 +1602,7 @@ return
 SendInput, +{f4}
 return
 
-#IfWinActive ahk_group terminal
+#IfWinActive ahk_group lix_shell
 #c::
 SendInput {Click, 2}^+c
 return

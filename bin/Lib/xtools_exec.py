@@ -668,18 +668,17 @@ class xt_util(object):
         
     def get(self, code_id=None):
         ret = sio()
-        p('-'*80, file=ret)
         if code_id:
             code_src = self.db.get(code_id)
             code_src = d64(code_src.encode()).decode()
-            p('id: ', code_id, '\n', file=ret)
+            p('id: ', code_id, file=ret)
             p(etxt(code_src), file=ret)
-            p('-'*80, file=ret)
         else:
+            p('-'*80, file=ret)
             for code_id_ in self.db:
                 code_src_ = self.db.get(code_id_)
                 code_src_ = d64(code_src_.encode()).decode()
-                p('id: ', code_id_, '\n', file=ret)
+                p('id: ', code_id_, file=ret)
                 p(etxt(code_src_), file=ret)
                 p('-'*80, file=ret)
         return ret.getvalue()
