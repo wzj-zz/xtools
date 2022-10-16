@@ -431,7 +431,7 @@ return
 return
 
 <^Space::
-if InStr(clipboard, "#@w") {
+if InStr(clipboard, "#@w") or InStr(clipboard, "#@ssh") {
 	py_exec_dispatch()
 }
 else {
@@ -915,7 +915,7 @@ return
 ::xt.call::
 WinClose, @Auto_Activate@
 clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
-clipboard := "'''#@wsl.ub2\nargs_map = {}\nxt().call('" clipboard "')'''"
+clipboard := "'''#@wsl@ub2\nargs_map = {}\nxt().call('" clipboard "')'''"
 pyw_eval()
 return
 
@@ -3679,6 +3679,8 @@ return
 
 #IfWinActive ahk_group terminal
 ::nvi::nvm install{Space}
+::nvu::nvm uninstall{Space}
+::nva::nvm arch{Space}
 ::nvls::nvm ls{Space}
 ::nvs::nvm ls-remote{Space}
 ::nvst::nvm use{Space}

@@ -635,6 +635,82 @@ class xtargs(object):
     def val(self):
         return self.parser.parse_args()
         
+class ssh(object):
+    def __init__(self, *ssh_args, **ssh_kwargs):
+        from fabric import Connection
+        self.conn = Connection(*ssh_args, **ssh_kwargs)
+        self.host = self.conn.host
+        
+    def pp(self, cmd):
+        def _pp(input=b'', hide='out', err=False):
+            self.ret = self.conn.run(cmd, hide=hide, warn=True)
+            if err:
+                return (self.ret.stdout.strip(), self.ret.stderr.strip())
+            else:
+                return self.ret.stdout.strip()
+        return _pp
+        
+    def rd(self, path, mode='rb'):
+        ret = bio()
+        self.get(path, ret)
+        if mode=='rb':
+            return ret.getvalue()
+        elif mode=='r':
+            return decode(ret.getvalue())
+        else:
+            return None
+        
+    def wt(self, path, mode='wb', encoding='utf-8'):
+        def wt_(data):
+            if 'b' not in mode:
+                data = data.encode(encoding)
+            ds = bio(data)
+            self.put(ds, path)
+        return wt_
+        
+    def put(self, *args, **kwargs):
+        return self.conn.put(*args, **kwargs)
+        
+    def get(self, *args, **kwargs):
+        return self.conn.get(*args, **kwargs)
+    
+    def rm(self, path):
+        return self.pp(r"echo {} | base64 -d  | sed 's/\r//g'  | xargs -r -d '\n' rm -rf".format(e64(path.encode()).decode()))()
+    
+    def pwd(self):
+        return self.pp('pwd')().strip()
+        
+    cwd = pwd
+        
+    def cd(self, *args, **kwargs):
+        return self.conn.cd(*args, **kwargs)
+        
+    def prefix(self, *args, **kwargs):
+        return self.conn.prefix(*args, **kwargs)
+        
+    def sh(self, code_src):
+        pass
+        
+    def xt(self, code_src, clean=True, core=None, err=False, hide='out'):
+        with self.cd('~'):
+            home_path = self.pwd()
+        if not core:
+            core = rd(__file__, 'r')
+        self.put(sio(core), '@@@xtools_exec@@@')
+        code_src_base64 = e64(code_src.encode()).decode()
+        
+        if len(code_src_base64)>5000:
+            self.put(sio(code_src_base64), f'{home_path}/@@@py_xtools_src_base64@@@')
+            dispatch_flag = ('-p', f'{home_path}/@@@py_xtools_src_base64@@@')
+        else:
+            dispatch_flag = ('-b', code_src_base64)
+            
+        ret = self.pp('python3 {}/@@@xtools_exec@@@ {} {}'.format(home_path, *dispatch_flag))(err=err, hide=hide)
+        if clean:
+            self.rm(f'{home_path}/@@@xtools_exec@@@')
+            self.rm(f'{home_path}/@@@py_xtools_src_base64@@@')
+        return ret
+        
 class xt_util(object):
     def __init__(self, db_path=None):
         if db_path:
@@ -691,15 +767,15 @@ class xt_util(object):
         
     @staticmethod
     def _parse_spec_blks(src_code):
-        blks = str_to_block(r'\s*#@wsl\.[\w-]+\s*|\s*#@win\s*', src_code, '$')
+        blks = str_to_block(r'\s*#@wsl@[\w-]+\s*|\s*#@win\s*|\s*#@ssh@.*', src_code, '$')
         blks = nem([blk.strip() for blk in split(r'\${80,}', blks)])
         spec_blks = []
         
         for blk in blks:
             spec = blk.split('\n')[0].strip()
-            spec_match = match(r'\s*#@wsl\.[\w-]+\s*|\s*#@win\s*', spec)
+            spec_match = match(r'\s*#@wsl@[\w-]+\s*|\s*#@win\s*|\s*#@ssh@.*', spec)
             if spec_match:
-                spec = spec_match.group().strip('#@').split('.')
+                spec = spec_match.group().strip('#@').split('@')
             else:
                 spec = None
             spec_blks.append({'spec':spec, 'src':blk})
@@ -725,6 +801,8 @@ class xt_util(object):
                 if spec[0]=='wsl':
                     wsl(spec[1])
                     pp('wsl.exe', 'python3', lcx(__file__)[0], *dispatch_flag)(stdin=None, stdout=None, stderr=None)
+                if spec[0]=='ssh':
+                    ssh(spec[1].strip()+'@'+spec[2].strip()).xt(spec_blk['src'], hide=None)
             if len(spec_blk_src)>5000:
                 rm('@@@py_xtools_src@@@')
 
