@@ -93,7 +93,7 @@ Hotkey, !3, ButtonWheelMaxSpeedDown, Off
 
 Hotkey, *`;, MoveMiddle, off
 
->^LWin::
+>^LCtrl::
 Hotkey, *a, Toggle
 Hotkey, *NumpadIns, Toggle
 Hotkey, *x, Toggle

@@ -19,7 +19,11 @@ from io import StringIO as sio
 from io import BytesIO as bio
 
 from threading import Thread
+from threading import Lock
+from concurrent.futures import ThreadPoolExecutor as TPool
+from concurrent.futures import as_completed as twait
 from multiprocessing import Pool
+from multiprocessing import cpu_count
 
 from inspect import isgenerator as isgen
 from inspect import isgeneratorfunction as isgenfn

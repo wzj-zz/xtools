@@ -427,7 +427,7 @@ set_clip(data)
 pyw_exec_wait()
 return
 
->^LCtrl::
+>^LWin::
 return
 
 <^Space::
