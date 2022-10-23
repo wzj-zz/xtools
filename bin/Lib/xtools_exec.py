@@ -4,6 +4,7 @@ import sys
 from ctypes import *
 
 import os
+from os import getenv
 
 from functools import reduce
 from functools import partial
@@ -173,9 +174,12 @@ def pp(*command):
             return p_pipe.communicate(input)[0]
     return communicate
     
+def run(*cmd):
+    pp(*cmd)(stdin=None, stdout=None, stderr=None)
+    
 def cmd_exec(cmds):
     for cmd in cmds:
-        pp(*cmd)(stdin=None, stdout=None, stderr=None)
+        run(*cmd)
     
 class px(object):
     def __init__(self, shell=True):
