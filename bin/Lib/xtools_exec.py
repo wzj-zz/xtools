@@ -75,8 +75,13 @@ def is_plat(plat):
     }[plat.lower()]==system().lower()
 
 def set_python_path(*paths):
+    def _get_dir_path(path):
+        if isfile(path):
+            return dirname(path)
+        if isdir(path):
+            return path
     if paths:
-        sys.path = list(paths) + sys.path
+        sys.path = list(map(_get_dir_path, paths)) + sys.path
     else:
         sys.path.insert(0, dirname(sys.argv[0]))
     
