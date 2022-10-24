@@ -5,6 +5,17 @@ from ctypes import *
 
 import os
 from os import getenv
+from os import rename as ren
+from os import makedirs as mkdir
+md = mkdir
+
+from os.path import isfile
+from os.path import isdir
+from os.path import abspath
+from os.path import basename
+from os.path import dirname
+from os.path import join as pin
+from os.path import exists as exist
 
 from functools import reduce
 from functools import partial
@@ -18,6 +29,10 @@ from re import split
 
 from io import StringIO as sio
 from io import BytesIO as bio
+
+from shutil import which
+from glob import glob
+glob = partial(glob, recursive=True)
 
 from threading import Thread
 from threading import Lock
@@ -42,6 +57,11 @@ from random import choice
 import time
 random.seed(time.time())
 
+#--------------------------------------------------------------------------------
+# shell-
+
+pwd = cwd = lambda :abspath(os.getcwd())
+
 def is_plat(plat):
     from platform import system
     return {
@@ -55,40 +75,12 @@ def is_plat(plat):
     }[plat.lower()]==system().lower()
 
 def set_python_path(*paths):
-    from os.path import isfile, isdir, abspath, dirname
-    
     if paths:
-        for i in paths[::-1]:
-            if isfile(i):
-                sys.path.insert(0, dirname(i))
-            elif isdir(i):
-                sys.path.insert(0, i)
-            else:
-                continue
-    sys.path.insert(0, dirname(abspath(sys.argv[0])))
+        sys.path = list(paths) + sys.path
+    else:
+        sys.path.insert(0, dirname(sys.argv[0]))
     
 stpy = set_python_path
-
-#--------------------------------------------------------------------------------
-# shell-
-
-from os.path import isfile
-from os.path import isdir
-from os.path import abspath
-from os.path import basename
-from os.path import dirname
-from os.path import join as pin
-from os.path import exists as exist
-
-from os import rename as ren
-from os import makedirs as mkdir
-md = mkdir
-
-pwd = cwd = lambda :abspath(os.getcwd())
-
-from shutil import which
-from glob import glob
-glob = partial(glob, recursive=True)
 
 def chdir(path=''):
     from os import chdir as os_chdir
