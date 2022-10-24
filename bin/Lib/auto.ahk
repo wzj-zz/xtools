@@ -94,39 +94,39 @@ quotes := Chr(34)
 
 /*   http://www.autohotkey.net/~Titan/
 
-	Function: uuid
-		Generates a time-based UUID string <http://en.wikipedia.org/wiki/UUID>.
+    Function: uuid
+        Generates a time-based UUID string <http://en.wikipedia.org/wiki/UUID>.
 
-	Parameters:
-		c - (optional) true to use your computers MAC code (default: false)
+    Parameters:
+        c - (optional) true to use your computers MAC code (default: false)
 
-	Returns:
-		A UUID string.
+    Returns:
+        A UUID string.
 
-	About: License
-		- Version 1.1 <http://www.autohotkey.net/~Titan/#uuid>
-		- New BSD License <http://www.autohotkey.net/~Titan/license.txt>
+    About: License
+        - Version 1.1 <http://www.autohotkey.net/~Titan/#uuid>
+        - New BSD License <http://www.autohotkey.net/~Titan/license.txt>
 */
 uuid(c = false) {
-	static n = 0, l, i
-	f := A_FormatInteger, t := A_Now, s := ""
-	SetFormat, Integer, H
-	t -= 1970, s
-	t := (t . A_MSec) * 10000 + 122192928000000000
-	If !i and c {
-		Loop, HKLM, System\MountedDevices
-		If i := A_LoopRegName
-			Break
-		StringGetPos, c, i, %s%, R2
-		StringMid, i, i, c + 2, 17
-	} Else {
-		Random, x, 0x100, 0xfff
-		Random, y, 0x10000, 0xfffff
-		Random, z, 0x100000, 0xffffff
-		x := "9"  SubStr(x, 3) s "1" SubStr(y, 3) SubStr(z, 3)
-	} t += n += l = A_Now, l := A_Now
-	SetFormat, Integer, %f%
-	Return, SubStr(t, 10) . s . SubStr(t, 6, 4) . s . 1 . SubStr(t, 3, 3) . s . (c ? i : x)
+    static n = 0, l, i
+    f := A_FormatInteger, t := A_Now, s := ""
+    SetFormat, Integer, H
+    t -= 1970, s
+    t := (t . A_MSec) * 10000 + 122192928000000000
+    If !i and c {
+        Loop, HKLM, System\MountedDevices
+        If i := A_LoopRegName
+            Break
+        StringGetPos, c, i, %s%, R2
+        StringMid, i, i, c + 2, 17
+    } Else {
+        Random, x, 0x100, 0xfff
+        Random, y, 0x10000, 0xfffff
+        Random, z, 0x100000, 0xffffff
+        x := "9"  SubStr(x, 3) s "1" SubStr(y, 3) SubStr(z, 3)
+    } t += n += l = A_Now, l := A_Now
+    SetFormat, Integer, %f%
+    Return, SubStr(t, 10) . s . SubStr(t, 6, 4) . s . 1 . SubStr(t, 3, 3) . s . (c ? i : x)
 }
 
 base64(string)
@@ -141,106 +141,106 @@ base64(string)
 }
 
 py_exec_dispatch() {
-	global python
-	Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -c -d
+    global python
+    Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -c -d
 }
 
 pyw_eval(code_src:="") {
     global pythonw
-	if(code_src=="") {
-		RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -c -e clip
-	}
+    if(code_src=="") {
+        RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -c -e clip
+    }
     else {
-		file_name := uuid()
-		write_text(file_name, base64(code_src))
-		RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -p %file_name% -e clip
-		remove(file_name)
-	}
+        file_name := uuid()
+        write_text(file_name, base64(code_src))
+        RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -p %file_name% -e clip
+        remove(file_name)
+    }
 }
 
 pyw_eval_32(code_src:="") {
     global pythonw32
-	if(code_src=="") {
-		RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -c -e clip
-	}
+    if(code_src=="") {
+        RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -c -e clip
+    }
     else {
-		file_name := uuid()
-		write_text(file_name, base64(code_src))
-		RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -p %file_name% -e clip
-		remove(file_name)
-	}
+        file_name := uuid()
+        write_text(file_name, base64(code_src))
+        RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -p %file_name% -e clip
+        remove(file_name)
+    }
 }
 
 pyw_exec(code_src:="") {
     global pythonw
-	if(code_src=="") {
-		Run, %pythonw% %A_ScriptDir%\xtools_exec.py -c
-	}
+    if(code_src=="") {
+        Run, %pythonw% %A_ScriptDir%\xtools_exec.py -c
+    }
     else {
-		base64_code_src := base64(code_src)
-		Run, %pythonw% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
-	}
+        base64_code_src := base64(code_src)
+        Run, %pythonw% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
+    }
 }
 
 pyw_exec_32(code_src:="") {
     global pythonw32
-	if(code_src=="") {
-		Run, %pythonw32% %A_ScriptDir%\xtools_exec.py -c
-	}
+    if(code_src=="") {
+        Run, %pythonw32% %A_ScriptDir%\xtools_exec.py -c
+    }
     else {
-		base64_code_src := base64(code_src)
-		Run, %pythonw32% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
-	}
+        base64_code_src := base64(code_src)
+        Run, %pythonw32% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
+    }
 }
 
 pyw_exec_wait(code_src:="") {
     global pythonw
-	if(code_src=="") {
-		RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -c
-	}
+    if(code_src=="") {
+        RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -c
+    }
     else {
-		file_name := uuid()
-		write_text(file_name, base64(code_src))
-		RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -p %file_name%
-		remove(file_name)
-	}
+        file_name := uuid()
+        write_text(file_name, base64(code_src))
+        RunWait, %pythonw% %A_ScriptDir%\xtools_exec.py -p %file_name%
+        remove(file_name)
+    }
 }
 
 pyw_exec_wait_32(code_src:="") {
     global pythonw32
-	if(code_src=="") {
-		RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -c
-	}
+    if(code_src=="") {
+        RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -c
+    }
     else {
-		file_name := uuid()
-		write_text(file_name, base64(code_src))
-		RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -p %file_name%
-		remove(file_name)
-	}
+        file_name := uuid()
+        write_text(file_name, base64(code_src))
+        RunWait, %pythonw32% %A_ScriptDir%\xtools_exec.py -p %file_name%
+        remove(file_name)
+    }
 }
 
 py_exec_cmd(code_src:="") {
     global python
-	
-	if(code_src=="") {
-		Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -c
-	}
+    
+    if(code_src=="") {
+        Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -c
+    }
     else {
-		base64_code_src := base64(code_src)
-		Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
-	}
+        base64_code_src := base64(code_src)
+        Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
+    }
 }
 
 py_exec_cmd_32(code_src:="") {
     global python32
-	
-	if(code_src=="") {
-		Run, cmd /k %python32% %A_ScriptDir%\xtools_exec.py -c
-	}
+    
+    if(code_src=="") {
+        Run, cmd /k %python32% %A_ScriptDir%\xtools_exec.py -c
+    }
     else {
-		base64_code_src := base64(code_src)
-		Run, cmd /k %python32% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
-	}
+        base64_code_src := base64(code_src)
+        Run, cmd /k %python32% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
+    }
 }
 
 line_filter() {
@@ -329,12 +329,12 @@ clip_dtxt() {
 }
 
 check_multi_line(data) {
-	if(InStr(data, "`n")) {
-		return true
-	}
-	else {
-		return false
-	}
+    if(InStr(data, "`n")) {
+        return true
+    }
+    else {
+        return false
+    }
 }
 ;----------------------------------------------------------------------
 ;script-脚本触发器，常用脚本补全热字串
@@ -432,10 +432,10 @@ return
 
 <^Space::
 if InStr(clipboard, "#@w") or InStr(clipboard, "#@ssh") {
-	py_exec_dispatch()
+    py_exec_dispatch()
 }
 else {
-	py_exec_cmd()
+    py_exec_cmd()
 }
 return
 
@@ -457,7 +457,7 @@ except:
 pyw_exec_wait()
 Loop, parse, clipboard, `n, `r
 {
-	Run, %A_LoopField%
+    Run, %A_LoopField%
 }
 return
 
@@ -741,8 +741,23 @@ return
 
 ::rd::
 WinClose, @Auto_Activate@
-clipboard := "reduce(lambda x, y:x+y, [rd(i, 'r') for i in fl(r'''" clipboard "''')])"
-pyw_eval()
+clip_etxt()
+code_src := "
+(
+raw_files = dtxt(" clipboard ")
+files = list(filter(isfile, fl(raw_files)))
+if len(files)==1:
+    set_clip(rd(files[0], 'r'))
+if len(files)>1:
+    ret = sio()
+    for file in files:
+        p('='*80, file=ret)
+        p('@@: ', file+': ', '\n', file=ret)
+        p(rd(file, 'r'), file=ret)
+    p('='*80, file=ret)
+    set_clip(ret.getvalue())
+)"
+pyw_exec_wait(code_src)
 return
 
 ::wb::
@@ -766,7 +781,7 @@ if not exist('@@@log@@@'):
     mkdir('@@@log@@@')
 data = fl(rd('@@@log_txt@@@', 'r'))
 for i in data:
-	cp(i, '@@@log@@@')
+    cp(i, '@@@log@@@')
 )
 pyw_exec_wait()
 return
@@ -852,9 +867,10 @@ return
 
 ::2b::
 WinClose, @Auto_Activate@
+clip_etxt()
 clipboard := "
 (
-data = r'''" clipboard "'''.split('\n')
+data = dtxt(" clipboard ").split('\n')
 set_clip(lr(str_to_block(data[0].strip(), en(data[1:]))))
 )"
 pyw_exec_wait()
@@ -887,11 +903,11 @@ clipboard := "
 (
 data = lsr(dtxt(" clipboard ")).lstrip('id:').strip().split('\n')
 if len(data)!=2:
-	exit()
+    exit()
 code_id = data[0]
 code_src = dtxt(eval(data[1])).strip()
 if not (len(code_id)==32 and match(r'[0-9a-fA-F]{32}', code_id)):
-	exit()
+    exit()
 xt().set(code_id, code_src)
 set_clip(code_id)
 )"
@@ -1660,42 +1676,42 @@ NumpadSub::RCtrl
 ;apk- app hotkey 全局热键 启动/激活
 >^`;::
 if WinExist("ahk_exe cmd.exe") {
-	WinActivateBottom, ahk_group win_shell
-	return
+    WinActivateBottom, ahk_group win_shell
+    return
 }
 else {
     Run, cmd.exe
-	return
+    return
 }
 
 >^'::
 if WinExist("ahk_group browser") {
-	WinActivateBottom, ahk_group browser
-	return
+    WinActivateBottom, ahk_group browser
+    return
 }
 else {
     Run, cmd.exe /c "start %browser_path%"
-	return
+    return
 }
 
 #F::
 if WinExist("ahk_exe Totalcmd64.exe") {
-	WinActivate, ahk_exe Totalcmd64.exe
-	return
+    WinActivate, ahk_exe Totalcmd64.exe
+    return
 }
 else {
-	Run, %A_ScriptDir%\..\..\utils\TotalCMD64\Totalcmd64.exe
-	return	
+    Run, %A_ScriptDir%\..\..\utils\TotalCMD64\Totalcmd64.exe
+    return    
 }
 
 #`;::
 if WinExist("ahk_exe notepad++.exe") {
-	WinActivate, ahk_exe notepad++.exe
-	return
+    WinActivate, ahk_exe notepad++.exe
+    return
 }
 else {
     Run, %SCOOP_ROOT%\apps\notepadplusplus\current\notepad++.exe
-	return
+    return
 }
 
 #+`;::
@@ -1717,23 +1733,23 @@ return
 
 #l::
 if WinExist("ahk_exe wsl.exe") {
-	WinActivateBottom, ahk_exe wsl.exe
-	return
+    WinActivateBottom, ahk_exe wsl.exe
+    return
 }
 else {
-	RunWait, wsl.exe --set-default ubuntu_1
+    RunWait, wsl.exe --set-default ubuntu_1
     Run, wsl.exe
-	return
+    return
 }
 
 #m::
 if WinExist("ahk_group terminal_emulator") {
-	WinActivateBottom, ahk_group terminal_emulator
-	return
+    WinActivateBottom, ahk_group terminal_emulator
+    return
 }
 else {
     Run, %SCOOP_ROOT%\apps\wsltty\current\bin\mintty.exe --WSL= --configdir="%A_ScriptDir%\..\..\config\wsltty" -
-	return
+    return
 }
 
 #+m::
@@ -1749,16 +1765,16 @@ return
 #Enter::
 Process, Exist, vcxsrv.exe
 if(!ErrorLevel) {
-	return
+    return
 }
 if WinExist("ahk_exe vcxsrv.exe") {
-	WinActivateBottom, ahk_exe vcxsrv.exe
-	return
+    WinActivateBottom, ahk_exe vcxsrv.exe
+    return
 }
 else {
-	RunWait, wsl.exe --set-default ubuntu_2, , Hide
+    RunWait, wsl.exe --set-default ubuntu_2, , Hide
     Run, cmd.exe /c "wsl.exe bash -c "DISPLAY=$(grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'):0.0 emacsclient -c" &", , Hide
-	return
+    return
 }
 
 #+Enter::
@@ -1779,12 +1795,12 @@ return
 
 #n::
 if WinExist("ahk_exe Code.exe") {
-	WinActivate, ahk_exe Code.exe
-	return
+    WinActivate, ahk_exe Code.exe
+    return
 }
 else {
     Run, openw.exe "%SCOOP_ROOT%\apps\vscode\current\Code.exe" --extensions-dir "%A_ScriptDir%\..\..\config\VScode\extensions", , Hide
-	return
+    return
 }
 
 #+n::
@@ -1811,12 +1827,12 @@ return
 
 #+b::
 if WinExist("ahk_class MMCMainFrame") {
-	WinActivateBottom, ahk_class MMCMainFrame
-	return
+    WinActivateBottom, ahk_class MMCMainFrame
+    return
 }
 else {
-	Run, "C:\Windows\System32\mmc.exe" "C:\Windows\System32\virtmgmt.msc"
-	return
+    Run, "C:\Windows\System32\mmc.exe" "C:\Windows\System32\virtmgmt.msc"
+    return
 }
 
 <!LShift::
@@ -1837,13 +1853,13 @@ return
 ::h::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe HxD64.exe") {
-	WinActivate, ahk_exe HxD64.exe
-	return
+    WinActivate, ahk_exe HxD64.exe
+    return
 }
 else {
-	Run, %SCOOP_ROOT%\apps\hxd\current\HxD.exe
-	WinActivate, ahk_exe HxD64.exe
-	return	
+    Run, %SCOOP_ROOT%\apps\hxd\current\HxD.exe
+    WinActivate, ahk_exe HxD64.exe
+    return    
 }
 
 ::wh::
@@ -1928,48 +1944,48 @@ return
 ::cd::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe dnSpy.exe") {
-	WinActivate, ahk_exe dnSpy.exe
-	return
+    WinActivate, ahk_exe dnSpy.exe
+    return
 }
 else {
-	Run, %A_ScriptDir%\..\..\re\dnspy\dnSpy-net-win32\dnSpy.exe
-	WinActivate, ahk_exe dnSpy.exe
-	return	
+    Run, %A_ScriptDir%\..\..\re\dnspy\dnSpy-net-win32\dnSpy.exe
+    WinActivate, ahk_exe dnSpy.exe
+    return    
 }
 
 ::cdx::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe dnSpy.exe") {
-	WinActivate, ahk_exe dnSpy.exe
-	return
+    WinActivate, ahk_exe dnSpy.exe
+    return
 }
 else {
-	Run, %A_ScriptDir%\..\..\re\dnspy\dnSpy-net-win64\dnSpy.exe
-	WinActivate, ahk_exe dnSpy.exe
-	return	
+    Run, %A_ScriptDir%\..\..\re\dnspy\dnSpy-net-win64\dnSpy.exe
+    WinActivate, ahk_exe dnSpy.exe
+    return    
 }
 
 ::df::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe WinMergeU.exe") {
-	WinActivate, ahk_exe WinMergeU.exe
-	return
+    WinActivate, ahk_exe WinMergeU.exe
+    return
 }
 else {
-	Run, %SCOOP_ROOT%\apps\winmerge\current\WinMergeU.exe
-	return	
+    Run, %SCOOP_ROOT%\apps\winmerge\current\WinMergeU.exe
+    return    
 }
 return
 
 ::si::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe sourceinsight4.exe") {
-	WinActivate, ahk_exe sourceinsight4.exe
-	return
+    WinActivate, ahk_exe sourceinsight4.exe
+    return
 }
 else {
-	Run, %A_ScriptDir%\..\..\utils\si\si\sourceinsight4.exe
-	return	
+    Run, %A_ScriptDir%\..\..\utils\si\si\sourceinsight4.exe
+    return    
 }
 return
 
@@ -2002,35 +2018,35 @@ return
 ::m::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe Typora.exe") {
-	WinActivate, ahk_exe Typora.exe
-	return
+    WinActivate, ahk_exe Typora.exe
+    return
 }
 else {
     Run, %A_ScriptDir%\..\..\utils\Typora\bin\typora.exe
-	return
+    return
 }
 
 ::v::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe PotPlayerMini64.exe") {
-	WinActivate, ahk_exe PotPlayerMini64.exe
     WinActivate, ahk_exe PotPlayerMini64.exe
-	return
+    WinActivate, ahk_exe PotPlayerMini64.exe
+    return
 }
 else {
     Run, %A_ScriptDir%\..\..\utils\PotPlayer64\PotPlayerMini64.exe
-	return
+    return
 }
 
 ::rc::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe mstsc.exe") {
-	WinActivateBottom, ahk_exe mstsc.exe
-	return
+    WinActivateBottom, ahk_exe mstsc.exe
+    return
 }
 else {
     Run, mstsc.exe
-	return
+    return
 }
 
 ::w::
@@ -2088,23 +2104,23 @@ return
 ::e::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe imhex.exe") {
-	WinActivate, ahk_exe imhex.exe
-	return
+    WinActivate, ahk_exe imhex.exe
+    return
 }
 else {
     Run, %SCOOP_ROOT%\apps\imhex\current\imhex.exe
-	return
+    return
 }
 
 ::ws::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe Wireshark.exe") {
-	WinActivate, ahk_exe Wireshark.exe
-	return
+    WinActivate, ahk_exe Wireshark.exe
+    return
 }
 else {
     Run, %SCOOP_ROOT%\apps\wireshark\current\Wireshark.exe
-	return
+    return
 }
 
 ::id::
@@ -2115,7 +2131,7 @@ if WinExist("ahk_exe idea64.exe") {
 }
 else {
     Run, %SCOOP_ROOT%\apps\idea-ultimate\current\IDE\bin\idea64.exe
-	return
+    return
 }
 
 ::cl::
@@ -2126,7 +2142,7 @@ if WinExist("ahk_exe clion64.exe") {
 }
 else {
     Run, %SCOOP_ROOT%\apps\clion\current\IDE\bin\clion64.exe
-	return
+    return
 }
 
 ::php::
@@ -2137,7 +2153,7 @@ if WinExist("ahk_exe phpstorm64.exe") {
 }
 else {
     Run, %SCOOP_ROOT%\apps\phpstorm\current\IDE\bin\phpstorm64.exe
-	return
+    return
 }
 
 ::jetop::
@@ -3035,8 +3051,8 @@ return
 ::lcud::updatedb{Space}
 ::cxl::
 if !check_multi_line(clipboard) {
-	clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
-	SendInput, {TEXT}if [ -d "%clipboard%" ];then cd "%clipboard%";else cd "$(dirname "%clipboard%")"; fi; pwd;
+    clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
+    SendInput, {TEXT}if [ -d "%clipboard%" ];then cd "%clipboard%";else cd "$(dirname "%clipboard%")"; fi; pwd;
 }
 return
 ::ct:: | xargs -r -d '\n' cat{Space}
@@ -3154,8 +3170,8 @@ except:
 )"
 pyw_exec_wait(code_src)
 if !check_multi_line(clipboard) {
-	clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
-	SendInput, {TEXT}'%clipboard%'
+    clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
+    SendInput, {TEXT}'%clipboard%'
 }
 return
 
@@ -3778,30 +3794,30 @@ return
 clipboard = 
 (
 search_list = [
-	echo(r'File Upload'.center(80, '-')),
-	echo(r'1. DiskFileItemFactory, parseRequest, FileItem, getInputStream|write:'),
+    echo(r'File Upload'.center(80, '-')),
+    echo(r'1. DiskFileItemFactory, parseRequest, FileItem, getInputStream|write:'),
     grep(r'\bDiskFileItemFactory\b', r'\bparseRequest\b', r'\bFileItem\b', r'\bgetInputStream\b|\bwrite\b')(r'\.jsp$|\.jspx$|\.java$'),
-	
-	echo(r'2. SmartUpload, save:'),
+    
+    echo(r'2. SmartUpload, save:'),
     grep(r'\bSmartUpload\b', r'\bsave\b')(r'\.jsp$|\.jspx$|\.java$'),
-	
-	# echo(r'3. MultipartHttpServletRequest, getFile|getFiles|getFileMap|getMultiFileMap, MultipartFile, getBytes|getInputStream|transferTo:'),
+    
+    # echo(r'3. MultipartHttpServletRequest, getFile|getFiles|getFileMap|getMultiFileMap, MultipartFile, getBytes|getInputStream|transferTo:'),
     # grep(r'\bMultipartHttpServletRequest\b', r'\bgetFile\b|\bgetFiles\b|\bgetFileMap\b|\bgetMultiFileMap\b|\bMultipartFile\b', r'\bgetBytes\b|\bgetInputStream\b|\btransferTo\b')(r'\.jsp$|\.jspx$|\.java$'),
-	
-	echo(r'3. MultipartHttpServletRequest, getFile|getFiles|getFileMap|getMultiFileMap, MultipartFile, getBytes|getInputStream|transferTo:\n   MultipartFile|CommonsMultipartFile, getBytes|getInputStream|transferTo|getFileItem:'),
+    
+    echo(r'3. MultipartHttpServletRequest, getFile|getFiles|getFileMap|getMultiFileMap, MultipartFile, getBytes|getInputStream|transferTo:\n   MultipartFile|CommonsMultipartFile, getBytes|getInputStream|transferTo|getFileItem:'),
     grep(r'\bMultipartFile\b|\bCommonsMultipartFile\b', r'\bgetBytes\b|\bgetInputStream\b|\btransferTo\b|\bgetFileItem\b')(r'\.jsp$|\.jspx$|\.java$'),
-	
-	echo(r'4. FormFile, getFileData|getInputStream:'),
-	grep(r'\bFormFile\b', r'\bgetFileData\b|\bgetInputStream\b')(r'\.jsp$|\.jspx$|\.java$'),
-	
-	echo(r'5. extends ActionSupport, File, FileUtils.copyFile|InputStream:'),
-	grep(r'\bextends\s+ActionSupport\b', r'\bFile\b', r'\bFileUtils\s*\.\s*copyFile\b|\bInputStream\b')(r'\.jsp$|\.jspx$|\.java$'),
-	
-	echo(r'6. new URL, openConnection, getInputStream'),
-	grep(r'\bnew\s+URL\b', r'\bopenConnection\b', r'\bgetInputStream\b')(r'\.jsp$|\.jspx$|\.java$'),
-	
-	echo(r'7. HttpServletRequest, getInputStream, FileOutputStream|FileUtils.copyInputStreamToFile|FileUtils.copyToFile:'),
-	grep(r'\bHttpServletRequest\b', r'\bgetInputStream\b', r'\bFileOutputStream\b|\bFileUtils\s*\.\s*copyInputStreamToFile\b|\bFileUtils\s*\.\s*copyToFile\b')(r'\.jsp$|\.jspx$|\.java$')
+    
+    echo(r'4. FormFile, getFileData|getInputStream:'),
+    grep(r'\bFormFile\b', r'\bgetFileData\b|\bgetInputStream\b')(r'\.jsp$|\.jspx$|\.java$'),
+    
+    echo(r'5. extends ActionSupport, File, FileUtils.copyFile|InputStream:'),
+    grep(r'\bextends\s+ActionSupport\b', r'\bFile\b', r'\bFileUtils\s*\.\s*copyFile\b|\bInputStream\b')(r'\.jsp$|\.jspx$|\.java$'),
+    
+    echo(r'6. new URL, openConnection, getInputStream'),
+    grep(r'\bnew\s+URL\b', r'\bopenConnection\b', r'\bgetInputStream\b')(r'\.jsp$|\.jspx$|\.java$'),
+    
+    echo(r'7. HttpServletRequest, getInputStream, FileOutputStream|FileUtils.copyInputStreamToFile|FileUtils.copyToFile:'),
+    grep(r'\bHttpServletRequest\b', r'\bgetInputStream\b', r'\bFileOutputStream\b|\bFileUtils\s*\.\s*copyInputStreamToFile\b|\bFileUtils\s*\.\s*copyToFile\b')(r'\.jsp$|\.jspx$|\.java$')
 ]
 
 search_str = ';'.join(search_list)
@@ -3814,12 +3830,12 @@ return
 clipboard = 
 (
 search_list = [
-	echo(r'Cmd Exec'.center(80, '-')),
-	echo(r'1. Runtime, getRuntime(), exec:'),
+    echo(r'Cmd Exec'.center(80, '-')),
+    echo(r'1. Runtime, getRuntime(), exec:'),
     grep(r'\bRuntime\s*\.\s*getRuntime\b\(\)', r'\.\s*\bexec\b')(r'\.jsp$|\.jspx$|\.java$'),
-	
-	echo(r'2. ScriptEngine|CompiledScript, eval:'),
-	grep(r'\bScriptEngine\b|\bCompiledScript\b', r'\s*\.\s*\beval\b')(r'\.jsp$|\.jspx$|\.java$')
+    
+    echo(r'2. ScriptEngine|CompiledScript, eval:'),
+    grep(r'\bScriptEngine\b|\bCompiledScript\b', r'\s*\.\s*\beval\b')(r'\.jsp$|\.jspx$|\.java$')
 ]
 
 search_str = ';'.join(search_list)
@@ -3833,8 +3849,8 @@ clipboard =
 (
 search_list = [
     grep(r'extends\s+zuulfilter')('\.java$'),
-	grep(r'@WebFilter')('\.java$'),
-	grep(r'implements\s+filter')('\.java$')
+    grep(r'@WebFilter')('\.java$'),
+    grep(r'implements\s+filter')('\.java$')
 ]
 
 search_str = ';'.join(search_list)
