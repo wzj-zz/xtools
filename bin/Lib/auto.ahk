@@ -752,7 +752,7 @@ if len(files)>1:
     ret = sio()
     for file in files:
         p('='*80, file=ret)
-        p('@@: ', file+': ', '\n', file=ret)
+        p('@@: ', file+'\n', file=ret)
         p(rd(file, 'r'), file=ret)
     p('='*80, file=ret)
     set_clip(ret.getvalue())
