@@ -1,17 +1,8 @@
 #!/bin/bash
 
-if [[ $1 = "-x" ]]
-then
-	python3 /mnt/d/tools/bin/Lib/xtools_exec.py -x
-elif [[ $1 = "-c" ]]
+if [[ $1 = "" ]]
 then
 	python3 /mnt/d/tools/bin/Lib/xtools_exec.py -c
-elif [[ $1 = "-p" ]]
-then
-	python3 /mnt/d/tools/bin/Lib/xtools_exec.py -p $2
-elif [[ $1 = "-b" ]]
-then
-	python3 /mnt/d/tools/bin/Lib/xtools_exec.py -b $2
 else
-	python3 /mnt/d/tools/bin/Lib/xtools_exec.py -c
+	python3 /mnt/d/tools/bin/Lib/xtools_exec.py $*
 fi
