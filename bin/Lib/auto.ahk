@@ -3156,7 +3156,6 @@ return
 ::tsa::find "$(pwd)" -mindepth 1 -maxdepth 1 | xargs -r -d '\n' egrep --color=auto -i -r -I -n ""{Space}{Left 2}
 ::bsa::find "$(pwd)" -type f | xargs -r -d '\n' strings -tx -f{Space}
 ::nl:: | nl{Space}
-::fe::fg emacs
 
 ::lcc::
 code_src := "
@@ -3286,6 +3285,8 @@ return
 ::gist::git status{Space}
 ::gizz::git stash push{Space}
 ::gizp::git stash pop{Space}
+::gicl::git clone{Space}
+::giclx::git clone --recursive{Space}
 
 ;查看PEM
 ::sslp::openssl x509 -text -noout -in{Space}
@@ -3426,6 +3427,16 @@ return
 ;winmake-常用命令
 #IfWinActive ahk_group terminal
 ::mgw::set PATH=%scoop%\apps\mingw-winlibs\current\bin;%PATH%
+::ms::
+clipboard := "max(glob(r'C:\Program Files (x86)\Microsoft Visual Studio\*\Community\VC\Auxiliary\Build\vcvars32.bat'))"
+pyw_eval()
+SendInput, {TEXT}"%clipboard%"
+return
+::msx::
+clipboard := "max(glob(r'C:\Program Files (x86)\Microsoft Visual Studio\*\Community\VC\Auxiliary\Build\vcvars64.bat'))"
+pyw_eval()
+SendInput, {TEXT}"%clipboard%"
+return
 ::mgb::mingw32-make.exe{Space}
 ::vcd::cl.exe /Zi /LD{Space}
 ::vcdu::cl.exe /Zi /LD /D "_UNICODE" /D "UNICODE"{Space}
@@ -3711,8 +3722,19 @@ return
 ::jvu::jenv remove{Space}
 ::jvls::jenv versions{Space}
 ::jvcur::jenv version{Space}
-::jvst::jenv local{Space}
-::jvstx::jenv global{Space}
+::jvst::jenv global{Space}
+::jvstl::jenv local{Space}
+#IfWinActive
+
+;go- goenv- 常用命令
+#IfWinActive ahk_group terminal
+::gvs::goenv install -l{Space}
+::gvi::goenv install{Space}
+::gvu::goenv uninstall{Space}
+::gvls::goenv versions{Space}
+::gvcur::goenv version{Space}
+::gvst::goenv global{Space}
+::gvstl::goenv local{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
 ;tcp- tcpdump常用命令
