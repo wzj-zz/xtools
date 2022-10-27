@@ -1620,7 +1620,7 @@ return
 
 #IfWinActive ahk_group lix_shell
 #c::
-SendInput {Click, 2}^+c
+SendInput +{Click, 2}^+c
 return
 ^+v::SendInput, {Text}%clipboard%
 
@@ -3253,6 +3253,7 @@ return
 !i::SendInput, ^b{Up}
 !j::SendInput, ^b{Left}
 !l::SendInput, ^b{Right}
+![::SendInput, ^bz
 ::mms::tmux set mouse on 2> /dev/null{Space}
 ::mat::
 SendInput, tmux attach -t{Space}
