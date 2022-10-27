@@ -3254,7 +3254,8 @@ return
 !j::SendInput, ^b{Left}
 !l::SendInput, ^b{Right}
 ![::SendInput, ^bz
-::mms::tmux set mouse on 2> /dev/null{Space}
+::mmsop::tmux set mouse on 2> /dev/null{Space}
+::mmsed::tmux set mouse off
 ::mat::
 SendInput, tmux attach -t{Space}
 return
