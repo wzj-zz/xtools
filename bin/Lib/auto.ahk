@@ -3253,6 +3253,7 @@ return
 !i::SendInput, ^b{Up}
 !j::SendInput, ^b{Left}
 !l::SendInput, ^b{Right}
+::mms::tmux set mouse on 2> /dev/null{Space}
 ::mat::
 SendInput, tmux attach -t{Space}
 return
