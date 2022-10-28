@@ -1462,16 +1462,6 @@ WinClose, @Auto_Activate@
 Run, wsl.exe
 return
 
-::tml::
-WinClose, @Auto_Activate@
-Run, wsl.exe tml
-return
-
-::tmlx::
-WinClose, @Auto_Activate@
-Run, wsl.exe tmux kill-session -t tml, , Hide
-return
-
 ::ems::
 WinClose, @Auto_Activate@
 Run, wsl.exe emacs --daemon
@@ -3237,6 +3227,17 @@ return
 ;----------------------------------------------------------------------
 ;tmux-常用命令
 
+#IfWinActive @Auto_Activate@
+::tml::
+WinClose, @Auto_Activate@
+Run, wsl.exe tml
+return
+
+::tmlx::
+WinClose, @Auto_Activate@
+Run, wsl.exe tmux kill-session -t tml, , Hide
+return
+
 #IfWinActive ahk_group lix_shell
 !,::SendInput, ^b!{Up}
 !.::SendInput, ^b!{Down}
@@ -3254,18 +3255,18 @@ return
 !j::SendInput, ^b{Left}
 !l::SendInput, ^b{Right}
 ![::SendInput, ^bz
-::mmsop::tmux set mouse on 2> /dev/null{Space}
-::mmsed::tmux set mouse off
-::mat::
+::tmmsop::tmux set mouse on 2> /dev/null{Space}
+::tmmsed::tmux set mouse off
+::tmat::
 SendInput, tmux attach -t{Space}
 return
-::mls::
+::tmls::
 SendInput, tmux ls
 return
-::mks::
+::tmks::
 SendInput, tmux kill-session -t{Space}
 return
-::mns::
+::tmns::
 SendInput, tmux new -s{Space}
 return
 #IfWinActive
@@ -3471,6 +3472,8 @@ return
 ::xmsl::xmake show -l{Space}
 ::xmst::xmake show -t{Space}
 ::xmr::xmake run{Space}
+::xmi::xmake install -y{Space}
+::xmu::xmake uninstall -y{Space}
 ::xmf::xmake config{Space}
 ::xmim::xmake f --import=
 ::xmex::xmake f --export=
