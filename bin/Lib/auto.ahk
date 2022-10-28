@@ -1721,6 +1721,17 @@ Loop, parse, clipboard, `n, `r
 }
 return
 
+<!LShift::
+if WinExist("ahk_exe Obsidian.exe") {
+	WinActivate, ahk_exe Obsidian.exe
+    return
+}
+else {
+    Run, %SCOOP_ROOT%\apps\obsidian\current\Obsidian.exe
+    return
+}
+return
+
 #l::
 if WinExist("ahk_exe wsl.exe") {
     WinActivateBottom, ahk_exe wsl.exe
@@ -1825,7 +1836,7 @@ else {
     return
 }
 
-<!LShift::
+<#LCtrl::
 WinActivateBottom, ahk_group ida
 return
 
@@ -3255,7 +3266,9 @@ return
 !j::SendInput, ^b{Left}
 !l::SendInput, ^b{Right}
 ![::SendInput, ^bz
-::tmmsop::tmux set mouse on 2> /dev/null{Space}
+!v::SendInput, ^b]
+::tmop::(tmux set mouse on && tmux set -g mode-keys vi) 2>> /dev/null
+::tmmsop::tmux set mouse on 2>> /dev/null{Space}
 ::tmmsed::tmux set mouse off
 ::tmat::
 SendInput, tmux attach -t{Space}
