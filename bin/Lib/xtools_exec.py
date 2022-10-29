@@ -210,14 +210,14 @@ def set_clip(data):
     try:
         import win32clipboard
         import win32con
-        data = str(data)
+        
         win32clipboard.OpenClipboard()
         win32clipboard.EmptyClipboard()
-        win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, data)
+        win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, str(data))
         win32clipboard.CloseClipboard()
     except:
         if which('win32yank.exe'):
-            pp('win32yank.exe', '-i')(data.encode())
+            pp('win32yank.exe', '-i')(str(data).encode())
 
 def get_clip():
     try:
