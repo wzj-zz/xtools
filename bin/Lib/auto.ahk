@@ -3037,6 +3037,8 @@ return
 #IfWinActive ahk_group lix_shell
 ::aslr::cat /proc/sys/kernel/randomize_va_space
 ::aslrx::echo 0 > /proc/sys/kernel/randomize_va_space{Home}{Right 6}
+::lxdm::ulimit -c{Space}
+::lxdmx::ulimit -c unlimited && echo "/tmp/core.%e.%p.%t" > /proc/sys/kernel/core_pattern
 ::tre::tree -f -P "*"{Space}{Left 2}
 ::trec::tree -f -P "*.cpp|*.c++|*.cxx|*.hpp|*.hh|*.h++|*.hxx|*.c|*.cc|*.h"{Space}
 ::dif::diff{Space}
