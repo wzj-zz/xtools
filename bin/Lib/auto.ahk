@@ -3286,6 +3286,12 @@ SendInput, tmux new -s{Space}
 return
 #IfWinActive
 ;----------------------------------------------------------------------
+;socat- nc- 常用命令
+
+#IfWinActive ahk_group lix_shell
+::scexe::socat tcp4-listen:7777,fork,reuseaddr exec:{Left 21}
+#IfWinActive
+;----------------------------------------------------------------------
 ;openssl- ssl- ssh- git- 常用命令
 #IfWinActive ahk_group common_shell
 ::sshk::ssh-keygen -t rsa -b 2048 -C ""{Left 1}

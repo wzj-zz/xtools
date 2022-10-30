@@ -328,8 +328,8 @@ def bit(data):
             return int('0b'+x[a:a+b][::-1], 0)
     return bit_val
 
-def fm(data, x=' '):
-    return x + x.join(findall('..', data))
+def fm(data, sep=' '):
+    return sep + sep.join(findall('..', data))
     
 def exor(data, key):
     key = list(key)
