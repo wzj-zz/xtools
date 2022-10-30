@@ -1566,7 +1566,7 @@ pyw_exec_wait()
 RunWait, %A_ScriptDir%\..\..\utils\TotalCMD64\Totalcmd64.exe /O /T "%clipboard%"
 return
 <!LCtrl::
-SendInput, ^+c\{Enter}
+RunWait, %A_ScriptDir%\..\..\utils\TotalCMD64\Totalcmd64.exe /O /T \\wsl$
 return
 ::re::<(){Left 1}
 ::exe::<(\.exe$|\.dll$|\.sys$)
