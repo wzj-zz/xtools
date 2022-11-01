@@ -3186,7 +3186,6 @@ return
 ::hx::echo -E $(history | fzf) | sed 's/{^}[0-9]*//'{Space}
 
 ::man::tldr{Space}
-::cman::cppman{Space}
 ::dman:: | xargs -r dman{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
