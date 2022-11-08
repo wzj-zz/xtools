@@ -226,6 +226,11 @@
          "keyword": "co",
          "name": "scoop",
          "path": "%SCOOP%\\apps"
+      }, {
+         "enabled": true,
+         "keyword": "zk",
+         "name": "zk",
+         "path": "D:\\tools\\wiki\\zk"
       } ],
       "web_search": [  ]
    },
