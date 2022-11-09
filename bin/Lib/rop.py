@@ -1,2 +1,0 @@
-import ropgadget
-ropgadget.main()
