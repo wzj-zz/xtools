@@ -1,8 +1,10 @@
 #!/bin/bash
 
+script_path=$(dirname $0)
+
 if [[ $1 = "" ]]
 then
-	python3 /mnt/d/tools/bin/Lib/xtools_exec.py -c
+	python3 $script_path/Lib/xtools_exec.py -c
 else
-	python3 /mnt/d/tools/bin/Lib/xtools_exec.py $*
+	python3 $script_path/Lib/xtools_exec.py $*
 fi

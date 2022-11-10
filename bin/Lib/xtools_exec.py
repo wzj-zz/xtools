@@ -30,6 +30,8 @@ from re import split
 from io import StringIO as sio
 from io import BytesIO as bio
 
+from collections import ChainMap as cmap
+
 from shutil import which
 from glob import glob
 glob = partial(glob, recursive=True)
