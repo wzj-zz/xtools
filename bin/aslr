@@ -1,8 +1,0 @@
-#!/bin/bash
-
-if [[ $1 = "" ]]
-then
-	cat /proc/sys/kernel/randomize_va_space
-else
-	echo $1 > /proc/sys/kernel/randomize_va_space
-fi
