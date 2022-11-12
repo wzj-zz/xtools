@@ -12,6 +12,7 @@ md = mkdir
 from os.path import isfile
 from os.path import isdir
 from os.path import abspath
+from os.path import realpath
 from os.path import basename
 from os.path import dirname
 from os.path import join as pin
