@@ -87,6 +87,9 @@ GroupAdd, virtual_machine, ahk_exe mstsc.exe
 
 GroupAdd, ahk_window, ahk_exe auto.exe
 GroupAdd, ahk_window, ahk_exe KeyPatch64.exe
+
+GroupAdd, xserver_window, ahk_exe msrdc.exe
+GroupAdd, xserver_window, ahk_exe vcxsrv.exe
 ;----------------------------------------------------------------------
 ;ahk- ahk function
 
@@ -1764,34 +1767,10 @@ return
 return
 
 #Enter::
-Process, Exist, vcxsrv.exe
-if(!ErrorLevel) {
-    return
-}
-if WinExist("ahk_exe vcxsrv.exe") {
-    WinActivateBottom, ahk_exe vcxsrv.exe
-    return
-}
-else {
-    RunWait, wsl.exe --set-default ubuntu_2, , Hide
-    Run, cmd.exe /c "wsl.exe bash -c "DISPLAY=$(grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'):0.0 emacsclient -c" &", , Hide
-    return
-}
+WinActivateBottom, ahk_group xserver_window
+return
 
 #+Enter::
-WinActivateBottom, ahk_exe vcxsrv.exe
-RunWait, wsl.exe --set-default ubuntu_2, , Hide
-clipboard := "
-(
-path = r'''" clipboard " '''
-
-try:
-    set_clip(lcx(path)[0])
-except:
-    set_clip('Error File Path!')
-)"
-pyw_exec_wait()
-Run, wsl.exe emacsclient "%clipboard%", , Hide
 return
 
 #n::
@@ -2969,6 +2948,7 @@ return
 
 ::wsx::lxrunoffline{Space}
 
+::wsver::wsl.exe --version{Space}
 ::wsls::wsl.exe --list --verbose{Space}
 ::wsud::wsl.exe --update{Space}
 ::wski::wsl.exe -t{Space}
