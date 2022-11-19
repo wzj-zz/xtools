@@ -3687,6 +3687,17 @@ return
 ::dgu::dpkg -r{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
+;winsw- wsw- windows service wrapper
+
+#IfWinActive ahk_group win_shell
+::wswi::winsw install{Space}
+::wswu::winsw uninstall{Space}
+::wswop::winsw start{Space}
+::wswed::winsw stop{Space}
+::wswst::winsw status{Space}
+::wswre::winsw restart{Space}
+#IfWinActive
+;----------------------------------------------------------------------
 ;py- python 常用命令
 
 #IfWinActive ahk_group terminal
