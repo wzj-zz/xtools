@@ -3285,6 +3285,8 @@ return
 ::gills::git config --local --list
 ::gigc::git gc --prune=now{Space}
 ::gilg::git log{Space}
+::giop::git init{Space}
+::giopx::git init --bare{Space}
 ::giad::git add .
 ::gist::git status{Space}
 ::gizz::git stash push{Space}
