@@ -3312,10 +3312,13 @@ return
 #IfWinActive ahk_group terminal
 ::dkver::docker version
 ::dkinf::docker info
+::dkct::docker inspect{Space}
 ::dkop::sudo service docker start
 ::dked::sudo service docker stop
 ::dks::docker search{Space}
 ::dkit::docker exec -it  /bin/bash{Left 10}
+::dcit::docker exec -it  /bin/bash{Left 10}
+::dcct::docker inspect{Space}
 ::dcls::docker container ls{Space}
 ::dcla::docker container ls --all{Space}
 ::dcst::docker container start{Space}
@@ -3328,6 +3331,7 @@ return
 ::dcrit::docker container run -it{Space}
 ::dcrm::docker container rm{Space}
 ::dce::docker container exec{Space}
+::dict::docker inspect{Space}
 ::dils::docker image ls{Space}
 ::dirm::docker image rm -f{Space}
 ::dipl::docker image pull{Space}
