@@ -7,8 +7,8 @@ if "%1"=="clash" (
 	copy %~dp0..\config\Everything\IbEverythingExt\bin\WindowsCodecs.dll %SCOOP%\apps\everything\current\WindowsCodecs.dll
 	open %SCOOP%\apps\everything\current\Everything.exe
 ) else if "%1"=="snap" (
-	copy %~dp0..\config\Snipaste\config.ini %SCOOP%\apps\snipaste\current\config.ini
-	open %SCOOP%\apps\snipaste\current\Snipaste.exe
+	copy %~dp0..\config\Snipaste\config.ini %SCOOP%\apps\snipaste-beta\current\config.ini
+	open %SCOOP%\apps\snipaste-beta\current\Snipaste.exe
 ) else if "%1"=="lt" (
 	copy %~dp0..\config\Listary\Preferences.json %SCOOP%\apps\listary\current\UserData
 	open %SCOOP%\apps\listary\current\Listary.exe
