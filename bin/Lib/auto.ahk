@@ -1439,6 +1439,12 @@ clip_etxt()
 clipboard := "files = fl(dtxt(" clipboard "))"
 return
 
+::lfl::
+WinClose, @Auto_Activate@
+clip_etxt()
+clipboard := "files = lfl(dtxt(" clipboard "))"
+return
+
 ::fa::
 WinClose, @Auto_Activate@
 clipboard := "Thread(target=lambda:fa_cli(r'''" clipboard "'''.strip())).start();set_clip(r'''" clipboard "'''.strip())"

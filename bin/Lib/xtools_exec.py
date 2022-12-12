@@ -1406,6 +1406,8 @@ def lcx(paths):
             
     return sorted(set(ret))
     
+lfl = lcx
+    
 def wsl(wsl_name):
     wsl_map = {
         'ub1':'ubuntu_1',
