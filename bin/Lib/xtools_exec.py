@@ -1357,49 +1357,54 @@ class reg(object):
 #-------------------------------------------------------------------------------- 
 # wsl-
 
-def wcx(x):
+def wcx(paths):
     win_pattern = r'^[a-zA-Z]:(?:[\\/][^\\/\n\r:\*"<>\|\?]+)*'
-    lix_pattern = r'^/mnt(?:/[^/\n\r]+)+'
+    wsl_lix_pattern = r'^/mnt(?:/[^/\n\r]+)+'
+    wsl_win_pattern = r'^\\\\wsl\.localhost\\.*'
+    lix_pattern = r'^(?:/[^/\n\r]+)+'
     url_pattern = r'^https?:/(?:/[^/\s]+)+'
 
-    win = []
-    lix = []
-    url = []
+    ret = []
     
-    for i in x.split('\n'):
-        if match(win_pattern, i.strip()):
-           win.append(i.strip().rstrip('\\/'))
-        elif match(lix_pattern, i.strip()):
-           lix.append(i.strip())
-        elif match(url_pattern, i.strip()):
-           url.append(i.strip())
-           
-    lix = list(map(lambda tmp_lix:gsub(r'/mnt/([a-zA-Z])', lambda x:x.group(1).upper()+':', tmp_lix).replace('/', '\\').strip(), lix))
-    win = list(map(lambda tmp_win:tmp_win.strip(), win))
-    return sorted(filter(lambda x:x, win + lix + url))
+    for _path in paths.split('\n'):
+        path = _path.strip().rstrip('\\/')
+        if match(win_pattern, path):
+           ret.append(path)
+        elif match(wsl_lix_pattern, path):
+           ret.append(gsub(r'^/mnt/([a-zA-Z])', lambda x:x.group(1).upper()+':', path).replace('/', '\\').strip())
+        elif match(wsl_win_pattern, path):
+            ret.append(path)
+        elif match(lix_pattern, path):
+            ret.append(path)
+        elif match(url_pattern, path):
+            ret.append(path)
+    return sorted(set(ret))
     
 fl = wcx
     
-def lcx(x):
+def lcx(paths):
     win_pattern = r'^[a-zA-Z]:(?:[\\/][^\\/\n\r:\*"<>\|\?]+)*'
-    lix_pattern = r'^/mnt(?:/[^/\n\r]+)+'
+    wsl_lix_pattern = r'^/mnt(?:/[^/\n\r]+)+'
+    wsl_win_pattern = r'^\\\\wsl\.localhost\\.*'
+    lix_pattern = r'^(?:/[^/\n\r]+)+'
     url_pattern = r'^https?:/(?:/[^/\s]+)+'
-    
-    win = []
-    lix = []
-    url = []
-    
-    for i in x.split('\n'):
-        if match(win_pattern, i.strip()):
-           win.append(i.strip().rstrip('\\/'))
-        elif match(lix_pattern, i.strip()):
-           lix.append(i.strip())
-        elif match(url_pattern, i.strip()):
-           url.append(i.strip())
 
-    win = list(map(lambda tmp_win:gsub(r'([a-zA-Z]):', lambda x:'\\mnt\\'+x.group(1).lower(), tmp_win).replace('\\', '/').strip(), win))
-    lix = list(map(lambda tmp_lix:tmp_lix.strip(), lix))
-    return sorted(set(filter(lambda x:x, win + lix + url)))
+    ret = []
+    
+    for _path in paths.split('\n'):
+        path = _path.strip().rstrip('\\/')
+        if match(win_pattern, path):
+            ret.append(gsub(r'([a-zA-Z]):', lambda x:'\\mnt\\'+x.group(1).lower(), path).replace('\\', '/').strip())
+        elif match(wsl_lix_pattern, path):
+            ret.append(path)
+        elif match(wsl_win_pattern, path):
+            ret.append(gsub(r'('+wsl_win_pattern+r'?\\)', '/', path).replace('\\', '/').strip())
+        elif match(lix_pattern, path):
+            ret.append(path)
+        elif match(url_pattern, path):
+            ret.append(path)
+            
+    return sorted(set(ret))
     
 def wsl(wsl_name):
     wsl_map = {
