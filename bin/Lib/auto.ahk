@@ -339,6 +339,12 @@ check_multi_line(data) {
         return false
     }
 }
+
+get_cur_window_proc_name() {
+	win_id := WinExist("A")
+	WinGet, process_name, ProcessName, ahk_id %win_id%
+	return process_name
+}
 ;----------------------------------------------------------------------
 ;script-脚本触发器，常用脚本补全热字串
 
@@ -1676,10 +1682,16 @@ NumpadSub::RCtrl
 >^`;::
 if WinExist("ahk_exe cmd.exe") {
     WinActivateBottom, ahk_group win_shell
-    return
+	while(!WinActive("ahk_group win_shell")) {
+		WinActivateBottom, ahk_group win_shell
+	}
+	return
 }
 else {
     Run, cmd.exe
+	while(!WinActive("ahk_exe cmd.exe")) {
+		WinActivate, ahk_exe cmd.exe
+	}
     return
 }
 
