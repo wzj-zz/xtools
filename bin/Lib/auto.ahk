@@ -143,9 +143,17 @@ base64(string)
     return StrGet(&buf)
 }
 
+activate_cmd() {
+	WinWait, ahk_exe cmd.exe
+	while(!WinActive("ahk_exe cmd.exe")) {
+		WinActivate, ahk_exe cmd.exe
+	}
+}
+
 py_exec_dispatch() {
     global python
     Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -c -d
+	activate_cmd()
 }
 
 pyw_eval(code_src:="") {
@@ -232,6 +240,7 @@ py_exec_cmd(code_src:="") {
         base64_code_src := base64(code_src)
         Run, cmd /k %python% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
     }
+	activate_cmd()
 }
 
 py_exec_cmd_32(code_src:="") {
@@ -244,6 +253,7 @@ py_exec_cmd_32(code_src:="") {
         base64_code_src := base64(code_src)
         Run, cmd /k %python32% %A_ScriptDir%\xtools_exec.py -b %base64_code_src%
     }
+	activate_cmd()
 }
 
 line_filter() {
@@ -1689,9 +1699,7 @@ if WinExist("ahk_exe cmd.exe") {
 }
 else {
     Run, cmd.exe
-	while(!WinActive("ahk_exe cmd.exe")) {
-		WinActivate, ahk_exe cmd.exe
-	}
+	activate_cmd()
     return
 }
 
