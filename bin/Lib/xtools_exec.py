@@ -4,7 +4,15 @@ import sys
 from ctypes import *
 
 import os
+
 from os import getenv
+setenv = lambda key, val:os.environ.update({key:val})
+
+getpath = lambda :getenv('PATH')
+def setpath(path):
+    sep = ';' if is_plat('win') else ':'
+    setenv('PATH', getenv('PATH')+sep+path.strip())
+    
 from os import rename as ren
 from os import makedirs as mkdir
 md = mkdir
