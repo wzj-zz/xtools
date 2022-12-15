@@ -14,8 +14,14 @@ def setpath(path):
     setenv('PATH', getenv('PATH')+sep+path.strip())
     
 from os import rename as ren
-from os import makedirs as mkdir
-md = mkdir
+
+def md(path):
+    from os import makedirs as mkdir
+    if not exist(path):
+        mkdir(path)
+        return True
+    else:
+        return False
 
 from os.path import isfile
 from os.path import isdir
@@ -552,6 +558,7 @@ def wea(mod, fn=None):
 p = print            
 en = lambda lst:'\n'.join(list(map(str, lst)))
 nem = lambda target: list(filter(lambda x:x, target))
+quo = lambda s:'"'+s.strip()+'"'
 
 def uuid():
     import uuid as lib_uuid
@@ -623,6 +630,11 @@ def rdict(src_map):
             else:
                 dst_map[v] = [k]
     return dst_map
+    
+def getdb(rel_path, db_path=None):
+    if not db_path:
+        db_path = pin(dirname(__file__), '..', '..', 'binx', '@db')
+    return pin(db_path, rel_path)
     
 class xtargs(object):
     def __init__(self):
@@ -1395,8 +1407,6 @@ def wcx(paths):
             ret.append(path)
     return sorted(set(ret))
     
-fl = wcx
-    
 def lcx(paths):
     win_pattern = r'^[a-zA-Z]:(?:[\\/][^\\/\n\r:\*"<>\|\?]+)*'
     wsl_lix_pattern = r'^/mnt(?:/[^/\n\r]+)+'
@@ -1421,7 +1431,11 @@ def lcx(paths):
             
     return sorted(set(ret))
     
-lfl = lcx
+def fl(paths):
+    if is_plat('win'):
+        return wcx(paths)
+    else:
+        return lcx(paths)
     
 def wsl(wsl_name):
     wsl_map = {

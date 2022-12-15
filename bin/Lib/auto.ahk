@@ -796,8 +796,7 @@ WinClose, @Auto_Activate@
 write_text("@@@log_txt@@@", clipboard)
 clipboard =
 (
-if not exist('@@@log@@@'):
-    mkdir('@@@log@@@')
+md('@@@log@@@')
 data = fl(rd('@@@log_txt@@@', 'r'))
 for i in data:
     cp(i, '@@@log@@@')
@@ -1453,12 +1452,6 @@ return
 WinClose, @Auto_Activate@
 clip_etxt()
 clipboard := "files = fl(dtxt(" clipboard "))"
-return
-
-::lfl::
-WinClose, @Auto_Activate@
-clip_etxt()
-clipboard := "files = lfl(dtxt(" clipboard "))"
 return
 
 ::fa::
