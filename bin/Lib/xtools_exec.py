@@ -163,6 +163,20 @@ def wtz(file_path='@@@bin@@@', mode='w'):
         return partial(put_file, mode='a')
     return put_file
     
+def run(*cmd):
+    import subprocess
+    cmd = ' '.join(cmd)
+    return subprocess.run(cmd, shell=True)
+    
+def cmd_exec(cmds):
+    ret = []
+    for cmd in cmds:
+        if type(cmd) in [list, tuple]:
+            ret.append(run(*cmd))
+        if type(cmd)==str:
+            ret.append(run(cmd))
+    return ret
+    
 def pp(*command):
     import subprocess
     def communicate(input=b'', shell=True, err=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
@@ -181,13 +195,6 @@ def pp(*command):
             p_pipe = subprocess.Popen(command_, stdin=stdin, stdout=stdout, stderr=stderr, startupinfo=st, shell=shell)
             return p_pipe.communicate(input)[0]
     return communicate
-    
-def run(*cmd):
-    pp(*cmd)(stdin=None, stdout=None, stderr=None)
-    
-def cmd_exec(cmds):
-    for cmd in cmds:
-        run(*cmd)
     
 class px(object):
     def __init__(self, shell=True):
