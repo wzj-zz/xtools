@@ -3457,12 +3457,12 @@ return
 #IfWinActive ahk_group terminal
 ::mgw::set PATH=%scoop%\apps\mingw-winlibs\current\bin;%PATH%
 ::ms::
-clipboard := "max(glob(r'C:\Program Files (x86)\Microsoft Visual Studio\*\Community\VC\Auxiliary\Build\vcvars32.bat'))"
+clipboard := "max(glob(r'C:\Program Files\Microsoft Visual Studio\*\Community\VC\Auxiliary\Build\vcvars32.bat') or glob(r'C:\Program Files (x86)\Microsoft Visual Studio\*\Community\VC\Auxiliary\Build\vcvars32.bat'))"
 pyw_eval()
 SendInput, {TEXT}"%clipboard%"
 return
 ::msx::
-clipboard := "max(glob(r'C:\Program Files (x86)\Microsoft Visual Studio\*\Community\VC\Auxiliary\Build\vcvars64.bat'))"
+clipboard := "max(glob(r'C:\Program Files\Microsoft Visual Studio\*\Community\VC\Auxiliary\Build\vcvars64.bat') or glob(r'C:\Program Files (x86)\Microsoft Visual Studio\*\Community\VC\Auxiliary\Build\vcvars64.bat'))"
 pyw_eval()
 SendInput, {TEXT}"%clipboard%"
 return
