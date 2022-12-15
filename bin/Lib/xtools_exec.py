@@ -634,7 +634,7 @@ def rdict(src_map):
 def getdb(rel_path, db_path=None):
     if not db_path:
         db_path = pin(dirname(__file__), '..', '..', 'binx', '@db')
-    return pin(db_path, rel_path)
+    return abspath(pin(db_path, rel_path))
     
 class xtargs(object):
     def __init__(self):
@@ -1436,6 +1436,10 @@ def fl(paths):
         return wcx(paths)
     else:
         return lcx(paths)
+        
+def fl0(paths):
+    _fl0 = fl(paths)
+    return _fl0[0] if _fl0 else None
     
 def wsl(wsl_name):
     wsl_map = {
