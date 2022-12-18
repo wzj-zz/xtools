@@ -169,10 +169,21 @@ def wtz(file_path='@@@bin@@@', mode='w'):
         return partial(put_file, mode='a')
     return put_file
     
-def run(*cmd):
+def extz(zip_path, unzip_path=None):
+    import zipfile
+    with zipfile.ZipFile(zip_path, mode='r') as zfile:
+        for file in zfile.namelist():
+            if not unzip_path:
+                unzip_path = zip_path+'@zip'
+            zfile.extract(file, unzip_path)
+    
+def run(*cmd, capture=False, shell=True, **kwargs):
     import subprocess
-    cmd = ' '.join(cmd)
-    return subprocess.run(cmd, shell=True)
+    if set([type(token) for token in cmd]) == {str}:
+        cmd = ' '.join(cmd)
+    if set([type(token) for token in cmd]) <= {list, tuple}:
+        cmd = reduce(lambda t1, t2:list(t1)+list(t2), cmd, [])
+    return subprocess.run(cmd, capture_output=capture, shell=shell, **kwargs)
     
 def cmd_exec(cmds):
     ret = []
