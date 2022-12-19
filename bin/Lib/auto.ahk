@@ -2938,18 +2938,11 @@ return
 ::ztm::my_tmp_var=$(powershell.exe Get-Clipboard | sed 's/\r//g')
 ::dfx::diff <(echo -E $my_tmp_var) <(powershell.exe Get-Clipboard | sed 's/\r//g') --color=auto{Space}
 ::dfo::diff <(echo -E $my_tmp_var) <(powershell.exe Get-Clipboard | sed 's/\r//g') --color=auto --suppress-common-lines -y{Space}
-::zrn::
-clipboard := "
-(
-paths = r'''" clipboard " '''
-
-try:
-    set_clip(en(lcx(paths)))
-except:
-    set_clip('Error File List!')
-)"
-pyw_exec_wait()
-SendInput, {Text}powershell.exe Get-Clipboard | sed 's/\r//g' | awk 'NF>0 {print $0}'
+::ztlcx::
+clip_etxt()
+clipboard := "en(lcx(dtxt(" clipboard ")))"
+pyw_eval()
+SendInput, {Text}powershell.exe Get-Clipboard | sed 's/\r//g'
 SendInput, {Space}
 return
 
