@@ -2929,6 +2929,7 @@ return
 ::mmd::'/mnt/d'
 ::mme::'/mnt/e'
 ::mmf::'/mnt/f'
+::mmg::'/mnt/g'
 ::mnt::read mnt_drive;sudo mount -t drvfs $mnt_drive: /mnt/$mnt_drive
 ::umnt::read mnt_drive;sudo umount /mnt/$mnt_drive
 
