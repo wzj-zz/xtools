@@ -524,33 +524,25 @@ lsr = lambda data:lr(ls(data))
 def str_to_block(pattern, data, sep='-'):
     return en([sep*80+'\n'+line if search(pattern, line, re.I) else line for line in data.replace('\r', '').split('\n')])
     
-def sset(data, ignore_case=True):
-    def _strip(data):
-        class custom_str(str):
-            def __init__(self, data):
-                self.data = data
-            def __hash__(self):
-                return hash(self.data.lower())
-            def __eq__(self, other):
-                return self.lower()==other.lower()
-        if type(data)==str:
+def sset(string_set, ignore_case=True):
+    class ignore_case_str(str):
+        def __init__(self, string):
+            self.string = string
+        def __hash__(self):
+            return hash(self.string.lower())
+        def __eq__(self, other):
+            return self.lower()==other.lower()
+            
+    def _process(string_set):
+        if type(string_set)==str:
+            string_set = nem(lsr(string_set).split('\n'))
             if ignore_case:
-                return nem(map(lambda x:custom_str(x.strip()), data.split('\n')))
-            else:
-                return nem(map(lambda x:x.strip(), data.split('\n')))
-        ret = []
-        try:
-            if ignore_case:
-                ret = map(lambda x:custom_str(str(x).strip()), data)
-            else:
-                ret = map(lambda x:str(x).strip(), data)
-        except:
-            if ignore_case:
-                ret = [custom_str(str(data).strip())]
-            else:
-                ret = [str(data).strip()]
-        return nem(ret)
-    return set(_strip(data))
+                string_set = map(ignore_case_str, string_set)
+            return set(string_set)
+        if type(string_set) in {tuple, list, set}:
+            return _process(en(string_set))
+    return _process(string_set)
+
 #--------------------------------------------------------------------------------
 # ffi-
 
