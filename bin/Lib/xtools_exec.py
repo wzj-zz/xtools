@@ -23,15 +23,6 @@ def md(path):
     else:
         return False
 
-from os.path import isfile
-from os.path import isdir
-from os.path import abspath
-from os.path import realpath
-from os.path import basename
-from os.path import dirname
-from os.path import join as pin
-from os.path import exists as exist
-
 from functools import reduce
 from functools import partial
 
@@ -73,6 +64,46 @@ from random import choice
 
 import time
 random.seed(time.time())
+
+from os.path import isfile
+from os.path import isdir
+from os.path import abspath
+from os.path import realpath
+from os.path import normpath
+from os.path import basename
+from os.path import dirname
+from os.path import join as pin
+from os.path import sep as pathsep
+from os.path import exists as exist
+from os.path import commonpath as compath
+
+def prefix(strings):
+    from os.path import commonprefix
+    return commonprefix(list(map(str.strip, strings)))
+    
+def suffix(strings):
+    return prefix(list(map(lambda string:string[::-1], strings)))[::-1]
+
+def simpath(first_paths, second_paths):
+    def _similar(first_path, second_path):
+        cnt = 0
+        if normpath(first_path)==normpath(second_path):
+            cnt = normpath(first_path).count(pathsep)+1
+        else:
+            cnt = suffix([first_path, second_path]).count(pathsep)
+        return cnt
+        
+    def _simpath(first_path, second_paths):
+        second_path = max(second_paths, key=lambda second_path:_similar(first_path, second_path))
+        if _similar(first_path, second_path)>0:
+            return (first_path, second_path)
+    
+    ret = []
+    for first_path in first_paths:
+        pair = _simpath(first_path, second_paths)
+        if pair:
+            ret.append(pair)
+    return ret
 
 #--------------------------------------------------------------------------------
 # shell-
