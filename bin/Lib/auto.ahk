@@ -7,11 +7,11 @@ EnvGet, SCOOP_ROOT, SCOOP
 
 browser_path := "www.google.com"
 
-python := A_ScriptDir "\..\..\utils\python3.7.4\python.exe"
-pythonw := A_ScriptDir "\..\..\utils\python3.7.4\pythonw.exe"
+python := SCOOP_ROOT "\apps\python\current\python.exe"
+pythonw := SCOOP_ROOT "\apps\python\current\pythonw.exe"
 
-python32 := A_ScriptDir "\..\..\utils\python3.7.4_x86\python.exe"
-pythonw32 := A_ScriptDir "\..\..\utils\python3.7.4_x86\pythonw.exe"
+python32 := SCOOP_ROOT "\apps\python32\current\python.exe"
+pythonw32 := SCOOP_ROOT "\apps\python32\current\pythonw.exe"
 
 java8 := SCOOP_ROOT "\apps\openjdk8-redhat\current\bin\java.exe"
 java8w := SCOOP_ROOT "\apps\openjdk8-redhat\current\bin\javaw.exe"
