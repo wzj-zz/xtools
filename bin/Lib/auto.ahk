@@ -2026,29 +2026,6 @@ WinClose, @Auto_Activate@
 WinActivate ahk_exe understand.exe
 return
 
-::m::
-WinClose, @Auto_Activate@
-if WinExist("ahk_exe Typora.exe") {
-    WinActivate, ahk_exe Typora.exe
-    return
-}
-else {
-    Run, %A_ScriptDir%\..\..\utils\Typora\bin\typora.exe
-    return
-}
-
-::v::
-WinClose, @Auto_Activate@
-if WinExist("ahk_exe PotPlayerMini64.exe") {
-    WinActivate, ahk_exe PotPlayerMini64.exe
-    WinActivate, ahk_exe PotPlayerMini64.exe
-    return
-}
-else {
-    Run, %A_ScriptDir%\..\..\utils\PotPlayer64\PotPlayerMini64.exe
-    return
-}
-
 ::rc::
 WinClose, @Auto_Activate@
 if WinExist("ahk_exe mstsc.exe") {
