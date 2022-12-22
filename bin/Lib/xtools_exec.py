@@ -666,9 +666,12 @@ def rdict(src_map):
     return dst_map
     
 def getdb(rel_path, db_path=None):
-    if not db_path:
+    if db_path is None:
         db_path = pin(dirname(__file__), '..', '..', 'binx', '@db')
-    return abspath(pin(db_path, rel_path))
+    target_path = abspath(pin(db_path, rel_path))
+    if not exist(target_path):
+        target_path = which(basename(target_path))
+    return target_path
     
 class xtargs(object):
     def __init__(self):
