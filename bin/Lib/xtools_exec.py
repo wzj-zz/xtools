@@ -10,7 +10,7 @@ setenv = lambda key, val:os.environ.update({key:val})
 
 getpath = lambda :getenv('PATH')
 def setpath(path):
-    sep = ';' if is_plat('win') else ':'
+    sep = ';' if isplat('win') else ':'
     setenv('PATH', getenv('PATH')+sep+path.strip())
     
 from os import rename as ren
@@ -110,8 +110,11 @@ def simpath(first_paths, second_paths):
 
 pwd = cwd = lambda :abspath(os.getcwd())
 
-def is_plat(plat):
+def getplat():
     from platform import system
+    return system().lower()
+
+def isplat(plat):
     return {
         'win':'windows',
         'windows':'windows',
@@ -120,7 +123,7 @@ def is_plat(plat):
         'darwin':'darwin',
         'mac':'darwin',
         'java':'java'
-    }[plat.lower()]==system().lower()
+    }[plat.lower()]==getplat()
 
 def set_python_path(*paths):
     def _get_dir_path(path):
@@ -228,7 +231,7 @@ def cmd_exec(cmds):
 def pp(*command):
     import subprocess
     def communicate(input=b'', shell=True, err=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
-        if is_plat('win'):
+        if isplat('win'):
             st = subprocess.STARTUPINFO()
             st.dwFlags = subprocess.STARTF_USESHOWWINDOW
             st.wShowWindow = subprocess.SW_HIDE
@@ -258,7 +261,7 @@ class px(object):
         
     @property
     def val(self):
-        if is_plat('win'):
+        if isplat('win'):
             self.data = pp(*self.cmd)(self.data, shell=self.shell)
         else:
             self.data = pp(' '.join(self.cmd))(self.data, shell=self.shell)
@@ -866,10 +869,10 @@ class xt_util(object):
                 dispatch_flag = ('-b', spec_blk_src)
                 
             if not spec:
-                pp('python3.exe', wcx(__file__)[0] if is_plat('win') else wcx(__file__)[0].join(["'", "'"]), *dispatch_flag)(stdin=None, stdout=None, stderr=None)
+                pp('python3.exe', wcx(__file__)[0] if isplat('win') else wcx(__file__)[0].join(["'", "'"]), *dispatch_flag)(stdin=None, stdout=None, stderr=None)
             else:
                 if spec[0]=='win':
-                    pp('python3.exe', wcx(__file__)[0] if is_plat('win') else wcx(__file__)[0].join(["'", "'"]), *dispatch_flag)(stdin=None, stdout=None, stderr=None)
+                    pp('python3.exe', wcx(__file__)[0] if isplat('win') else wcx(__file__)[0].join(["'", "'"]), *dispatch_flag)(stdin=None, stdout=None, stderr=None)
                 if spec[0]=='wsl':
                     wsl(spec[1])
                     pp('wsl.exe', 'python3', lcx(__file__)[0], *dispatch_flag)(stdin=None, stdout=None, stderr=None)
@@ -1469,7 +1472,7 @@ def lcx(paths):
     return sorted(set(ret))
     
 def fl(paths):
-    if is_plat('win'):
+    if isplat('win'):
         return wcx(paths)
     else:
         return lcx(paths)
@@ -1503,7 +1506,7 @@ class wsx(object):
         
     @property
     def val(self):
-        if is_plat('win'):
+        if isplat('win'):
             self.data = pp(*self.cmd)(self.data, shell=self.shell)
         else:
             self.data = pp(' '.join(self.cmd))(self.data, shell=self.shell)
