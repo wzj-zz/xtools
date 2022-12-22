@@ -7,6 +7,8 @@ EnvGet, SCOOP_ROOT, SCOOP
 
 browser_path := "www.google.com"
 
+tc_path := A_ScriptDir "\..\TotalCMD64\Totalcmd64.exe"
+
 python := SCOOP_ROOT "\apps\python\current\python.exe"
 pythonw := SCOOP_ROOT "\apps\python\current\pythonw.exe"
 
@@ -301,7 +303,7 @@ isdir(path) {
 }
 
 isfile(path) {
-    return not isdir(path)
+    return FileExist(path) and not isdir(path)
 }
 
 basename(path) {
@@ -815,7 +817,7 @@ return
 
 ::lgx::
 WinClose, @Auto_Activate@
-RunWait, %A_ScriptDir%\..\..\utils\TotalCMD64\Totalcmd64.exe /O /T "%A_WorkingDir%\@@@log@@@"
+RunWait, %tc_path% /O /T "%A_WorkingDir%\@@@log@@@"
 return
 
 ::un::
@@ -1581,10 +1583,10 @@ except:
     set_clip('Error File Path!')
 )"
 pyw_exec_wait()
-RunWait, %A_ScriptDir%\..\..\utils\TotalCMD64\Totalcmd64.exe /O /T "%clipboard%"
+RunWait, %tc_path% /O /T "%clipboard%"
 return
 <!LCtrl::
-RunWait, %A_ScriptDir%\..\..\utils\TotalCMD64\Totalcmd64.exe /O /T \\wsl$
+RunWait, %tc_path% /O /T \\wsl$
 return
 ::re::<(){Left 1}
 ::exe::<(\.exe$|\.dll$|\.sys$)
@@ -1594,7 +1596,7 @@ return
 
 #IfWinActive ahk_exe Everything.exe
 <^LAlt::
-RunWait, %A_ScriptDir%\..\..\utils\TotalCMD64\Totalcmd64.exe /O /T "%clipboard%"
+RunWait, %tc_path% /O /T "%clipboard%"
 return
 
 #IfWinActive ahk_exe HxD64.exe
@@ -1712,7 +1714,17 @@ if WinExist("ahk_exe Totalcmd64.exe") {
     return
 }
 else {
-    Run, %A_ScriptDir%\..\..\utils\TotalCMD64\Totalcmd64.exe
+	bin_path := A_ScriptDir "\..\"
+	tc_zip_path :=  A_ScriptDir "\..\..\setup\TotalCMD64.zip"
+	
+	if(isfile(tc_path)) {
+		Run, %tc_path%
+	}
+	else {
+		remove(dirname(tc_path))
+		RunWait, 7z.exe x -y -o%bin_path% %tc_zip_path%
+		Run, %tc_path%
+	}
     return    
 }
 
@@ -2853,7 +2865,7 @@ return
 
 #IfWinActive ahk_group win_shell
 ::rex::
-RunWait, %A_ScriptDir%\..\..\utils\TotalCMD64\Totalcmd64.exe /O /T ::{645FF040-5081-101B-9F08-00AA002F954E}
+RunWait, %tc_path% /O /T ::{645FF040-5081-101B-9F08-00AA002F954E}
 return
 ::rec::
 RunWait, cmd.exe /c "echo Y|PowerShell.exe -NoProfile -Command Clear-RecycleBin"

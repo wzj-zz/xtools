@@ -1,5 +1,6 @@
 bin/Lib/auto.exe
 bin/KeyPatch/KeyPatch64.exe
+bin/TotalCMD64
 bin/**/*.pyc
 bin/**/__pycache__/
 
