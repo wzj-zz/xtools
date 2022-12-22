@@ -3754,8 +3754,8 @@ return
 ;java- jenv- 常用命令
 
 #IfWinActive ahk_group terminal
-::jvi::jenv add{Space}
-::jvu::jenv remove{Space}
+::jvad::jenv add{Space}
+::jvrm::jenv remove{Space}
 ::jvls::jenv versions{Space}
 ::jvcur::jenv version{Space}
 ::jvst::jenv global{Space}
