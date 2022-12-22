@@ -2747,18 +2747,9 @@ return
 #IfWinActive ahk_group terminal
 ;frida-
 ::faver::frida --version
-::fawver::
-SendInput, %A_ScriptDir%\..\..\utils\python3.7.4\Scripts\frida.exe --version
-return
 ::fa::frida{Space}
-::faw::
-SendInput, %A_ScriptDir%\..\..\utils\python3.7.4\Scripts\frida.exe{Space}
-return
-::ft::frida-trace{Space}
-::ftw::
-SendInput, %A_ScriptDir%\..\..\utils\python3.7.4\Scripts\frida-trace.exe -O "%A_WorkingDir%\@@@txt@@@"{Space}
-return
-::fcv::p D:\tools\bin\Lib\frida\frida-drcov.py{Space}
+::fat::frida-trace{Space}
+::facv::p D:\tools\bin\Lib\frida\frida-drcov.py{Space}
 
 ;dr-
 ::drcv::D:\tools\re\DynamoRIO\bin32\drrun.exe -t drcov --{Space}
