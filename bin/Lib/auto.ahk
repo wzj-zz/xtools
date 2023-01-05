@@ -2305,7 +2305,7 @@ return
 
 ::ps::
 WinClose, @Auto_Activate@
-Run, %SCOOP_ROOT%\apps\processhacker-nightly\current\ProcessHacker.exe
+Run, %SCOOP_ROOT%\apps\systeminformer-nightly\current\SystemInformer.exe
 return
 
 ::res::
