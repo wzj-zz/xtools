@@ -3244,18 +3244,11 @@ return
 ::tmop::(tmux set mouse on && tmux set -g mode-keys vi) 2>> /dev/null
 ::tmmsop::tmux set mouse on 2>> /dev/null{Space}
 ::tmmsed::tmux set mouse off
-::tmat::
-SendInput, tmux attach -t{Space}
-return
-::tmls::
-SendInput, tmux ls
-return
-::tmks::
-SendInput, tmux kill-session -t{Space}
-return
-::tmns::
-SendInput, tmux new -s{Space}
-return
+::tmat::tmux attach -t{Space}
+::tmdat::tmux detach{Space}
+::tmls::tmux ls{Space}
+::tmks::tmux kill-session -t{Space}
+::tmns::tmux new -s{Space}
 #IfWinActive
 ;----------------------------------------------------------------------
 ;socat- nc- 常用命令
