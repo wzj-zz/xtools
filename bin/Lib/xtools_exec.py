@@ -668,13 +668,20 @@ def rdict(src_map):
                 dst_map[v] = [k]
     return dst_map
     
-def getdb(rel_path, db_path=None):
-    if db_path is None:
-        db_path = pin(dirname(__file__), '..', '..', 'binx', '@db')
-    target_path = abspath(pin(db_path, rel_path))
+def getres(rel_path, res_path=None):
+    if res_path is None:
+        res_path = pin(dirname(__file__), '..', '..', 'binx', '@res')
+    target_path = abspath(pin(res_path, rel_path))
     if not exist(target_path):
         target_path = which(basename(target_path))
     return target_path
+    
+def getsrc(rel_path, src_path=None):
+    if src_path is None:
+        src_path = pin(dirname(__file__), '..', '..', 'binx', '@src')
+    target_path = abspath(pin(src_path, rel_path))
+    if exist(target_path):
+        return target_path
     
 class xtargs(object):
     def __init__(self):
@@ -839,6 +846,13 @@ class xt_util(object):
         self.db[code_id] = code_val
         wt(self.db_path)(dmjs(self.db).encode())
         return code_id
+        
+    @staticmethod
+    def load(rel_path, src_path=None):
+        src_file_path = getsrc(rel_path, src_path)
+        if src_file_path:
+            exec(rd(src_file_path, 'r'), globals())
+            return src_file_path
         
     @staticmethod
     def _parse_spec_blks(src_code):
