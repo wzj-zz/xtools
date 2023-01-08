@@ -902,59 +902,6 @@ clipboard := "uuid().hex"
 pyw_eval()
 return
 
-::xt.add::
-WinClose, @Auto_Activate@
-clip_etxt()
-clipboard := "xt().add(dtxt(" clipboard ").strip())"
-pyw_eval()
-return
-
-::xt.rm::
-WinClose, @Auto_Activate@
-clip_etxt()
-clipboard := "xt().rm(dtxt(" clipboard ").strip().lstrip('id:').strip())"
-pyw_eval()
-return
-
-::xt.set::
-WinClose, @Auto_Activate@
-clip_etxt()
-clipboard := "
-(
-data = lsr(dtxt(" clipboard ")).lstrip('id:').strip().split('\n')
-if len(data)!=2:
-    exit()
-code_id = data[0]
-code_src = dtxt(eval(data[1])).strip()
-if not (len(code_id)==32 and match(r'[0-9a-fA-F]{32}', code_id)):
-    exit()
-xt().set(code_id, code_src)
-set_clip(code_id)
-)"
-pyw_exec_wait()
-return
-
-::xt.get::
-WinClose, @Auto_Activate@
-clip_etxt()
-clipboard := "xt().get(dtxt(" clipboard ").strip())"
-pyw_eval()
-return
-
-::xt.getx::
-WinClose, @Auto_Activate@
-clip_etxt()
-clipboard := "xt().get()"
-pyw_eval()
-return
-
-::xt.call::
-WinClose, @Auto_Activate@
-clipboard := RegExReplace(clipboard, "m)(*ANYCRLF)^[[:blank:]]*(.*?)[[:blank:]]*$", "$1")
-clipboard := "'''#@wsl@ub2\nargs_map = {}\nxt().call('" clipboard "')'''"
-pyw_eval()
-return
-
 ::xt.ug::
 WinClose, @Auto_Activate@
 clipboard := "
